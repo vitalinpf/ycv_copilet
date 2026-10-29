@@ -1642,6 +1642,41 @@ body:not(.demo-room) .em-link,.hb-a .em{display:none !important;}
 #cp-fab.cp-fab.run:not(.zz):not(.zy),#cp-fab.cp-fab.think:not(.zz):not(.zy){filter:none !important;}
 #cp-fab.cp-fab #fab-ic,#cp-fab.cp-fab.run #fab-ic,#cp-fab.cp-fab.think #fab-ic{display:flex !important;opacity:1 !important;visibility:visible !important;transform:none !important;}
 #cp-fab.cp-fab #fab-ic .f-logo,#cp-fab.cp-fab.run #fab-ic .f-logo,#cp-fab.cp-fab.think #fab-ic .f-logo{display:block !important;opacity:1 !important;visibility:visible !important;}
+
+/* v152 — "Thanks for the feedback" toast (499:65690): black 75%, 1px #484848 stroke, r4, 8px padding, white check + 12px/510 white text */
+#toast.toast.fbk{padding:8px !important;gap:8px !important;max-width:256px;border-radius:4px !important;background:rgba(0,0,0,.75) !important;border:1px solid #484848 !important;box-shadow:none !important;-webkit-backdrop-filter:none !important;backdrop-filter:none !important;align-items:center !important;}
+#toast.toast.fbk span{font-size:12px !important;font-weight:510 !important;letter-spacing:.2px !important;color:#fff !important;white-space:nowrap;line-height:normal !important;}
+#toast.toast.fbk .tk{display:block;width:18.35px;height:10.66px;margin:1.17px 0;flex:none;}
+
+/* v153 — pressed like/dislike = main-blue #49C6EF (chat row and "Was it helpful?" chip) */
+#cp-body [data-fb].on,#cp-body [data-fb][aria-pressed=true],#cp-body .fb-out [data-fb].on,.f-chip.fb .fbb.on{background:#49C6EF !important;color:#212127 !important;}
+#cp-body [data-fb].on img,#cp-body [data-fb].on svg,.f-chip.fb .fbb.on img{filter:brightness(0) !important;opacity:.87 !important;}
+
+/* v154 — chip grows to fit "Thanks for the feedback" + the chosen thumb */
+.f-chip.fb{width:max-content !important;max-width:none !important;}
+.f-chip.fb>*{flex:none !important;}
+
+/* v155 — "Was it helpful?" chip on/off per 479:63461: off = main-blue 20% + dark 11px icon, on = #49C6EF + white icon; chip p2/3/2/10, gap 6, 10px text */
+.f-chip.fb{padding:2px 3px 2px 10px !important;gap:6px !important;border-radius:16px !important;border:.6px solid rgba(33,33,39,.1) !important;font-size:10px !important;}
+.f-chip.fb>span{font-size:10px !important;font-weight:400 !important;color:#212127 !important;}
+.f-chip.fb .fbb{width:22px !important;height:22px !important;padding:5.5px !important;margin:0 !important;border:none !important;border-radius:17.96px !important;background:rgba(73,198,239,.2) !important;display:flex !important;align-items:center;justify-content:center;box-sizing:border-box;-webkit-backdrop-filter:blur(1.83px);backdrop-filter:blur(1.83px);}
+.f-chip.fb .fbb+.fbb{margin-left:0 !important;}
+.f-chip.fb .fbb img{width:11px !important;height:11px !important;filter:none !important;opacity:1 !important;}
+.f-chip.fb .fbb .on-ic{display:none !important;}
+.f-chip.fb .fbb.on{background:#49C6EF !important;}
+.f-chip.fb .fbb.on img{display:none !important;}
+.f-chip.fb .fbb.on .on-ic{display:block !important;}
+/* chat feedback row: same "on" = main-blue fill with a white icon */
+#cp-body [data-fb].on img,#cp-body [data-fb].on svg{filter:brightness(0) invert(1) !important;opacity:1 !important;}
+#cp-body [data-fb].on{color:#fff !important;}
+
+/* v155b — on icon stays white (beat the older brightness filters) */
+.f-chip.f-chip.fb .fbb.on img.on-ic{filter:none !important;opacity:1 !important;}
+
+/* v156 — feedback colours per reference: off = #E0F3FB circle + #54A1C6 outline thumb, on = #6EC3EB circle + white outline thumb */
+.f-chip.f-chip.fb .fbb{background:rgba(73,198,239,.2) !important;}
+.f-chip.f-chip.fb .fbb.on{background:#6EC3EB !important;}
+.f-chip.f-chip.fb .fbb img{filter:none !important;opacity:1 !important;}
 </style>
 </head>
 <body>
@@ -4214,10 +4249,10 @@ function flowPaused(){ var pg=document.getElementById('cr-page'); return !!(S.hi
 (function(){
   var chip=document.querySelector('.f-chip'), fab=$('cp-fab'), T=0;
   function showFb(){ if (S.sheet || S.busy) return;
-    chip.className='f-chip fb'; chip.innerHTML='<span>Was it helpful?</span><button class="fbb" data-v="up" aria-label="Helpful"><img src="assets/icons/icon-like.svg" alt=""></button><button class="fbb" data-v="down" aria-label="Not helpful"><img src="assets/icons/icon-dislike.svg" alt=""></button>';
+    chip.className='f-chip fb'; chip.innerHTML='<span>Was it helpful?</span><button class="fbb" data-v="up" aria-label="Helpful"><img src="assets/icons/icon-fb-like.svg?v=3" alt=""><img class="on-ic" src="assets/icons/icon-fb-like-on.svg?v=3" alt=""></button><button class="fbb" data-v="down" aria-label="Not helpful"><img src="assets/icons/icon-fb-dislike.svg?v=3" alt=""><img class="on-ic" src="assets/icons/icon-fb-dislike-on.svg?v=3" alt=""></button>';
     chip.style.left=(fab.offsetLeft+41)+'px'; chip.style.top=(fab.offsetTop+(fab.offsetHeight-27.2)/2)+'px';
     chip.classList.add('show'); clearTimeout(T); T=setTimeout(function(){ chip.classList.remove('show'); }, 5000); }
-  chip.addEventListener('click', function(e){ var b=e.target.closest('.fbb'); if (!b) return; e.stopPropagation(); b.classList.add('on'); clearTimeout(T); setTimeout(function(){ chip.classList.remove('show'); }, 600); toast('Thanks for the feedback', I.check); }, true);
+  chip.addEventListener('click', function(e){ var b=e.target.closest('.fbb'); if (!b) return; e.stopPropagation(); b.classList.add('on'); clearTimeout(T); /* v154 — thanks stays in the "Was it helpful?" chip spot (no centre toast), then closes */ setTimeout(function(){ chip.querySelector('span').textContent='Thanks for the feedback'; chip.querySelectorAll('.fbb:not(.on)').forEach(function(x){ x.remove(); }); }, 300); T=setTimeout(function(){ chip.classList.remove('show'); }, 1800); }, true);
   var _sdt=showDoneToast; showDoneToast=function(){ var r=_sdt.apply(this, arguments); chip.classList.remove('fb'); clearTimeout(T); T=setTimeout(function(){ if (!chip.classList.contains('fb')) showFb(); }, 5300); return r; };
   var _os=openSheet; openSheet=function(){ clearTimeout(T); chip.classList.remove('show'); return _os.apply(this, arguments); };
 })();
@@ -4398,6 +4433,9 @@ document.addEventListener('click',function(e){var em=e.target.closest('#cp-body 
     c.classList.toggle('show', !!on);
   }, 120);
 })();
+
+/* v152 — mark the feedback toast so it takes the Figma toast_message style */
+(function(){ var _t=toast; toast=function(msg){ var r=_t.apply(this, arguments); $('toast').classList.toggle('fbk', /Thanks for the feedback/.test(msg)); return r; }; })();
 </script>
 </body>
 </html>
