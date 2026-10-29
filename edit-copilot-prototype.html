@@ -1585,6 +1585,11 @@ body:not(.demo-room) .em-link,.hb-a .em{display:none !important;}
 /* v142 — suggestion text vertically centred with its icon */
 #cp-body .sug{align-items:center !important;}
 #cp-body .sug>span:not(.si):not(.try){align-self:center !important;flex:1;margin:0 !important;}
+
+/* v143 — 8px between the subtitle and the suggestion list (cp-body gap is 12px, so pull the list up 4px) */
+#cp-sheet #cp-body .f-head .hello{margin-bottom:0 !important;padding-bottom:0 !important;}
+#cp-sheet #cp-body .f-head{margin-bottom:0 !important;padding-bottom:0 !important;height:auto !important;min-height:0 !important;}
+#cp-sheet #cp-body .f-head+.sug-list{margin-top:-4px !important;}
 </style>
 </head>
 <body>
