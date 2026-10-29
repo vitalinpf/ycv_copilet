@@ -1590,6 +1590,33 @@ body:not(.demo-room) .em-link,.hb-a .em{display:none !important;}
 #cp-sheet #cp-body .f-head .hello{margin-bottom:0 !important;padding-bottom:0 !important;}
 #cp-sheet #cp-body .f-head{margin-bottom:0 !important;padding-bottom:0 !important;height:auto !important;min-height:0 !important;}
 #cp-sheet #cp-body .f-head+.sug-list{margin-top:-4px !important;}
+
+/* v144 — feedback "on" = ycv/main-text fill (white in the dark sheet, #212127 on the white chip) */
+#cp-body [data-fb].on,#cp-body [data-fb][aria-pressed=true],#cp-body .fb-out [data-fb].on{background:#fff !important;color:#212127 !important;}
+#cp-body [data-fb].on img,#cp-body [data-fb].on svg{filter:brightness(0) !important;opacity:.87 !important;}
+.f-chip.fb .fbb.on{background:#212127 !important;}
+.f-chip.fb .fbb.on img{filter:brightness(0) invert(1) !important;opacity:1 !important;}
+/* v144 — look cards (435:51426 style_list): 77×120, 102.86px image, 7.71px name bar, gap 8, blue Best Match tag */
+#cp-body .lookpick{gap:8px !important;padding:0 16px 10px !important;}
+#cp-body .lookpick .lk{width:77px !important;height:120px !important;flex:none !important;border:.514px solid rgba(235,235,236,.2) !important;border-radius:8px !important;}
+#cp-body .lookpick .lk img{height:102.86px !important;border-radius:6.857px 6.857px 0 0 !important;object-fit:cover;}
+#cp-body .lookpick .lk .nm{padding:3.43px 7px 5.14px !important;font-size:7.71px !important;font-weight:500 !important;}
+#cp-body .lookpick .lk .best{padding:2.57px 6.86px 2.57px 5.14px !important;border-radius:0 0 8.57px 0 !important;background:#28B1DE !important;color:#212127 !important;font-size:7.71px !important;font-weight:500 !important;line-height:normal !important;}
+#cp-body .lookpick .lk.on{border-color:transparent !important;outline:2px solid #28B1DE !important;outline-offset:-2px;}
+
+/* v145 — input row per 452:64779: field 40px tall, padding 8/6/8/10 + 4px text inset, mic slot 26×24 (p4, 18×16 glyph), 40px history circle */
+#cp-sheet #in-box{min-height:40px !important;padding:8px 6px 8px 14px !important;align-items:center !important;}
+#cp-sheet #in-box>#mic-btn.mic{flex:none !important;width:26px !important;height:24px !important;padding:4px !important;margin:0 !important;box-sizing:border-box !important;display:flex !important;align-items:center;justify-content:center;}
+#cp-sheet #in-box>#mic-btn.mic svg,#cp-sheet #in-box>#mic-btn.mic img{width:18px !important;height:16px !important;}
+#cp-sheet #cp-input{min-height:24px !important;padding:4px 0 !important;box-sizing:border-box;}
+#cp-sheet .in-row>#hist-in,#cp-sheet .in-row>#send-btn{width:40px !important;height:40px !important;padding:11px !important;}
+#cp-sheet .in-row>#hist-in svg,#cp-sheet .in-row>#send-btn svg{width:18px !important;height:18px !important;}
+
+/* v146 — input row colours per 435:51061 (dark tokens): fill #252B31, stroke #3D5C66, placeholder #96B0B9, white glyphs */
+#cp-sheet #in-box,#cp-sheet .in-row>#hist-in{background:#252B31 !important;border:.6px solid #3D5C66 !important;}
+#cp-sheet #cp-input::placeholder{color:#96B0B9 !important;}
+#cp-sheet #in-box>#mic-btn.mic,#cp-sheet .in-row>#hist-in{color:#fff !important;}
+#cp-sheet #in-box>#mic-btn.mic img,#cp-sheet .in-row>#hist-in img{filter:brightness(0) invert(1) !important;opacity:1 !important;}
 </style>
 </head>
 <body>
@@ -1914,7 +1941,7 @@ var P, H, HI, RUNS, S;
 function freshAll(){
   P = freshProject(); H=[{p:clone(P), label:'Start'}]; HI=0; RUNS=[];
   S = { t:0, playing:false, mode:'edit', sheet:false, full:false, busy:false, step:0, plan:null, run:null, unread:false,
-        tipShown:true, history:['Make it brighter','Trim to 8 seconds','磨皮 + 瘦臉'], adj:null, comparing:false, changed:{} };
+        tipShown:true, history:['Make it brighter','Trim to 8 seconds','Smooth skin and slim my face'], adj:null, comparing:false, changed:{} };
 }
 freshAll();
 
@@ -2662,7 +2689,7 @@ function closeAdjust(silent){
 var HLOG_SEED = [
   {d:'Yesterday', u:'Make it brighter', a:'Done — 1 edit', s:'Brightness 0 → +15'},
   {d:'Yesterday', u:'Trim to 8 seconds', a:'Done — 1 edit', s:'Length 15s → 8s'},
-  {d:'Yesterday', u:'磨皮 + 瘦臉', a:'Done — 2 edits', s:'Smooth skin 0 → 50 · Face lift 0 → 40'}
+  {d:'Yesterday', u:'Smooth skin and slim my face', a:'Done — 2 edits', s:'Smooth skin 0 → 50 · Face lift 0 → 40'}
 ];
 function logRun(run){
   if (!run.ops.length) return; S.log=S.log||[];
@@ -3849,9 +3876,9 @@ var _fullReset88 = fullReset; fullReset = function(){ var pg=$('cr-page'); if (p
 new MutationObserver(function(){ document.documentElement.classList.toggle('cr-open', $('cr-page').classList.contains('show')); }).observe($('cr-page'), {attributes:true, attributeFilter:['class']});
 /* v92 — History = the actual chat lines (user request, "I will start…", "I have successfully applied…") */
 HLOG_SEED = [
-  {d:'Yesterday', u:'Make it brighter', msgs:['I will start by applying brightness to your video.','I have successfully applied brightness to your video.']},
-  {d:'Yesterday', u:'Trim to 8 seconds', msgs:['I will start by applying a length of 8s to your video.','I have successfully applied a length of 8s to your video.']},
-  {d:'Yesterday', u:'磨皮 + 瘦臉', msgs:['I will start by applying smooth skin and face lift to your video.','I have successfully applied smooth skin and face lift to your video.']}
+  {d:'Yesterday', u:'Make it brighter', msgs:['I have successfully applied brightness to your video.']},
+  {d:'Yesterday', u:'Trim to 8 seconds', msgs:['I have successfully applied a length of 8s to your video.']},
+  {d:'Yesterday', u:'Smooth skin and slim my face', msgs:['I have successfully applied smooth skin and face lift to your video.']}
 ];
 var _startRun92 = startRun;
 startRun = function(){
@@ -4322,6 +4349,11 @@ document.addEventListener('click',function(e){var em=e.target.closest('#cp-body 
     '<img class="v141" src="assets/icons/icon-sug2-resize.svg" style="left:0;top:0;width:25.846px;height:25.846px" alt=""><img class="v141" src="assets/icons/icon-sug2-play.svg" style="left:calc(50% + 6.24px - 4.442px);top:calc(50% + 5.43px - 4.442px);width:8.885px;height:8.885px" alt="">'];
   function fix(){ document.querySelectorAll('#cp-body .sug').forEach(function(b){ var i=+b.dataset.i, si=b.querySelector('.si'); if (si && SET[i] && !si.querySelector('.v141')) si.innerHTML=SET[i]; }); }
   new MutationObserver(fix).observe(document.getElementById('cp-body'),{childList:true,subtree:true}); fix();
+})();
+
+/* v146 — History glyph: clock with a counter-clockwise arrow (SF clock.arrow.trianglehead.counterclockwise.rotate.90) */
+(function(){ var b=document.getElementById('hist-in'); if (!b) return;
+  b.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.6 14.5A8 8 0 1 0 4 11"/><path d="M1.8 8.6 4 11.4l2.8-2.2"/><path d="M12 7.5V12l3 2"/></svg>';
 })();
 </script>
 </body>
