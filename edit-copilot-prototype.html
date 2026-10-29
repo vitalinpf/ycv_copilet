@@ -1548,6 +1548,21 @@ body:not(.demo-room) .em-link,.hb-a .em{display:none !important;}
 #cp-body .hello h2{margin-bottom:6px !important;}
 #cp-body .sug>span:not(.si):not(.try),#cp-body .sug:not(:first-child)>span:not(.si):not(.try){font-size:11px !important;line-height:15px !important;white-space:normal !important;-webkit-line-clamp:unset !important;display:block !important;overflow:visible !important;}
 #cp-body .sug .try{display:none !important;}
+
+/* v140 — S14 Credits + FAQ (461:117823): flush 288px rows, 0.6px dividers, "-N" bold prices, FAQ rows match pricing rows */
+#cr-page .bd .bal small{text-transform:none;}
+#cr-page .bd h4{margin:24px 0 4px !important;font-size:12px !important;font-weight:700 !important;letter-spacing:.2px !important;color:#8E8E9A !important;text-transform:uppercase;}
+#cr-page .bd .row{margin:0 !important;padding:10px 0 !important;background:none !important;border:none !important;border-top:.6px solid rgba(235,235,236,.12) !important;border-radius:0 !important;gap:10px !important;align-items:center !important;}
+#cr-page .bd h4+.row{border-top:none !important;}
+#cr-page .bd .row>div{font-size:12px !important;font-weight:500 !important;letter-spacing:.2px;color:#fff !important;line-height:normal !important;}
+#cr-page .bd .row>div span{display:block;margin-top:2px;font-size:10px !important;font-weight:400 !important;color:#8E8E9A !important;line-height:normal !important;}
+#cr-page .bd .row em{font-style:normal;font-size:14px !important;font-weight:700 !important;color:#fff !important;letter-spacing:.2px;}
+#cr-page .bd .row em img{display:none !important;}
+#cr-page .bd .eg{margin:10px 0 0 !important;font-size:11px !important;line-height:normal !important;color:#8E8E9A !important;letter-spacing:.2px;}
+#cr-page .bd .eg b{font-weight:400 !important;color:#96B0B9 !important;}
+#cr-page .bd .faq p{margin:0 !important;padding:10px 0 !important;border-top:.6px solid rgba(235,235,236,.12);font-size:10px !important;line-height:normal !important;color:#8E8E9A !important;letter-spacing:.2px;}
+#cr-page .bd .faq h4+p{border-top:none;}
+#cr-page .bd .faq p b{display:block;margin-bottom:2px;font-size:12px !important;font-weight:500 !important;color:#fff !important;}
 </style>
 </head>
 <body>
@@ -4265,6 +4280,13 @@ document.addEventListener('click',function(e){var em=e.target.closest('#cp-body 
   ta.addEventListener('keydown',function(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();onSendBtn();}});
   ta.addEventListener('input',function(){grow();t();renderSend();try{syncHello();}catch(_){}});
   var o=send;send=function(){var r=o.apply(this,arguments);setTimeout(function(){grow();t();},0);return r;};})();
+
+/* v140 — Credits prices read "-5", "-1"… like Figma; balance label "Your Balance" */
+(function(){ var bd=document.querySelector('#cr-page .bd'); if (!bd) return;
+  bd.querySelectorAll('.row em').forEach(function(e){ var n=parseInt(e.textContent,10); if (!isNaN(n)) e.textContent='-'+n; });
+  var sm=bd.querySelector('.bal small'); if (sm) sm.textContent='Your Balance';
+  bd.querySelectorAll('.row[style]').forEach(function(r){ r.removeAttribute('style'); });
+})();
 </script>
 </body>
 </html>
