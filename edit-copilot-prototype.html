@@ -1497,11 +1497,22 @@ body:not(.demo-room) .em-link,.hb-a .em{display:none !important;}
 /* v123 — look thumb selected border per agent_thumb.svg */
 #cp-body .lookpick .lk{position:relative;}
 #cp-body .lookpick .lk.on{box-shadow:none !important;}
-#cp-body .lookpick .lk.on::after{content:'' !important;display:block !important;position:absolute !important;top:0 !important;left:0 !important;right:0 !important;bottom:0 !important;width:auto !important;height:auto !important;background:none !important;box-shadow:none !important;opacity:1 !important;border:2px solid #28B1DE !important;border-radius:8px !important;pointer-events:none;z-index:5;}
+#cp-body .lookpick .lk.on{outline:2px solid #28B1DE !important;outline-offset:-2px;border-radius:8px;}
 /* v124 — mic inside the input box (Figma 452-64778) */
 #cp-sheet #in-box>#mic-btn{flex:none;position:static !important;width:26px !important;height:26px !important;padding:4px !important;margin:0 6px 0 0;border:none !important;background:none !important;display:flex !important;align-items:center;justify-content:center;}
 #cp-sheet #in-box{display:flex !important;align-items:center;}
 #cp-sheet #in-box>#cp-input{flex:1;min-width:0;}
+/* v125 — mini card text per Figma 410-47973 */
+.cp-mini .mt{font-size:12px !important;line-height:20px !important;font-weight:400 !important;}
+.cp-mini .mt b{font-weight:700 !important;}
+#cp-mini{border:0.6px solid #484848 !important;gap:9px !important;}
+#cp-mini .mh{font-size:12px !important;font-weight:510;}
+#cp-mini .mh::before{width:28px !important;height:28px !important;}
+#cp-mini .mi{height:32px !important;border-radius:66px !important;background:#292934 !important;border:0.6px solid #3d5c66 !important;padding:0 10px 0 14px !important;}
+#cp-mini .mi::before{display:none !important;}
+#cp-mini .mi::after{content:'';flex:none;width:18px;height:18px;background:url(assets/icons/icon-mic.svg) center/contain no-repeat;}
+#cp-mini .mi input{font-size:12px !important;}
+#cp-mini .mi input::placeholder{color:#96b0b9 !important;}
 </style>
 </head>
 <body>
@@ -3423,7 +3434,7 @@ $('tool-row').addEventListener('click', function(e){
   var name=(b.querySelector('span')||b).textContent.replace(/\s+/g,' ').trim();
   if (!conflictTool(name)) return;
   e.stopPropagation(); e.preventDefault();
-  askConfirm('Open '+name+'?', 'Copilot will stop and none of its changes will be applied. Credits used for this request won’t be refunded.', 'Open', function(){ stopCopilot(); setTimeout(function(){ toast(name+' (not part of this prototype)'); }, 400); });
+  askConfirm('Stop Copilot?', 'Copilot will stop and none of its changes will be applied. Credits used for this request won’t be refunded.', 'Stop', function(){ stopCopilot(); setTimeout(function(){ toast(name+' (not part of this prototype)'); }, 400); });
 }, true);
 
 /* v51 — progress shown as a message instead of a task card */
@@ -3514,7 +3525,7 @@ openSheet = function(){ if (!S.chatted && !S.busy && S.welcomeMode && S.welcomeM
 /* v58 — scripted demo scenarios */
 var DEMO=[
   {k:'chat',   t:'Chat',              d:'Types a request and sends it'},
-  {k:'stop',   t:'Interrupt a run',   d:'Start editing, then stop Copilot mid-run'},
+  {k:'stop',   t:'Interrupt a run',   d:'Start editing, then tap another tool mid-run'},
   {k:'follow', t:'Follow-up request', d:'Finish a retouch, then ask for more'},
   {k:'look',   t:'Pick a look',       d:'Copilot offers 3 Korean-style looks'},
   {k:'room',   t:'Edit More',         d:'Open the matching tool after a run'},
@@ -3541,7 +3552,7 @@ function dDoneRun(){ var r=lastRun(); return !S.busy && r && r.status==='done'; 
 var DEMO_FN={
   chat: async function(tok){ fullReset(); setMode('retouch'); await dWait(500, tok); await dType('Apply auto face retouch', tok); },
   stop: async function(tok){ fullReset(); await dWait(400, tok); await dType('Make it 9:16 and 10 seconds for Reels', tok);
-    await dUntil(function(){ return S.busy && !S.sheet; }, tok); await dWait(1600, tok); askStop(); },
+    await dUntil(function(){ return S.busy && !S.sheet; }, tok); await dWait(1600, tok); [].slice.call(document.querySelectorAll('#tool-row .tb-item')).filter(function(x){ return /Filter/.test(x.textContent); })[0].click(); },
   follow: async function(tok){ fullReset(); setMode('retouch'); await dWait(400, tok); await dType('Apply auto face retouch', tok);
     await dUntil(dDoneRun, tok); await dWait(900, tok); openReview(); await dWait(1600, tok);
     await dType('Make the retouch more noticeable', tok); },
@@ -3685,7 +3696,7 @@ fabIdle = function(){ clearTimeout(S.miniT); $('cp-fab').classList.remove('mini'
   function guard(e, title, cta, after){
     if (!S.busy) return;
     e.stopPropagation(); e.preventDefault(); if (e.stopImmediatePropagation) e.stopImmediatePropagation();
-    askConfirm(title, MSG, cta, function(){ stopCopilot(); if (after) setTimeout(after, 400); });
+    askConfirm('Stop Copilot?', MSG, 'Stop', function(){ stopCopilot(); if (after) setTimeout(after, 400); });
   }
   $('tool-row').addEventListener('click', function(e){
     var b=e.target.closest('.tb-item'); if (!b || !S.busy) return;
@@ -4092,7 +4103,8 @@ var _respond102=respond; respond=function(text){
       S.startNote=null; S.doneNote=null;
       var t = /^Music$/.test(r.miss.join(',')) ? 'I can’t add music yet — it’s coming soon. You can add it yourself in Edit › Audio.' : r.miss.length ? r.miss.join(', ')+' '+(r.miss.length>1?'are':'is')+' coming soon!\nFor now, I can retouch her face, apply a look or filter, or reframe your video.'
                             : 'I couldn’t match that to an edit yet.\nTry something like “Apply auto face retouch” or “Make it 9:16”.';
-      var m=addMsg(esc(t),'ai'); m.classList.add('fail-msg'); scrollBody(); return; } }
+      /* v125 — Figma 410-47973: collapse to the mini card */
+      S.miniReset=true; closeSheet(); setTimeout(function(){ showMini(esc(t).replace(/\n/g,' ')); }, 320); return; } }
   return _respond102.apply(this, arguments);
 };
 /* (5) like / dislike / info row under the look picker */
@@ -4116,11 +4128,17 @@ $('cp-fab').addEventListener('click', function(){ if (!S.sheet) openSheet(); });
   $('cp-body').addEventListener('click', function(e){
     var h=e.target.closest && e.target.closest('#cp-body .f-head'); if (!h || e.target.closest('[data-cr]')) return;
     var nx=h.nextElementSibling;
-    if (nx && nx.classList.contains('sug-list')){ nx.remove(); return; }
+    if (nx && nx.classList.contains('sug-list')){ if (!nx.classList.contains('keep')) nx.remove(); return; }
     if (!tpl || S.busy) return;
     h.insertAdjacentHTML('afterend', tpl); var l=h.nextElementSibling; l.classList.add('f-again');
     l.querySelectorAll('.sug').forEach(function(b){ b.onclick=function(){ var x=FIXED_SUGGEST.edit[+b.dataset.i]; l.remove(); send(x.t); }; });
   });
+  /* v126 — keep the suggestion row under the header after sending */
+  function keep(){ var h=document.querySelector('#cp-body .f-head'); if (!h || !tpl) return; var nx=h.nextElementSibling;
+    if (nx && nx.classList.contains('sug-list')) return;
+    h.insertAdjacentHTML('afterend', tpl); var l=h.nextElementSibling; l.classList.add('f-again','keep');
+    l.querySelectorAll('.sug').forEach(function(b){ b.onclick=function(){ var x=FIXED_SUGGEST.edit[+b.dataset.i]; send(x.t); }; }); }
+  new MutationObserver(keep).observe($('cp-body'), {childList:true});
 })();
 
 /* v107 — background extras + running chip */
@@ -4189,6 +4207,9 @@ input.addEventListener('input',t);var o=send;send=function(){var r=o.apply(this,
 
 /* v124 — mic back inside the input box */
 (function(){var m=$('mic-btn'),b=$('in-box');if(m&&b)b.appendChild(m);})();
+
+/* v125 — mini card placeholder per Figma */
+(function(){var i=document.querySelector('#cp-mini .mi input');if(i)i.placeholder='Describe what you\'d like to edit';})();
 </script>
 </body>
 </html>
