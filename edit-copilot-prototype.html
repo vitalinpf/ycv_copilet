@@ -1517,6 +1517,8 @@ body:not(.demo-room) .em-link,.hb-a .em{display:none !important;}
 #cp-body .msg.user{border:none !important;box-shadow:none !important;outline:none !important;border-radius:16px 2px 16px 16px !important;background:rgba(255,255,255,.06) !important;color:#fff !important;}
 /* v128 — every user bubble (chat, history, review) per Figma 402-20218 */
 .msg.user,.hb-u,#hv-body .msg.user,#cp-sheet .msg.user{border:none !important;box-shadow:none !important;outline:none !important;border-radius:16px 2px 16px 16px !important;background:rgba(255,255,255,.06) !important;background-image:none !important;color:#fff !important;}
+/* v129 — mini card icon per Figma 483-62815 */
+#cp-mini .mh::before{width:28px !important;height:28px !important;background:url(assets/icons/icon-mini-video-editor.svg) center/28px 28px no-repeat !important;}
 </style>
 </head>
 <body>
@@ -4214,6 +4216,9 @@ input.addEventListener('input',t);var o=send;send=function(){var r=o.apply(this,
 
 /* v125 — mini card placeholder per Figma */
 (function(){var i=document.querySelector('#cp-mini .mi input');if(i)i.placeholder='Describe what you\'d like to edit';})();
+
+/* v129 — minimizing the unsupported mini card leaves the FAB idle (no loading ring) */
+(function(){var b=document.querySelector('#cp-mini .mh button');if(!b)return;b.onclick=function(){hideMini();if(!S.busy){var f=$('cp-fab');f.classList.remove('run','think','busy');try{fabIdle();}catch(_){}}};})();
 </script>
 </body>
 </html>
