@@ -4308,7 +4308,7 @@ document.addEventListener('click',function(e){var em=e.target.closest('#cp-body 
 
 /* v141 — S2 suggestion icons from Figma (white, 24px slot) */
 (function(){
-  var SET=['<img class="v141" src="assets/icons/icon-sug2-effect.svg" style="left:0;top:0;width:25.846px;height:25.846px" alt="">',
+  var SET=['<img class="v141" src="assets/icons/icon-sug2-effect.svg?v=2" style="left:0;top:0;width:25.846px;height:25.846px" alt="">',
     '<img class="v141" src="assets/icons/icon-sug2-color.svg" style="left:calc(50% - 0.31px - 10.995px);top:calc(50% - 0.09px - 10.904px);width:21.991px;height:21.808px" alt="">',
     '<img class="v141" src="assets/icons/icon-sug2-resize.svg" style="left:0;top:0;width:25.846px;height:25.846px" alt=""><img class="v141" src="assets/icons/icon-sug2-play.svg" style="left:calc(50% + 6.24px - 4.442px);top:calc(50% + 5.43px - 4.442px);width:8.885px;height:8.885px" alt="">'];
   function fix(){ document.querySelectorAll('#cp-body .sug').forEach(function(b){ var i=+b.dataset.i, si=b.querySelector('.si'); if (si && SET[i] && !si.querySelector('.v141')) si.innerHTML=SET[i]; }); }
