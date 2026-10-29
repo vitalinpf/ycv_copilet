@@ -1524,6 +1524,13 @@ body:not(.demo-room) .em-link,.hb-a .em{display:none !important;}
 /* v130 — History sheet fits its content, up to 642px */
 #cp-sheet.hist-mode{height:auto !important;max-height:642px !important;}
 #cp-sheet.hist-mode #hv-body{flex:0 1 auto !important;}
+/* v132 — input grows to multiple lines instead of hiding text */
+#cp-sheet #in-box{height:auto !important;min-height:32px !important;align-items:flex-end !important;padding-top:6px !important;padding-bottom:6px !important;box-sizing:border-box;}
+#cp-sheet #in-box.multi{border-radius:16px !important;}
+#cp-sheet #in-box>#cp-input{resize:none;overflow-y:auto;scrollbar-width:none;height:18px;max-height:90px !important;line-height:18px !important;padding:0 !important;margin:0;border:none;outline:none;background:none;font:inherit;font-size:12px;color:#fff;align-self:center;}
+#cp-sheet #in-box>#cp-input::-webkit-scrollbar{display:none;}
+#cp-sheet #in-box>#mic-btn{margin-top:-4px !important;margin-bottom:-4px !important;}
+#cp-sheet .in-row{align-items:flex-end !important;}
 </style>
 </head>
 <body>
@@ -2751,7 +2758,7 @@ function tickRun(){
       applyOp(P,o); markChanged(o); renderAll();
       td.className='td done'; td.querySelector('.st').innerHTML=I.check; td.querySelector('[data-v]').textContent='Done';
       run.idx++; run.card.querySelector('[data-cnt]').textContent=run.idx+'/'+n;
-      if (run.idx<n) setTimeout(tickRun,450); else finishRun('done');
+      if (run.idx<n) setTimeout(tickRun,100); else finishRun('done');
     }
   },60);
 }
@@ -2873,13 +2880,13 @@ function startRun(){
 function tickRun(){
   var run=S.run; if (!run) return;
   var o=run.ops[run.idx], n=run.ops.length, tds=run.todo.querySelectorAll('.td'), c=run.card;
-  var dur=(K[o.kind].mode==='retouch'?5400:4200)+Math.random()*900, t0=performance.now(); /* v85 — slower, calmer processing */
+  var dur=3600/n /* v134 — FAB ring visible ≈ 2s (the first ~1.6s is the sheet folding) */, t0=performance.now(); /* v85 — slower, calmer processing */
   startStep(o);
   clearInterval(runTimer);
   runTimer=setInterval(function(){
     if (!S.run){ clearInterval(runTimer); return; }
     var k=Math.min(1,(performance.now()-t0)/dur), td=tds[run.idx], sp=Math.round(k*100);
-    var overall=Math.round(((run.idx+k)/n)*100), left=Math.max(1,Math.round((1-k)*dur/1000+(n-run.idx-1)*5));
+    var overall=Math.round(((run.idx+k)/n)*100), left=Math.max(1,Math.round((1-k)*dur/1000+(n-run.idx-1)*dur/1000));
     td.className='td now'; td.querySelector('[data-v]').textContent=sp+'%';
     c.querySelector('[data-ring]').style.strokeDashoffset=(RING*(1-k)).toFixed(1);
     c.querySelector('[data-pct]').textContent=sp+'%';
@@ -2892,7 +2899,7 @@ function tickRun(){
       applyOp(P,o); markChanged(o); renderAll();
       td.className='td done'; td.querySelector('.st').innerHTML=I.check; td.querySelector('[data-v]').textContent='Done';
       run.idx++; run.todo.querySelector('[data-cnt]').textContent=run.idx+'/'+n;
-      if (run.idx<n) setTimeout(tickRun,450); else finishRun('done');
+      if (run.idx<n) setTimeout(tickRun,100); else finishRun('done');
     }
   },60);
 }
@@ -3570,7 +3577,7 @@ var DEMO_FN={
   look: async function(tok){ fullReset(); setMode('retouch'); await dWait(400, tok); await dType('Recommend one Korean-style makeup look and apply it directly.', tok); },
   room: async function(tok){ fullReset(); document.body.classList.add('demo-room'); await dWait(400, tok); await dType('Make it 9:16 and 10 seconds for Reels', tok);
     await dUntil(dDoneRun, tok); await dWait(900, tok); openReview(); await dWait(1400, tok);
-    var em=document.querySelector('#cp-body .em-link'); if (em) em.click(); },
+    /* v135 — stop here: chat stays open with Edit More visible */ },
   fail: async function(tok){ fullReset(); await dWait(400, tok); await dType('Add background music', tok); },
   broke: async function(tok){ fullReset(); S.credits=6; renderCredits(); setMode('retouch'); await dWait(400, tok); await dType('Apply auto face retouch', tok); }
 };
@@ -4112,10 +4119,10 @@ var _respond102=respond; respond=function(text){
   if (!sp){ var r; try{ r=parse(text); }catch(_){ r=null; }
     if (r && !r.ops.length && !r.already){
       S.startNote=null; S.doneNote=null;
-      var t = /^Music$/.test(r.miss.join(',')) ? 'I can’t add music yet — it’s coming soon. You can add it yourself in Edit › Audio.' : r.miss.length ? r.miss.join(', ')+' '+(r.miss.length>1?'are':'is')+' coming soon!\nFor now, I can retouch her face, apply a look or filter, or reframe your video.'
+      var t = /^Music$/.test(r.miss.join(',')) ? 'I can’t add music yet — it’s coming soon. You can add it yourself in Audio.' : r.miss.length ? r.miss.join(', ')+' '+(r.miss.length>1?'are':'is')+' coming soon!\nFor now, I can retouch her face, apply a look or filter, or reframe your video.'
                             : 'I couldn’t match that to an edit yet.\nTry something like “Apply auto face retouch” or “Make it 9:16”.';
-      /* v125 — Figma 410-47973: collapse to the mini card */
-      S.miniReset=true; closeSheet(); setTimeout(function(){ showMini(esc(t).replace(/\n/g,' ')); }, 320); return; } }
+      /* v133 — answer inline in the open sheet (no mini card) */
+      var m=addMsg(esc(t),'ai'); m.classList.add('fail-msg'); scrollBody(); return; } }
   return _respond102.apply(this, arguments);
 };
 /* (5) like / dislike / info row under the look picker */
@@ -4224,6 +4231,18 @@ input.addEventListener('input',t);var o=send;send=function(){var r=o.apply(this,
 
 /* v129 — minimizing the unsupported mini card leaves the FAB idle (no loading ring) */
 (function(){var b=document.querySelector('#cp-mini .mh button');if(!b)return;b.onclick=function(){hideMini();if(!S.busy){var f=$('cp-fab');f.classList.remove('run','think','busy');try{fabIdle();}catch(_){}}};})();
+
+/* v132 — History button shows on every visit after the first */
+(function(){var sh=$('cp-sheet'),k='ycv-copilot-visited';try{if(localStorage.getItem(k))sh.classList.add('used');localStorage.setItem(k,'1');}catch(_){}})();
+
+/* v132 — swap the one-line input for an auto-growing textarea */
+(function(){var old=$('cp-input'),ta=document.createElement('textarea');ta.id='cp-input';ta.rows=1;ta.placeholder=old.placeholder;ta.setAttribute('autocomplete','off');ta.setAttribute('enterkeyhint','send');ta.className=old.className;
+  old.replaceWith(ta);input=ta;var sh=$('cp-sheet'),box=$('in-box');
+  function grow(){ta.style.height='18px';var h=Math.min(ta.scrollHeight,90);ta.style.height=h+'px';box.classList.toggle('multi',h>20);}
+  function t(){sh.classList.toggle('has-text',!!ta.value.trim());}
+  ta.addEventListener('keydown',function(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();onSendBtn();}});
+  ta.addEventListener('input',function(){grow();t();renderSend();try{syncHello();}catch(_){}});
+  var o=send;send=function(){var r=o.apply(this,arguments);setTimeout(function(){grow();t();},0);return r;};})();
 </script>
 </body>
 </html>
