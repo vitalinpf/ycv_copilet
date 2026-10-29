@@ -1623,6 +1623,25 @@ body:not(.demo-room) .em-link,.hb-a .em{display:none !important;}
 
 /* v148 — credits example line: regular weight */
 #cr-page .bd .eg,#cr-page .bd .eg b{font-weight:400 !important;}
+
+/* v149 — dialog backdrop = black_glass (452:63781): black at 75% + 2px backdrop blur (outer and inner layer) */
+#confirm-bd.confirm-backdrop{background:rgba(0,0,0,.75) !important;-webkit-backdrop-filter:blur(4px) !important;backdrop-filter:blur(4px) !important;}
+
+/* v150 — FAB per cp/fab (477:63225 idle, 477:60114 processing): 135° #39D5F4→#399FF5→#5E39EB, white 26px icon, p5 r20; idle has a drop shadow */
+#cp-fab.cp-fab:not(.zz):not(.zy),#cp-fab.cp-fab.run:not(.zz),#cp-fab.cp-fab.intro:not(.zz){width:36px !important;height:36px !important;padding:5px !important;border:none !important;border-radius:20px !important;background:linear-gradient(135deg,#39D5F4 15%,#399FF5 51.809%,#5E39EB 87.916%) !important;filter:drop-shadow(0 4px 4px rgba(0,0,0,.25)) !important;box-shadow:none !important;}
+#cp-fab .f-logo,#cp-fab.run .f-logo,#cp-fab.think .f-logo{width:26px !important;height:26px !important;background:url(assets/icons/icon-fab-video-white.svg) center/26px 26px no-repeat !important;}
+#cp-fab .f-logo>*,#cp-fab #fab-ic>svg{display:none !important;}
+#cp-fab.run,#cp-fab.think{filter:none !important;}
+#cp-fab.run::after,#cp-fab.think::after{display:none !important;animation:none !important;}
+/* processing chip next to the FAB (477:63207): white pill, 10px #1A1A1F label + 11px spinning cursor */
+#v150-proc{position:absolute;z-index:41;display:none;align-items:center;gap:4px;padding:6px 6px 6px 10px;border-radius:16px;background:#fff;border:.6px solid rgba(255,255,255,.1);font-size:10px;line-height:normal;color:#1A1A1F;white-space:nowrap;pointer-events:none;}
+#v150-proc.show{display:flex;}
+#v150-proc i{width:11px;height:11px;flex:none;background:url(assets/icons/icon-cursor-brightblue.svg) center/11px 11px no-repeat;animation:v119spin 1s linear infinite;}
+
+/* v150b — processing FAB keeps its white icon and drops the shadow */
+#cp-fab.cp-fab.run:not(.zz):not(.zy),#cp-fab.cp-fab.think:not(.zz):not(.zy){filter:none !important;}
+#cp-fab.cp-fab #fab-ic,#cp-fab.cp-fab.run #fab-ic,#cp-fab.cp-fab.think #fab-ic{display:flex !important;opacity:1 !important;visibility:visible !important;transform:none !important;}
+#cp-fab.cp-fab #fab-ic .f-logo,#cp-fab.cp-fab.run #fab-ic .f-logo,#cp-fab.cp-fab.think #fab-ic .f-logo{display:block !important;opacity:1 !important;visibility:visible !important;}
 </style>
 </head>
 <body>
@@ -4360,6 +4379,24 @@ document.addEventListener('click',function(e){var em=e.target.closest('#cp-body 
 /* v146 — History glyph: clock with a counter-clockwise arrow (SF clock.arrow.trianglehead.counterclockwise.rotate.90) */
 (function(){ var b=document.getElementById('hist-in'); if (!b) return;
   b.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.6 14.5A8 8 0 1 0 4 11"/><path d="M1.8 8.6 4 11.4l2.8-2.2"/><path d="M12 7.5V12l3 2"/></svg>';
+})();
+
+/* v150 — while Copilot edits, a white chip beside the FAB names the current step ("Smoothing skin" + spinner) */
+(function(){
+  var fab=$('cp-fab'); if (!fab) return;
+  var c=document.createElement('div'); c.id='v150-proc'; c.innerHTML='<span></span><i></i>'; fab.after(c);
+  var ING={smoother:'Smoothing skin',brighten:'Brightening face',teeth:'Whitening teeth',faceLift:'Lifting face',nose:'Reshaping nose',eyes:'Enlarging eyes',
+    lips:'Adding lip color',blush:'Adding blush',body:'Shaping body',hair:'Coloring hair',look:'Applying look',filter:'Applying filter',bright:'Adjusting brightness',
+    contrast:'Adjusting contrast',sat:'Adjusting saturation',ratio:'Resizing video',trim:'Trimming video',length:'Trimming video'};
+  setInterval(function(){
+    var run=S.run, on=fab.classList.contains('run') && run && run.ops && run.idx<run.ops.length && !S.sheet;
+    if (on){
+      var k=run.ops[run.idx].kind, t=ING[k] || ((K[k]&&K[k].label||'Editing').split(' · ')[0]);
+      if (c.firstChild.textContent!==t) c.firstChild.textContent=t;
+      c.style.left=(fab.offsetLeft+fab.offsetWidth+5)+'px'; c.style.top=(fab.offsetTop+(fab.offsetHeight-c.offsetHeight)/2)+'px';
+    }
+    c.classList.toggle('show', !!on);
+  }, 120);
 })();
 </script>
 </body>
