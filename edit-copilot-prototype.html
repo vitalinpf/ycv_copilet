@@ -1475,16 +1475,33 @@ background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' wid
 /* v117 — running state from SVGs: FAB (Copilot FAB.svg) + "Copilot is editing" chip (running chip.svg); only the arcs spin */
 #cp-fab.run{background:url(assets/icons/fab-run-base.svg) 0 0/36px 36px no-repeat !important;border:none !important;}
 #cp-fab.run .lg{visibility:hidden !important;}
-#cp-fab.run::after{left:0 !important;top:0 !important;width:36px !important;height:36px !important;background:url(assets/icons/fab-run-arc.svg) 0 0/36px 36px no-repeat !important;transform-origin:18.2px 18.1px;animation:ringspin 1s linear infinite !important;}
+#cp-fab.run::after{left:0 !important;top:0 !important;width:36px !important;height:36px !important;background:url(assets/icons/fab-run-arc.svg?v=2) 0 0/36px 36px no-repeat !important;transform-origin:18.2px 18.1px;animation:ringspin 1s linear infinite !important;}
 .run-chip{width:109px !important;height:28px !important;padding:0 !important;border:none !important;border-radius:13.6px !important;background:url(assets/icons/running-chip-base.svg?v=5) 0 0/109px 28px no-repeat !important;backdrop-filter:blur(2px);}
 .run-chip>*{display:none !important;}
 .run-chip>.cur{display:block !important;position:absolute;left:86.7px;top:8.1px;width:11px;height:11px;transform-origin:5.5px 5.5px;}
 /* v118 — hide Edit More links for now */
-.em-link,.hb-a .em{display:none !important;}
+body:not(.demo-room) .em-link,.hb-a .em{display:none !important;}
 /* v119 — loading arcs always spin */
 @keyframes v119spin{to{transform:rotate(360deg)}}
 .run-chip>.cur{animation:none !important;}
 #cp-fab.run::after{border:none !important;border-radius:0 !important;left:0 !important;top:0 !important;display:block !important;content:"" !important;position:absolute !important;animation:v119spin 1s linear infinite !important;}
+/* v120 — history button only after first use */
+#cp-sheet:not(.used) #hist-in{display:none !important;}
+/* v121 — input box height matches history button */
+#cp-sheet #in-box{height:32px !important;min-height:32px !important;}
+/* v122 — send lives in the history slot: shown only while typing */
+#cp-sheet .in-row>#send-btn{display:none !important;flex:none;position:static !important;width:31.2px !important;height:31.2px !important;padding:6px !important;box-sizing:border-box;border-radius:45px !important;border:none !important;background:#49C6EF !important;color:#1A1A1F !important;align-items:center;justify-content:center;}
+#cp-sheet .in-row>#send-btn svg{width:18px;height:18px;}
+#cp-sheet.typing .in-row>#send-btn{display:flex !important;}
+#cp-sheet.typing .in-row>#hist-in{display:none !important;}
+/* v123 — look thumb selected border per agent_thumb.svg */
+#cp-body .lookpick .lk{position:relative;}
+#cp-body .lookpick .lk.on{box-shadow:none !important;}
+#cp-body .lookpick .lk.on::after{content:'' !important;display:block !important;position:absolute !important;top:0 !important;left:0 !important;right:0 !important;bottom:0 !important;width:auto !important;height:auto !important;background:none !important;box-shadow:none !important;opacity:1 !important;border:2px solid #28B1DE !important;border-radius:8px !important;pointer-events:none;z-index:5;}
+/* v124 — mic inside the input box (Figma 452-64778) */
+#cp-sheet #in-box>#mic-btn{flex:none;position:static !important;width:26px !important;height:26px !important;padding:4px !important;margin:0 6px 0 0;border:none !important;background:none !important;display:flex !important;align-items:center;justify-content:center;}
+#cp-sheet #in-box{display:flex !important;align-items:center;}
+#cp-sheet #in-box>#cp-input{flex:1;min-width:0;}
 </style>
 </head>
 <body>
@@ -3497,7 +3514,7 @@ openSheet = function(){ if (!S.chatted && !S.busy && S.welcomeMode && S.welcomeM
 /* v58 — scripted demo scenarios */
 var DEMO=[
   {k:'chat',   t:'Chat',              d:'Types a request and sends it'},
-  {k:'stop',   t:'Interrupt a run',   d:'Start editing, then tap another tool mid-run'},
+  {k:'stop',   t:'Interrupt a run',   d:'Start editing, then stop Copilot mid-run'},
   {k:'follow', t:'Follow-up request', d:'Finish a retouch, then ask for more'},
   {k:'look',   t:'Pick a look',       d:'Copilot offers 3 Korean-style looks'},
   {k:'room',   t:'Edit More',         d:'Open the matching tool after a run'},
@@ -3508,6 +3525,7 @@ var demoTok=0;
 function dWait(ms, tok){ return new Promise(function(res, rej){ setTimeout(function(){ tok===demoTok ? res() : rej('x'); }, ms); }); }
 function dUntil(fn, tok, max){ return new Promise(function(res, rej){ var t0=Date.now(); (function poll(){ if (tok!==demoTok) return rej('x'); if (fn()) return res(); if (Date.now()-t0>(max||30000)) return rej('t'); setTimeout(poll, 120); })(); }); }
 function fullReset(){
+  document.body.classList.remove('demo-room');
   try{ hideMini(); }catch(_){} try{ hideFb(); }catch(_){}
   if (S.selClip!=null){ S.selClip=null; $('clip-bar').classList.remove('show'); $('cp-fab').style.visibility=''; }
   try{ closeAdjust(true); }catch(_){}
@@ -3523,12 +3541,12 @@ function dDoneRun(){ var r=lastRun(); return !S.busy && r && r.status==='done'; 
 var DEMO_FN={
   chat: async function(tok){ fullReset(); setMode('retouch'); await dWait(500, tok); await dType('Apply auto face retouch', tok); },
   stop: async function(tok){ fullReset(); await dWait(400, tok); await dType('Make it 9:16 and 10 seconds for Reels', tok);
-    await dUntil(function(){ return S.busy && !S.sheet; }, tok); await dWait(1600, tok); [].slice.call(document.querySelectorAll('#tool-row .tb-item')).filter(function(x){ return /Filters/.test(x.textContent); })[0].click(); },
+    await dUntil(function(){ return S.busy && !S.sheet; }, tok); await dWait(1600, tok); askStop(); },
   follow: async function(tok){ fullReset(); setMode('retouch'); await dWait(400, tok); await dType('Apply auto face retouch', tok);
     await dUntil(dDoneRun, tok); await dWait(900, tok); openReview(); await dWait(1600, tok);
     await dType('Make the retouch more noticeable', tok); },
   look: async function(tok){ fullReset(); setMode('retouch'); await dWait(400, tok); await dType('Recommend one Korean-style makeup look and apply it directly.', tok); },
-  room: async function(tok){ fullReset(); await dWait(400, tok); await dType('Make it 9:16 and 10 seconds for Reels', tok);
+  room: async function(tok){ fullReset(); document.body.classList.add('demo-room'); await dWait(400, tok); await dType('Make it 9:16 and 10 seconds for Reels', tok);
     await dUntil(dDoneRun, tok); await dWait(900, tok); openReview(); await dWait(1400, tok);
     var em=document.querySelector('#cp-body .em-link'); if (em) em.click(); },
   fail: async function(tok){ fullReset(); await dWait(400, tok); await dType('Add background music', tok); },
@@ -4072,7 +4090,7 @@ var _respond102=respond; respond=function(text){
   if (!sp){ var r; try{ r=parse(text); }catch(_){ r=null; }
     if (r && !r.ops.length && !r.already){
       S.startNote=null; S.doneNote=null;
-      var t = r.miss.length ? r.miss.join(', ')+' '+(r.miss.length>1?'are':'is')+' coming soon!\nFor now, I can retouch her face, apply a look or filter, or reframe your video.'
+      var t = /^Music$/.test(r.miss.join(',')) ? 'I can’t add music yet — it’s coming soon. You can add it yourself in Edit › Audio.' : r.miss.length ? r.miss.join(', ')+' '+(r.miss.length>1?'are':'is')+' coming soon!\nFor now, I can retouch her face, apply a look or filter, or reframe your video.'
                             : 'I couldn’t match that to an edit yet.\nTry something like “Apply auto face retouch” or “Make it 9:16”.';
       var m=addMsg(esc(t),'ai'); m.classList.add('fail-msg'); scrollBody(); return; } }
   return _respond102.apply(this, arguments);
@@ -4160,6 +4178,17 @@ $('cp-fab').addEventListener('click', function(){ if (!S.sheet) openSheet(); });
     return _sm.call(this, m, hlTool);
   };
 })();
+
+/* v120 — show history after the first send */
+(function(){var o=send;send=function(){var r=o.apply(this,arguments);document.getElementById('cp-sheet').classList.add('used');return r;};})();
+
+/* v122 — move send next to the input; swap with history while typing */
+(function(){var sh=$('cp-sheet'),b=$('send-btn'),h=$('hist-in');h.parentNode.insertBefore(b,h.nextSibling);
+function t(){sh.classList.toggle('typing',!!input.value.trim());}
+input.addEventListener('input',t);var o=send;send=function(){var r=o.apply(this,arguments);t();return r;};})();
+
+/* v124 — mic back inside the input box */
+(function(){var m=$('mic-btn'),b=$('in-box');if(m&&b)b.appendChild(m);})();
 </script>
 </body>
 </html>
