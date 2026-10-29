@@ -4119,9 +4119,10 @@ var _respond102=respond; respond=function(text){
   if (!sp){ var r; try{ r=parse(text); }catch(_){ r=null; }
     if (r && !r.ops.length && !r.already){
       S.startNote=null; S.doneNote=null;
-      var t = /^Music$/.test(r.miss.join(',')) ? 'I can’t add music yet — it’s coming soon. You can add it yourself in Audio.' : r.miss.length ? r.miss.join(', ')+' '+(r.miss.length>1?'are':'is')+' coming soon!\nFor now, I can retouch her face, apply a look or filter, or reframe your video.'
+      var t = /^Music$/.test(r.miss.join(',')) ? 'I can\'t add music yet — it\'s coming soon. You can add it yourself in Edit > Audio.' : r.miss.length ? r.miss.join(', ')+' '+(r.miss.length>1?'are':'is')+' coming soon!\nFor now, I can retouch her face, apply a look or filter, or reframe your video.'
                             : 'I couldn’t match that to an edit yet.\nTry something like “Apply auto face retouch” or “Make it 9:16”.';
       /* v133 — answer inline in the open sheet (no mini card) */
+      S.thinking=false; $('cp-fab').classList.remove('think','run');
       var m=addMsg(esc(t),'ai'); m.classList.add('fail-msg'); scrollBody(); return; } }
   return _respond102.apply(this, arguments);
 };
