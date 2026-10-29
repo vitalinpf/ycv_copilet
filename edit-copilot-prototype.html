@@ -1452,6 +1452,26 @@ html,body,body *,button,input,textarea,select{font-family:'SF Pro','SF Pro Text'
 background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath d='M10 3.5 5.5 8l4.5 4.5' fill='none' stroke='white' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") 0 50%/14px 14px no-repeat,url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath d='M6 3.5 10.5 8 6 12.5' fill='none' stroke='white' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") 100% 50%/14px 14px no-repeat,linear-gradient(#29B8E7,#29B8E7) 0 0/14px 100% no-repeat,linear-gradient(#29B8E7,#29B8E7) 100% 0/14px 100% no-repeat !important;}
 /* Filter tool: no dark square behind the icon */
 #tool-row .tb-item.used .tb-icon{background:none !important;}
+/* v111 — Credits page top (top.svg, 320×60): grab 0–22, header row 22–60; back chevron 24px box at x10, title centred, credit pill 51×24 at right 14 */
+.cr-page .hd{height:38px !important;padding:0 14px 0 10px !important;align-items:center !important;}
+.cr-page .hd button[data-crx]{width:24px !important;height:24px !important;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='10 29 24 24'%3E%3Cpath d='M25.1648 33.6961L18.1807 40.6801M25.1082 47.7844L18.0922 40.7684' fill='none' stroke='white' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/24px 24px no-repeat !important;}
+.cr-page .hd button[data-crx] svg{display:none !important;}
+.cr-page .hd b{top:19px !important;}
+.cr-page .hd .f-credit{position:absolute !important;right:14px !important;top:7px !important;margin:0 !important;width:51px !important;height:24px !important;box-sizing:border-box;padding:0 0 0 4px !important;gap:5px !important;border-radius:12px !important;background:rgba(255,255,255,.1) !important;border:none !important;backdrop-filter:blur(4px);display:flex;align-items:center;}
+.cr-page .hd .f-credit img{width:16px !important;height:16px !important;}
+.cr-page .hd .f-credit span{font-size:11px !important;font-weight:600 !important;line-height:14px !important;color:#fff !important;}
+/* v112 — look picker (Figma 410:44871): Best Match tag padding 3/8/3/6 */
+#cp-body .lookpick .lk .best{padding:3px 8px 3px 6px !important;}
+/* v113 — html-built tool icons: children positioned inside the 26px box, never scaled by older img rules */
+#tool-row .tb-icon>img,#tool-row .tb-icon>span>img{position:absolute !important;max-width:none !important;transform:none;margin:0 !important;}
+/* v114 — (1) Best Match label uses ycv/04 → dark in dark mode; (2) chat pages (no square card list) get the compact header from Figma 402:20218 */
+#cp-body .lookpick .lk .best{color:#212127 !important;}
+#cp-body.chatting .f-head{height:28px;box-sizing:border-box;padding-top:0 !important;padding-bottom:0 !important;margin-bottom:4px !important;overflow:visible;}
+#cp-body.chatting .f-head .hello>p{display:none !important;}
+#cp-body.chatting .f-head h2{height:28px;margin:0 !important;}
+#cp-body .f-head .f-credit{width:51px !important;box-sizing:border-box;padding-left:4px !important;padding-right:0 !important;gap:4px !important;}
+/* v116 — all Copilot sheet text: letter-spacing 0.2px */
+#cp-sheet,#cp-sheet *{letter-spacing:.2px !important;}
 </style>
 </head>
 <body>
@@ -3932,7 +3952,7 @@ var FIXED_SUGGEST={
 freshSuggestions=function(){ return FIXED_SUGGEST.edit; };  /* same three cards in every scenario */
 /* v97 — S11 looks: four Figma looks with their own thumbnails */
 K_LOOKS.length=0;
-[['Love Sparks',2],['Tag Me',3],['Super Sweet',1],['Soft Kiss',4]].forEach(function(x,i){ K_LOOKS.push({n:x[0], f:'none', best:i===0, img:'assets/images/img-look-0'+x[1]+'.jpg'}); });
+[['Super Sweet',1],['Love Sparks',2],['Tag Me',3]].forEach(function(x,i){ K_LOOKS.push({n:x[0], f:'none', best:i===0, img:'assets/images/img-look-0'+x[1]+'.jpg'}); });
 var _showLook97=showLookPicker; showLookPicker=function(){ var r=_showLook97.apply(this, arguments);
   var d=document.querySelectorAll('#cp-body .lookpick'); d=d[d.length-1];
   if (d) d.querySelectorAll('.lk').forEach(function(b,i){ var im=b.querySelector('img'); if (im&&K_LOOKS[i]){ im.onerror=null; im.src=K_LOOKS[i].img; } var bs=b.querySelector('.best'); if (bs) bs.textContent='Best Match'; });
@@ -3964,7 +3984,7 @@ var TOOL_HTML={
   adjust: tImg('tool-adjust.svg',4.3,4.85,17.3,16.1),
   filter: tImg('tool-filter.svg',1,1,24,24),
   canvas: tImg('tool-canvas.svg',0,0,26,26),
-  plus: '<i style="position:absolute;left:4.3px;top:3.4px;width:16.8px;height:17.8px;box-sizing:border-box;border:1.275px solid #fff;border-radius:4.3px"></i>'+tImg('tool-edit-plus.svg',8.9,9.7,8.2,8.2)
+  plus: '<i style="position:absolute;left:4.3px;top:3.4px;width:16.8px;height:17.8px;box-sizing:border-box;border:1.275px solid #fff;border-radius:4.3px"></i>'+tImg('tool-edit-plus.svg?v=2',8.9,9.7,8.2,8.2)
 };
 EDIT_TOOLS.length=0;
 [['Edit','svg:edit','edit'],['Adjust','html:adjust','adjust'],['Filter','html:filter','filter',1],['Video Enhance','html:hd'],['Face Swap','html:swap'],['Object Removal','html:removal'],
@@ -4083,6 +4103,49 @@ $('cp-fab').addEventListener('click', function(){ if (!S.sheet) openSheet(); });
   new MutationObserver(function(){ chip.classList.toggle('show', gf.classList.contains('show')); }).observe(gf,{attributes:true,attributeFilter:['class']});
   var _sm=setMode; setMode=function(m){ var r=_sm.apply(this,arguments); document.documentElement.classList.toggle('mode-retouch', m==='retouch'); return r; };
   try{ renderPreview(); renderTimeline(); syncTime(); }catch(e){}
+})();
+
+/* v113 — toolbar icons past the first screen rebuilt from Figma lobby_icon_S (393:10119) */
+(function(){
+  function sq(l,t,w,h,o){ return '<i style="position:absolute;left:'+l+'px;top:'+t+'px;width:'+w+'px;height:'+h+'px;background:#fff;opacity:'+o+'"></i>'; }
+  TOOL_HTML.mosaic='<span style="position:absolute;left:5.1px;top:5.1px;width:15.804px;height:15.804px">'+
+    sq(0,0,3.824,4.078,.36)+sq(0,7.9,3.824,4.078,.6)+sq(3.82,4.08,4.078,3.824,.2)+sq(3.82,11.98,4.078,3.824,.2)+
+    sq(7.9,0,4.078,4.078,.6)+sq(11.98,4.08,3.824,3.824,.2)+sq(7.9,7.9,4.078,4.078,.5)+sq(11.98,11.98,3.824,3.824,.36)+
+    '<i style="position:absolute;inset:0;box-sizing:border-box;border:1.224px solid #fff;border-radius:1.756px"></i></span>';
+  TOOL_HTML.aive=tImg('tool-ai-video-editor.svg',0,0,26,26);
+  TOOL_HTML.stab=tImg('tool-stabilize.svg',0,0,26,26);
+  TOOL_HTML.layout=tImg('tool-layout.svg',0,0,26,26);
+  TOOL_HTML.aiexp=tImg('tool-ai-expressions.svg',.03,0,26,26);
+  TOOL_HTML.aianim=tImg('tool-ai-anim-group.svg',2.29,2.29,21.412,21.412)+tImg('tool-ai-anim-face.svg',4.72,6.76,16.35,10.83);
+  TOOL_HTML.expand=tImg('tool-vexpand.svg',4.74,4.55,16.022,16.022)+tImg('tool-vexpand-play.svg',14.37,13.45,8.011,8.011);
+  TOOL_HTML.presets='<span style="position:absolute;inset:0;transform:scaleX(-1)">'+tImg('tool-presets-rect.svg',5.22,8.16,13.38,13.38)+
+    '<i style="position:absolute;left:8.16px;top:3.71px;width:14.83px;height:14.83px;box-sizing:border-box;border:1.275px solid #fff;border-radius:2.549px"></i>'+
+    tImg('tool-presets-path.svg',11.85,7.22,7.22,7.22)+'</span>';
+  var MAP={'Text':'plus','Audio':'plus','Effects':'plus','Stickers':'plus','Mosaic Blur':'mosaic','AI Video Editor':'aive','Stabilize':'stab',
+    'Presets':'presets','Layout':'layout','AI Animation':'aianim','AI Expressions':'aiexp','Video Expansion':'expand'};
+  EDIT_TOOLS.forEach(function(t){ if (MAP[t[0]]) t[1]='html:'+MAP[t[0]]; });
+  if (S.mode!=='retouch') buildTools();
+})();
+
+/* v114 — compact "Copilot" header once a conversation has started */
+(function(){
+  var body=document.getElementById('cp-body');
+  function sync(){
+    var on=!!body.querySelector('.msg.user, .msg.ai:not(.greet)');
+    body.classList.toggle('chatting', on);
+    var g=body.querySelector('.f-head .grad'); if (g){ var t=on?'Copilot':'Meet Video Copilot'; if (g.textContent!==t) g.textContent=t; }
+  }
+  new MutationObserver(sync).observe(body,{childList:true,subtree:false});
+  sync();
+})();
+
+/* v115 — demos stay on the EDIT toolbar (Figma background is always EDIT); RETOUCH only when the user taps that tab */
+(function(){
+  var _sm=setMode; setMode=function(m, hlTool){
+    var ev=window.event, byTab=!!(ev && ev.type==='click' && ev.target && ev.target.closest && ev.target.closest('#mode-tabs'));
+    if (m==='retouch' && !byTab){ m='edit'; hlTool=undefined; }
+    return _sm.call(this, m, hlTool);
+  };
 })();
 </script>
 </body>
