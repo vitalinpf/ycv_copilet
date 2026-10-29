@@ -1516,9 +1516,14 @@ body:not(.demo-room) .em-link,.hb-a .em{display:none !important;}
 /* v127 — user bubble per Figma 402-20218 */
 #cp-body .msg.user{border:none !important;box-shadow:none !important;outline:none !important;border-radius:16px 2px 16px 16px !important;background:rgba(255,255,255,.06) !important;color:#fff !important;}
 /* v128 — every user bubble (chat, history, review) per Figma 402-20218 */
-.msg.user,.hb-u,#hv-body .msg.user,#cp-sheet .msg.user{border:none !important;box-shadow:none !important;outline:none !important;border-radius:16px 2px 16px 16px !important;background:rgba(255,255,255,.06) !important;background-image:none !important;color:#fff !important;}
+.msg.user,.hb-u,#hv-body .hb-u,#hv-body .msg.user,#cp-sheet .msg.user{border:none !important;box-shadow:none !important;outline:none !important;border-radius:16px 2px 16px 16px !important;background:rgba(255,255,255,.06) !important;background-image:none !important;color:#fff !important;}
 /* v129 — mini card icon per Figma 483-62815 */
 #cp-mini .mh::before{width:28px !important;height:28px !important;background:url(assets/icons/icon-mini-video-editor.svg) center/28px 28px no-repeat !important;}
+/* v130 — no info button anywhere */
+.f-info{display:none !important;}
+/* v130 — History sheet fits its content, up to 642px */
+#cp-sheet.hist-mode{height:auto !important;max-height:642px !important;}
+#cp-sheet.hist-mode #hv-body{flex:0 1 auto !important;}
 </style>
 </head>
 <body>
@@ -3969,7 +3974,7 @@ welcome = function(){
   // S6/S7: Figma like / dislike / info buttons
   function fb(){ document.querySelectorAll('#cp-body .fb-out').forEach(function(f){ if (f.dataset.f94) return; f.dataset.f94='1';
     var b=f.querySelectorAll('[data-fb]'); if (b[0]) b[0].insertAdjacentHTML('beforeend','<img src="assets/icons/icon-like.svg" alt="">'); if (b[1]) b[1].insertAdjacentHTML('beforeend','<img src="assets/icons/icon-dislike.svg" alt="">');
-    var i=document.createElement('button'); i.setAttribute('data-fb',''); i.className='f-info'; i.setAttribute('aria-label','Credits used'); i.setAttribute('data-cr',''); i.innerHTML='<img src="assets/icons/icon-info.svg" alt="">'; f.appendChild(i); }); }
+    /* v131 — info button removed */ }); }
   new MutationObserver(fb).observe($('cp-body'), {childList:true, subtree:true});
 })();
 /* ═════════ v95 — Figma update: FAB chip (idle 5s / done 5s), loading ring ═════════ */
