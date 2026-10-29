@@ -1544,7 +1544,6 @@ body:not(.demo-room) .em-link,.hb-a .em{display:none !important;}
 #cp-body .sug-list::after{content:none !important;}
 #cp-body .sug,.cp-sheet.hello-mode #cp-body .sug{width:auto !important;flex-direction:row !important;align-items:center !important;gap:10px !important;padding:11px 12px !important;min-height:44px !important;border-radius:8px !important;background:rgba(255,255,255,.06) !important;}
 #cp-body .sug .si,.cp-sheet.hello-mode #cp-body .sug .si{position:relative !important;display:block !important;width:22px !important;height:22px !important;margin:0 !important;align-self:center !important;flex:none;}
-#cp-body .sug .si>*{position:absolute !important;left:0;top:0;width:34px !important;height:34px !important;transform:scale(.647);transform-origin:0 0;}
 #cp-body .hello h2{margin-bottom:6px !important;}
 #cp-body .sug>span:not(.si):not(.try),#cp-body .sug:not(:first-child)>span:not(.si):not(.try){font-size:11px !important;line-height:15px !important;white-space:normal !important;-webkit-line-clamp:unset !important;display:block !important;overflow:visible !important;}
 #cp-body .sug .try{display:none !important;}
@@ -1563,6 +1562,25 @@ body:not(.demo-room) .em-link,.hb-a .em{display:none !important;}
 #cr-page .bd .faq p{margin:0 !important;padding:10px 0 !important;border-top:.6px solid rgba(235,235,236,.12);font-size:10px !important;line-height:normal !important;color:#8E8E9A !important;letter-spacing:.2px;}
 #cr-page .bd .faq h4+p{border-top:none;}
 #cr-page .bd .faq p b{display:block;margin-bottom:2px;font-size:12px !important;font-weight:500 !important;color:#fff !important;}
+
+/* v141 — S2 exact (435:51061): title 18px gradient, subtitle 22px below, rows p10 r10 gap8 + 24px white icons, input row */
+#cp-body .hello h2 .grad{font-size:18px !important;font-weight:700 !important;letter-spacing:.2px !important;background:linear-gradient(90deg,#39D5F4 0%,#399FF5 50.48%,#A38BFF 100%) !important;-webkit-background-clip:text !important;background-clip:text !important;}
+#cp-body .hello h2{margin-bottom:0 !important;}
+#cp-body .hello p{margin:22px 0 0 !important;padding:0 !important;font-size:12px !important;line-height:16px !important;letter-spacing:.2px !important;color:#fff !important;}
+#cp-body .f-head+.sug-list,#cp-body .sug-list{margin-top:8px !important;gap:6px !important;}
+#cp-body .sug,.cp-sheet.hello-mode #cp-body .sug{padding:10px !important;gap:8px !important;min-height:0 !important;border-radius:10px !important;background:rgba(255,255,255,.06) !important;}
+#cp-body .sug .si,.cp-sheet.hello-mode #cp-body .sug .si{width:24px !important;height:24px !important;overflow:visible !important;}
+#cp-body .sug .si img.v141{position:absolute;display:block !important;}
+#cp-body .sug>span:not(.si):not(.try),#cp-body .sug:not(:first-child)>span:not(.si):not(.try){font-size:11px !important;line-height:15px !important;letter-spacing:.2px !important;color:#fff !important;}
+/* input row (452:64778): 4px gap, 0.6px #79CCE7 stroke on a 4% blue fill, pill field + 38.8px history circle */
+.cp-foot{padding-left:16px !important;padding-right:16px !important;}
+#cp-sheet .in-row{gap:4px !important;align-items:flex-end !important;}
+#cp-sheet #in-box{min-height:40px !important;padding:8px 6px 8px 14px !important;border:.6px solid #79CCE7 !important;background:rgba(73,198,239,.04) !important;border-radius:66px !important;box-sizing:border-box;box-shadow:none !important;}
+#cp-sheet #in-box.multi{border-radius:20px !important;}
+#cp-sheet #cp-input{font-size:12px !important;letter-spacing:.2px !important;line-height:16px !important;}
+#cp-sheet #cp-input::placeholder{color:#8E8E9A !important;}
+#cp-sheet .in-row>#hist-in,#cp-sheet .in-row>#send-btn{width:38.8px !important;height:38.8px !important;padding:10.4px !important;border:.6px solid #79CCE7 !important;background:rgba(73,198,239,.04) !important;border-radius:45px !important;box-sizing:border-box;}
+#cp-sheet .in-row>#send-btn{background:#49C6EF !important;border-color:#49C6EF !important;}
 </style>
 </head>
 <body>
@@ -4286,6 +4304,15 @@ document.addEventListener('click',function(e){var em=e.target.closest('#cp-body 
   bd.querySelectorAll('.row em').forEach(function(e){ var n=parseInt(e.textContent,10); if (!isNaN(n)) e.textContent='-'+n; });
   var sm=bd.querySelector('.bal small'); if (sm) sm.textContent='Your Balance';
   bd.querySelectorAll('.row[style]').forEach(function(r){ r.removeAttribute('style'); });
+})();
+
+/* v141 — S2 suggestion icons from Figma (white, 24px slot) */
+(function(){
+  var SET=['<img class="v141" src="assets/icons/icon-sug2-effect.svg" style="left:0;top:0;width:25.846px;height:25.846px" alt="">',
+    '<img class="v141" src="assets/icons/icon-sug2-color.svg" style="left:calc(50% - 0.31px - 10.995px);top:calc(50% - 0.09px - 10.904px);width:21.991px;height:21.808px" alt="">',
+    '<img class="v141" src="assets/icons/icon-sug2-resize.svg" style="left:0;top:0;width:25.846px;height:25.846px" alt=""><img class="v141" src="assets/icons/icon-sug2-play.svg" style="left:calc(50% + 6.24px - 4.442px);top:calc(50% + 5.43px - 4.442px);width:8.885px;height:8.885px" alt="">'];
+  function fix(){ document.querySelectorAll('#cp-body .sug').forEach(function(b){ var i=+b.dataset.i, si=b.querySelector('.si'); if (si && SET[i] && !si.querySelector('.v141')) si.innerHTML=SET[i]; }); }
+  new MutationObserver(fix).observe(document.getElementById('cp-body'),{childList:true,subtree:true}); fix();
 })();
 </script>
 </body>
