@@ -1531,6 +1531,11 @@ body:not(.demo-room) .em-link,.hb-a .em{display:none !important;}
 #cp-sheet #in-box>#cp-input::-webkit-scrollbar{display:none;}
 #cp-sheet #in-box>#mic-btn{margin-top:-4px !important;margin-bottom:-4px !important;}
 #cp-sheet .in-row{align-items:flex-end !important;}
+/* v138 — header logo is one SVG (Icon_Video_Editor.svg) scaled evenly, not stacked pieces */
+.f-logo:not(#cp-fab .f-logo){background:url(assets/icons/icon-video-editor.svg) center/contain no-repeat;}
+.f-logo:not(#cp-fab .f-logo)>*{display:none !important;}
+#cp-fab .f-logo{background:url(assets/icons/icon-video-editor-dark.svg) center/contain no-repeat !important;}
+#cp-fab .f-logo>*{display:none !important;}
 </style>
 </head>
 <body>
