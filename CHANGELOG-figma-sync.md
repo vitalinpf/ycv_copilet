@@ -80,6 +80,7 @@
 - 卡片 77×120、間距 8、圖片高 102.86px、名稱 7.71px
 - Best Match 標籤：底色 `#28B1DE`、文字深色 `#212127`（ycv/04）
 - 選取狀態：外框 `2px #28B1DE`
+- 卡片列 `.lookpick` padding `0 16px 0px`（v177，原 `0 16px 10px`）
 
 ## 8. Stop confirm 彈窗（v149）
 
