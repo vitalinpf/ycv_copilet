@@ -1685,6 +1685,13 @@ html.cr-open #cp-sheet .cr-page::before{content:none !important;display:none !im
 #cp-sheet.hist-mode .cp-head .hv-back svg{display:none !important;}
 #cp-sheet.hist-mode .cp-head .ttl{top:41px !important;}
 #cp-sheet.hist-mode .cp-head .cr-chip{position:absolute !important;right:14px !important;top:29px !important;margin:0 !important;width:51px !important;height:24px !important;box-sizing:border-box;padding:0 0 0 4px !important;gap:5px !important;border-radius:12px !important;background:rgba(255,255,255,.1) !important;border:none !important;backdrop-filter:blur(4px);align-items:center;}
+
+/* v162 — chat-row feedback on = white bg + dark outline icon */
+#cp-body [data-fb].on,#cp-body [data-fb][aria-pressed=true],#cp-body .fb-out [data-fb].on{background:#fff !important;color:#1A1A1F !important;}
+#cp-body [data-fb].on img,#cp-body [data-fb].on svg,#cp-body [data-fb][aria-pressed=true] img,#cp-body [data-fb][aria-pressed=true] svg{filter:brightness(0) !important;opacity:.9 !important;}
+
+/* v163 — "Was it helpful?" chip off bg = #E0F3FB (sampled from reference); on stays #6EC3EB + white icon */
+.f-chip.f-chip.fb .fbb:not(.on){background:#E0F3FB !important;}
 </style>
 </head>
 <body>
