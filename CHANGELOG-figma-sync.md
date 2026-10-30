@@ -9,7 +9,7 @@
 
 ## 1. 開場 Sheet（Meet Video Copilot）
 
-- 標題 18px，漸層 `#39D5F4 → #399FF5 (50.48%) → #A38BFF`；隱藏標題旁 logo（v139）
+- 標題 **17px**（v170，原 18px），漸層 `#39D5F4 → #399FF5 (50.48%) → #A38BFF`；隱藏標題旁 logo（v139）
 - 副標「Tell me how you’d like to edit your video.」12px／16px 白字，與下方 list 間距 8px（v141–v143）
 - Suggestion list：直排、間距 6px；每列 padding 10、圓角 10、底色 `rgba(255,255,255,.06)`、文字 11px／15px，**上下置中**
 - 第一列文字改為「Add a warm filter for a cozy, golden tone」
@@ -25,11 +25,12 @@
 ## 1-1. 任務完成訊息
 
 - **每個完成的任務後面都有「Edit More ›」（v167）**：取消原本只在 Edit More scenario 才顯示的限制
-  - 點擊後開啟對應工具（例如 warm filter → Filter 面板）
+  - 點擊後**只關掉聊天視窗**（v170，不再開啟工具）
+  - 「Edit More」前只留一個一般空格，拿掉原本多的 10px 間距（v170）
   - 未完成的情況（中途停止、Undo、credits 不足、不支援的要求）不顯示
-- **對話保留在原本的聊天視窗（v168）**：任務完成後，關掉再打開 sheet、或點 Edit More 到工具再回來，先前的對話都還在，可以接著聊
+- **對話保留在原本的聊天視窗（v168）**：任務完成後，關掉再打開 sheet（包括點 Edit More 關掉），先前的對話都還在，可以接著聊
   - 取消 v27「完成任務後重新開 Copilot 就開新對話」與「關閉 sheet 後清空對話」
-  - Edit More scenario（demo 5）點 Edit More 不再清空回到開頭，改為和其他情境一樣開啟對應工具
+  - Edit More scenario（demo 5）點 Edit More 不再清空回到開頭
   - 只有重新整理頁面（等同重開 app）或切換 demo scenario／Reset 時才清空
 
 ## 2. Credit icon
@@ -48,6 +49,7 @@
 
 - 標題「Your Balance」；價格顯示為「-N」，不顯示金幣
 - 價目列與 FAQ 列：滿版、`.6px rgba(235,235,236,.12)` 分隔線
+- 區塊標題 Pricing／Faq（v170，依 Figma 461:117819）：16px Bold、主文字白色、首字大寫（`capitalize`，FAQ → Faq），不再是 12px 灰色全大寫
 - 範例說明 `.eg`：`font-weight: normal`，`.eg b` 顏色 `#96B0B9`
 
 ## 5. Credits ／ History 頁頂部統一
@@ -84,12 +86,14 @@
 
 ## 10. Feedback（讚／倒讚）
 
-### cp-fab 旁的「Was it helpful?」chip（v154–v156、v163）
+### cp-fab 旁的「Was it helpful?」chip（v154–v156、v170）
 
 | 狀態 | 底色 | icon |
 |---|---|---|
-| Off | `#E0F3FB` | `#54A1C6` 線條 |
-| On | `#6EC3EB` | 白色線條 |
+| Off | `#E8E8E8` | `#1A1A1F` 線條 |
+| On | `#1A1A1F` | 白色線條 |
+
+- 只保留白色 chip：舊版 v53 的深灰「Was this helpful?」pill（`#fb-pill`）會偶爾跳出，已停用（v170）
 
 - chip：padding `2px 3px 2px 10px`、間距 6、10px `#212127` 文字；按鈕 22px、圓角 17.96
 - 按下後**不跳中央 toast**，chip 原位顯示「Thanks for the feedback」＋已選的 icon，約 1.8 秒後收起；寬度隨內容（max-content）
@@ -98,7 +102,7 @@
 
 | 狀態 | 底色 | icon |
 |---|---|---|
-| Off | 深色圓底 | 白色線條 |
+| Off | `rgba(22,23,26,.2)`（bg/m-bg-alpha-20，v170） | 白色線條 |
 | On | **白色** `#FFFFFF` | **深色線條** |
 
 ---
@@ -112,7 +116,7 @@
 | `icon-sug2-color@4x.png` | 建議列 icon：色彩（4×） |
 | `icon-sug2-resize@4x.png` | 建議列 icon：尺寸／裁剪（4×，Figma 最新版） |
 | `icon-sug2-expansion.svg`、`icon-sug2-play-bg.svg`、`icon-sug2-play-tri.svg` | Resize icon 的 Figma 原始圖層 |
-| `icon-fb-like*.svg`、`icon-fb-dislike*.svg` | Feedback off（`#54A1C6`）／on（白）icon |
+| `icon-fb-like*.svg`、`icon-fb-dislike*.svg` | Feedback icon；`-dark` 為 chip off（`#1A1A1F`），`-on` 為 on（白） |
 | `icon-fab-video-white.svg` | FAB 白色 icon |
 | `icon-cursor-brightblue.svg` | FAB processing chip 旋轉 icon |
 | `icon-toast-check.svg` | Feedback toast 樣式（保留，目前未使用） |

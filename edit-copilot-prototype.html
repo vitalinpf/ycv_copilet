@@ -1708,6 +1708,22 @@ html body .cr-page .hd .f-credit{display:none !important;}
 #cp-sheet.sug-done #cp-body .sug-list,#cp-sheet.sug-done #cp-body .greet .hello p,#cp-sheet.sug-done #cp-body .f-head p{display:none !important;}
 /* v167 — every completed task ends with "Edit More" (undoes v118 hide) */
 body #cp-body .em-link{display:inline-flex !important;}
+
+/* v170 — (1) "Meet Video Copilot" 17px */
+#cp-body .hello h2 .grad{font-size:17px !important;}
+/* v170 — (2) Credits page section titles per 461:117819: 16px bold, main text colour, capitalised ("Pricing", "Faq"), list pt 4 */
+html body #cr-page .bd h4,html body .cr-page h4{font-size:16px !important;font-weight:700 !important;letter-spacing:.2px !important;text-transform:capitalize !important;color:#fff !important;}
+/* v170 — (3) chat-row feedback off bg = bg/m-bg-alpha-20 */
+#cp-body .fb-out [data-fb]:not(.on):not([aria-pressed=true]){background:var(--bg-m-bg-alpha-20, rgba(22,23,26,.2)) !important;}
+/* v170 — (4) Edit More: only one normal space before it (no extra 10px gap) */
+#cp-body .msg.result .em-link{margin-left:0 !important;}
+/* v170 — (5) only the white "Was it helpful?" chip; the old dark v53 pill never shows */
+#fb-pill,.fb-pill{display:none !important;}
+/* v170 — (5) chip like/dislike: off = #E8E8E8 + #1A1A1F outline, on = #1A1A1F + white outline */
+.f-chip.f-chip.fb .fbb:not(.on){background:#E8E8E8 !important;}
+.f-chip.f-chip.fb .fbb.on{background:#1A1A1F !important;}
+.f-chip.f-chip.fb .fbb[data-v=up] img:not(.on-ic){content:url(assets/icons/icon-fb-like-dark.svg);}
+.f-chip.f-chip.fb .fbb:not([data-v=up]) img:not(.on-ic){content:url(assets/icons/icon-fb-dislike-dark.svg);}
 </style>
 </head>
 <body>
@@ -4481,6 +4497,17 @@ document.addEventListener('click',function(e){var em=e.target.closest('#cp-body 
   var _c=closeSheet; closeSheet=function(){ var r=_c.apply(this, arguments); S.resetOnOpen=false; return r; };
   /* undo v27 "fresh session after a finished task": reopening keeps the finished conversation */
   var _o=openSheet; openSheet=function(){ S.resetOnOpen=false; if (S.fresh) S.resultSeen=false; return _o.apply(this, arguments); };
+})();
+
+/* v170 — Credits headings use Figma copy; Edit More just closes the chat; no space text before Edit More */
+(function(){
+  function fix(){
+    document.querySelectorAll('.cr-page h4').forEach(function(h){ if (h.textContent.trim()==='FAQ') h.textContent='Faq'; });
+    document.querySelectorAll('#cp-body .em-link').forEach(function(b){ var t=b.previousSibling; if (t && t.nodeType===3 && !/ $/.test(t.nodeValue)) t.nodeValue=t.nodeValue.replace(/\s*$/,' '); });
+  }
+  new MutationObserver(fix).observe(document.body,{childList:true,subtree:true}); fix();
+  document.addEventListener('click',function(e){ var em=e.target.closest && e.target.closest('#cp-body .em-link'); if (!em) return;
+    e.preventDefault(); e.stopImmediatePropagation(); closeSheet(); },true);
 })();
 </script>
 </body>
