@@ -19,7 +19,8 @@
   - `icon-sug2-color@4x.png`
   - `icon-sug2-resize@4x.png`：依 Figma 最新版重切（video_expansion 框 + 右下 play 鈕：白圓底、深色三角）
 
-- **Suggestion 只出現一次（v167）**：使用者送出任何訊息（包括點 suggestion）後，suggestion list 和「Tell me how you’d like to edit your video.」都不再出現（重新開 sheet 也一樣）；切換 demo scenario／Reset 時才恢復
+- **Suggestion 只出現一次（v167）**：使用者送出任何訊息（包括點 suggestion）後，suggestion list 和「Tell me how you’d like to edit your video.」都不再出現（重新開 sheet 也一樣）
+  - 切換 demo scenario／Reset 時會偵測（v169）：這次開頁後**點過 sug-list** → 繼續隱藏 list 和該句；**沒點過** → 恢復顯示。重新整理頁面才重置偵測
 
 ## 1-1. 任務完成訊息
 
