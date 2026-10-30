@@ -45,6 +45,7 @@
 ## 3. 輸入列（in-row）（v145–v147）
 
 - `#in-box`：padding `8px 6px 8px 14px`、min-height 40、底色 `#252B31`、邊框 `.6px #3D5C66`
+- 圓角統一 `16px`：單行（v175，原 66px 膠囊形）、多行（v176，原 20px）
 - Placeholder「Describe what you'd like to edit」顏色 `#96B0B9`，**上下置中**（textarea padding 3px 0、line-height 18px）
 - 麥克風按鈕 26×24、padding 4、icon 18×16
 - History／Send 按鈕 40px、padding 11；History icon 換新圖、icon 全白
