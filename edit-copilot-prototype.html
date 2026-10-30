@@ -1724,6 +1724,9 @@ html body #cr-page .bd h4,html body .cr-page h4{font-size:16px !important;font-w
 .f-chip.f-chip.fb .fbb.on{background:#1A1A1F !important;}
 .f-chip.f-chip.fb .fbb[data-v=up] img:not(.on-ic){content:url(assets/icons/icon-fb-like-dark.svg);}
 .f-chip.f-chip.fb .fbb:not([data-v=up]) img:not(.on-ic){content:url(assets/icons/icon-fb-dislike-dark.svg);}
+
+/* v171 — Compare button removed (plus its "Hold Compare" hint) */
+#cmp-btn,#cmp-btn.show,.cmp-btn,.card-note{display:none !important;}
 </style>
 </head>
 <body>
@@ -2962,7 +2965,7 @@ function finishRun(how){
   $('gen-frame').classList.remove('show'); fabIdle();
   if (done.length){ commit('Copilot · '+done.length+' edit'+(done.length>1?'s':'')); run.histAt=HI; }
   renderSend(); renderUndo();
-  if (done.length){ addMsg('Done! Hold <b>Compare</b> on the preview to see the difference.','ai'); $('cp-body').appendChild(run.card); scrollBody(); }
+  if (done.length){ addMsg('Done!','ai'); $('cp-body').appendChild(run.card); scrollBody(); }
   renderSummary(run, how); logRun(run);
   if (!done.length) return;
   renderCompare();

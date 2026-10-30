@@ -33,6 +33,10 @@
   - Edit More scenario（demo 5）點 Edit More 不再清空回到開頭
   - 只有重新整理頁面（等同重開 app）或切換 demo scenario／Reset 時才清空
 
+## 1-2. 預覽畫面
+
+- **Compare 按鈕拿掉（v171）**：任務完成後預覽右下角不再出現 Compare（按住比較前後）按鈕，相關「Hold Compare…」提示文字一併移除
+
 ## 2. Credit icon
 
 - `icon-credit.svg` 解析度不足 → 改用 **`icon-credit@4x.png`**（64×64，顯示 16px）
