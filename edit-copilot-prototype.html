@@ -4406,7 +4406,7 @@ document.addEventListener('click',function(e){var em=e.target.closest('#cp-body 
 (function(){
   var SET=['<img class="v141" src="assets/icons/icon-sug2-effect@4x.png" style="left:0;top:0;width:24px;height:24px" alt="">',
     '<img class="v141" src="assets/icons/icon-sug2-color@4x.png" style="left:0;top:0;width:24px;height:24px" alt="">',
-    '<img class="v141" src="assets/icons/icon-sug2-resize@4x.png" style="left:0;top:0;width:24px;height:24px" alt="">'];
+    '<img class="v141" src="assets/icons/icon-sug2-resize@4x.png?v=2" style="left:0;top:0;width:24px;height:24px" alt="">'];
   function fix(){ document.querySelectorAll('#cp-body .sug').forEach(function(b){ var i=+b.dataset.i, si=b.querySelector('.si'); if (si && SET[i] && !si.querySelector('.v141')) si.innerHTML=SET[i]; }); }
   new MutationObserver(fix).observe(document.getElementById('cp-body'),{childList:true,subtree:true}); fix();
 })();
