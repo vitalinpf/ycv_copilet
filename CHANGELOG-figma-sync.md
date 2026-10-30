@@ -37,6 +37,22 @@
 
 - **Compare 按鈕拿掉（v171）**：任務完成後預覽右下角不再出現 Compare（按住比較前後）按鈕，相關「Hold Compare…」提示文字一併移除
 
+## 1-3. Looks lobby（v178）
+
+- Scenario 4「Pick a look」完成後，點「Edit More ›」→ 關掉聊天視窗，底部工具列換成 **Looks 面板**（依參考圖）
+  - 強度滑桿：可拖曳，右側顯示數值（預設帶入 Copilot 套用的強度），預覽即時更新
+  - 分類 tab：⊘（不套用）、Daily、Fashion、K-pop、Festival、Summer；點 tab 會捲到該分類，左右滑動縮圖時 tab 也會跟著切換
+  - 縮圖：使用 `assets/images/Look/` 的 28 個妝容（K-pop 另含聊天中的 Tag Me），皇冠標示、新項目紅點、選取時藍色外框；點縮圖即套用到預覽
+  - 左側「‹」返回一般工具列；切換 demo scenario／Reset 也會關閉
+- 依 Figma 515:6089 調整（v179）：
+  - 強度滑桿置中：軌道 168px、1px；已拖過的部分與圓鈕同色 `#49C6EF`，其餘為 gray_light_3 `#3F3F4D`（v181）；圓鈕 16px `#49C6EF` 帶陰影；數值 10px
+  - 分類 tab：10px；未選 Regular `#96B0B9`；選中 Semibold `#1A1A1F`、底色 `#49C6EF`；padding `4px 10px`、最小寬 46、圓角 20、間距 3
+- 尺寸依 Figma 515:6089（v180）：
+  - 縮圖 52×60：圖 52×52，名稱列 10px 高、`#16171A` 底、6px 字；外框 `.6px #484848`；選中為內側 `3px #49C6EF` 框
+  - 皇冠 16px（`icon-ll-crown.svg`）、新項目紅點（`icon-ll-new.svg`）、⊘ 18px（`icon-ll-none.svg`）、返回鍵 16×26（`icon-ll-back.svg`）皆用 Figma 原圖
+  - 面板 padding 上 8、下 36；tab 列 padding `2px 0 12px 15px`
+- 打開時自動選中剛剛在聊天中套用的妝容（例如 Super Sweet），並捲到該分類
+
 ## 2. Credit icon
 
 - `icon-credit.svg` 解析度不足 → 改用 **`icon-credit@4x.png`**（64×64，顯示 16px）
@@ -124,6 +140,7 @@
 | `icon-sug2-resize@4x.png` | 建議列 icon：尺寸／裁剪（4×，Figma 最新版） |
 | `icon-sug2-expansion.svg`、`icon-sug2-play-bg.svg`、`icon-sug2-play-tri.svg` | Resize icon 的 Figma 原始圖層 |
 | `icon-fb-like*.svg`、`icon-fb-dislike*.svg` | Feedback icon；`-dark` 為 chip off（`#1A1A1F`），`-on` 為 on（白） |
+| `icon-ll-back.svg`、`icon-ll-crown.svg`、`icon-ll-new.svg`、`icon-ll-none.svg` | Looks 面板的返回鍵、皇冠、新項目紅點、不套用（Figma 515:6089） |
 | `icon-fab-video-white.svg` | FAB 白色 icon |
 | `icon-cursor-brightblue.svg` | FAB processing chip 旋轉 icon |
 | `icon-toast-check.svg` | Feedback toast 樣式（保留，目前未使用） |
