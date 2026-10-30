@@ -1696,6 +1696,13 @@ html.cr-open #cp-sheet .cr-page::before{content:none !important;display:none !im
 /* v164 — History cr-chip hugs its content (no fixed width); Credits page hides header credit chip (balance card already shows it) */
 #cp-sheet.hist-mode .cp-head .cr-chip{width:auto !important;min-width:0 !important;max-width:none !important;height:auto !important;right:16px !important;padding:4px 6px 4px 4px !important;white-space:nowrap;}
 .cr-page .hd .f-credit{display:none !important;}
+
+/* v165 — sheet header credit chip hugs content (e.g. low balance "6"), same padding as History chip */
+#cp-sheet #cp-body .f-head .f-credit,#cp-sheet .f-credit:not(.cr-page .f-credit){width:auto !important;min-width:0 !important;max-width:none !important;padding:4px 6px 4px 4px !important;white-space:nowrap;}
+
+/* v166 — every credit chip (sheet header, chat header, History, greet h2) hugs its content: no fixed width, padding 4px 6px 4px 4px */
+html body .f-credit.f-credit,html body .cr-chip.cr-chip,html body #cp-sheet .cp-head button.cr-chip,html body #cp-sheet.hist-mode .cp-head .cr-chip,html body #cp-sheet #cp-body .f-head .f-credit{width:auto !important;min-width:0 !important;max-width:none !important;height:24px !important;box-sizing:border-box !important;padding:4px 6px 4px 4px !important;gap:4px !important;white-space:nowrap !important;flex:none !important;}
+html body .cr-page .hd .f-credit{display:none !important;}
 </style>
 </head>
 <body>

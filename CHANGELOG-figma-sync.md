@@ -43,7 +43,9 @@
 - History 的 hd 比 Credits 矮 4px → 以 Credits（Figma）為準統一：
   - hd 高度、標題位置相同
   - 返回鍵統一為 24px 箭頭
-- History 右上角 credit chip（`.cr-chip`，v164）：寬度不固定、由內容撐開；`right: 16px`、`padding: 4px 6px 4px 4px`
+- **所有頁面的 credit chip**（`.f-credit`、`.cr-chip`，v164–v166）統一：寬度不固定、由內容撐開，高 24、`padding: 4px 6px 4px 4px`、間距 4
+  - 涵蓋開場 Sheet、對話中 Sheet、History（另設 `right: 16px`）及全部 7 個 demo scenario
+  - 避免餘額位數少時（如 Scenario 7 Not enough credits 的「6」）右側留白過多
 - Credits 頁右上角的 credit chip **隱藏**（下方 Your Balance 已顯示餘額）（v164）
 
 ## 6. History 內容
