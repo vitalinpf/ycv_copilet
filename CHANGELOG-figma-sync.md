@@ -26,6 +26,10 @@
 - **每個完成的任務後面都有「Edit More ›」（v167）**：取消原本只在 Edit More scenario 才顯示的限制
   - 點擊後開啟對應工具（例如 warm filter → Filter 面板）
   - 未完成的情況（中途停止、Undo、credits 不足、不支援的要求）不顯示
+- **對話保留在原本的聊天視窗（v168）**：任務完成後，關掉再打開 sheet、或點 Edit More 到工具再回來，先前的對話都還在，可以接著聊
+  - 取消 v27「完成任務後重新開 Copilot 就開新對話」與「關閉 sheet 後清空對話」
+  - Edit More scenario（demo 5）點 Edit More 不再清空回到開頭，改為和其他情境一樣開啟對應工具
+  - 只有重新整理頁面（等同重開 app）或切換 demo scenario／Reset 時才清空
 
 ## 2. Credit icon
 

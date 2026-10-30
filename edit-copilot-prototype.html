@@ -4414,7 +4414,7 @@ input.addEventListener('input',t);var o=send;send=function(){var r=o.apply(this,
 /* v136 — only a fresh page load hides History; any scenario shows it */
 document.addEventListener('click',function(e){if(e.target.closest('.demo-btn'))$('cp-sheet').classList.add('used');},true);
 /* v136 — demo 5: tapping Edit More closes the chat and returns to the start */
-document.addEventListener('click',function(e){var em=e.target.closest('#cp-body .em-link');if(!em||!document.body.classList.contains('demo-room'))return;
+document.addEventListener('click',function(e){var em=e.target.closest('#cp-body .em-link');if(!em||!document.body.classList.contains('demo-room')||true)return; /* v168 — disabled: Edit More opens the tool and the chat is kept */
   e.stopPropagation();e.preventDefault();closeSheet();setTimeout(function(){try{fullReset();}catch(_){}$('cp-sheet').classList.add('used');},350);},true);
 
 /* v132 — swap the one-line input for an auto-growing textarea */
@@ -4472,6 +4472,13 @@ document.addEventListener('click',function(e){var em=e.target.closest('#cp-body 
 (function(){
   var _s=send; send=function(t, via){ $('cp-sheet').classList.add('sug-done'); return _s.apply(this, arguments); };
   var _r=fullReset; fullReset=function(){ $('cp-sheet').classList.remove('sug-done'); return _r.apply(this, arguments); };
+})();
+
+/* v168 — the conversation stays in the chat after a task; closing/reopening the sheet never clears it (only a page reload / demo reset does) */
+(function(){
+  var _c=closeSheet; closeSheet=function(){ var r=_c.apply(this, arguments); S.resetOnOpen=false; return r; };
+  /* undo v27 "fresh session after a finished task": reopening keeps the finished conversation */
+  var _o=openSheet; openSheet=function(){ S.resetOnOpen=false; if (S.fresh) S.resultSeen=false; return _o.apply(this, arguments); };
 })();
 </script>
 </body>
