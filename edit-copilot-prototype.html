@@ -1703,6 +1703,11 @@ html.cr-open #cp-sheet .cr-page::before{content:none !important;display:none !im
 /* v166 — every credit chip (sheet header, chat header, History, greet h2) hugs its content: no fixed width, padding 4px 6px 4px 4px */
 html body .f-credit.f-credit,html body .cr-chip.cr-chip,html body #cp-sheet .cp-head button.cr-chip,html body #cp-sheet.hist-mode .cp-head .cr-chip,html body #cp-sheet #cp-body .f-head .f-credit{width:auto !important;min-width:0 !important;max-width:none !important;height:24px !important;box-sizing:border-box !important;padding:4px 6px 4px 4px !important;gap:4px !important;white-space:nowrap !important;flex:none !important;}
 html body .cr-page .hd .f-credit{display:none !important;}
+
+/* v167 — once the user sends anything (incl. tapping a suggestion), the suggestion list and its prompt line never come back */
+#cp-sheet.sug-done #cp-body .sug-list,#cp-sheet.sug-done #cp-body .greet .hello p,#cp-sheet.sug-done #cp-body .f-head p{display:none !important;}
+/* v167 — every completed task ends with "Edit More" (undoes v118 hide) */
+body #cp-body .em-link{display:inline-flex !important;}
 </style>
 </head>
 <body>
@@ -4462,6 +4467,12 @@ document.addEventListener('click',function(e){var em=e.target.closest('#cp-body 
 
 /* v152 — mark the feedback toast so it takes the Figma toast_message style */
 (function(){ var _t=toast; toast=function(msg){ var r=_t.apply(this, arguments); $('toast').classList.toggle('fbk', /Thanks for the feedback/.test(msg)); return r; }; })();
+
+/* v167 — suggestions are one-shot: hide them after the first send; a fresh scenario/reset brings them back */
+(function(){
+  var _s=send; send=function(t, via){ $('cp-sheet').classList.add('sug-done'); return _s.apply(this, arguments); };
+  var _r=fullReset; fullReset=function(){ $('cp-sheet').classList.remove('sug-done'); return _r.apply(this, arguments); };
+})();
 </script>
 </body>
 </html>

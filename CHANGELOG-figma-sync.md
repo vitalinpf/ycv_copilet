@@ -19,6 +19,14 @@
   - `icon-sug2-color@4x.png`
   - `icon-sug2-resize@4x.png`：依 Figma 最新版重切（video_expansion 框 + 右下 play 鈕：白圓底、深色三角）
 
+- **Suggestion 只出現一次（v167）**：使用者送出任何訊息（包括點 suggestion）後，suggestion list 和「Tell me how you’d like to edit your video.」都不再出現（重新開 sheet 也一樣）；切換 demo scenario／Reset 時才恢復
+
+## 1-1. 任務完成訊息
+
+- **每個完成的任務後面都有「Edit More ›」（v167）**：取消原本只在 Edit More scenario 才顯示的限制
+  - 點擊後開啟對應工具（例如 warm filter → Filter 面板）
+  - 未完成的情況（中途停止、Undo、credits 不足、不支援的要求）不顯示
+
 ## 2. Credit icon
 
 - `icon-credit.svg` 解析度不足 → 改用 **`icon-credit@4x.png`**（64×64，顯示 16px）
