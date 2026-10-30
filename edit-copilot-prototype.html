@@ -1712,7 +1712,7 @@ body #cp-body .em-link{display:inline-flex !important;}
 /* v170 — (1) "Meet Video Copilot" 17px */
 #cp-body .hello h2 .grad{font-size:17px !important;}
 /* v170 — (2) Credits page section titles per 461:117819: 16px bold, main text colour, capitalised ("Pricing", "Faq"), list pt 4 */
-html body #cr-page .bd h4,html body .cr-page h4{font-size:16px !important;font-weight:700 !important;letter-spacing:.2px !important;text-transform:capitalize !important;color:#fff !important;}
+html body #cr-page .bd h4,html body .cr-page h4{font-size:16px !important;font-weight:700 !important;letter-spacing:.2px !important;text-transform:none !important;color:#fff !important;} /* v172 — FAQ stays all caps */
 /* v170 — (3) chat-row feedback off bg = bg/m-bg-alpha-20 */
 #cp-body .fb-out [data-fb]:not(.on):not([aria-pressed=true]){background:var(--bg-m-bg-alpha-20, rgba(22,23,26,.2)) !important;}
 /* v170 — (4) Edit More: only one normal space before it (no extra 10px gap) */
@@ -1727,6 +1727,9 @@ html body #cr-page .bd h4,html body .cr-page h4{font-size:16px !important;font-w
 
 /* v171 — Compare button removed (plus its "Hold Compare" hint) */
 #cmp-btn,#cmp-btn.show,.cmp-btn,.card-note{display:none !important;}
+
+/* v174 — Credits page: divider under the last cost row ("Free") */
+html body #cr-page .bd .row:not(:has(+ .row)){border-bottom:.6px solid rgba(235,235,236,.12) !important;}
 </style>
 </head>
 <body>
@@ -4034,7 +4037,7 @@ respond = function(text){
   var bd=document.querySelector('#cr-page .bd'); if (!bd) return;
   var bal=bd.querySelector('.bal').outerHTML;
   bd.innerHTML=bal+
-    '<h4>Pricing</h4>'+
+    '<h4>Credit costs</h4>'+
     '<div class="row"><div>Each request to Copilot<span>One message you send — it can include several edits</span></div><em>'+REQ_COST+' credits</em></div>'+
     '<div class="row"><div>Picking an option Copilot offers<span>e.g. choosing one of the suggested looks</span></div><em>Included</em></div>'+
     '<div class="row"><div>Undo, Edit More, History<span>Fine-tuning or reviewing a result</span></div><em>Free</em></div>'+
@@ -4071,7 +4074,7 @@ respond = function(text){
     ['Crop & length','Aspect ratio, trim to a length','1 credit'],
     ['Undo, Edit More, History','Fine-tuning or reviewing a result','Free']
   ];
-  var h=bal+'<h4>Pricing</h4>';
+  var h=bal+'<h4>Credit costs</h4>';
   rows.forEach(function(r,i){ h+='<div class="row"'+(i===1?' style="border-top:1px dashed rgba(255,255,255,.12)"':'')+'><div>'+esc(r[0])+'<span>'+esc(r[1])+'</span></div><em>'+esc(r[2])+'</em></div>'; });
   h+='<p class="eg" style="margin:10px 0 0;font-size:11px;color:rgba(255,255,255,.55);line-height:1.5">Example: “Whiten teeth” = 5 + 1 = <b style="color:#FFD36B">6 credits</b>. A question or an unsupported request = 5 credits.</p>';
   h+='<div class="faq"><h4>FAQ</h4>'+
@@ -4502,10 +4505,9 @@ document.addEventListener('click',function(e){var em=e.target.closest('#cp-body 
   var _o=openSheet; openSheet=function(){ S.resetOnOpen=false; if (S.fresh) S.resultSeen=false; return _o.apply(this, arguments); };
 })();
 
-/* v170 — Credits headings use Figma copy; Edit More just closes the chat; no space text before Edit More */
+/* v170 — Edit More just closes the chat; no space text before Edit More */
 (function(){
   function fix(){
-    document.querySelectorAll('.cr-page h4').forEach(function(h){ if (h.textContent.trim()==='FAQ') h.textContent='Faq'; });
     document.querySelectorAll('#cp-body .em-link').forEach(function(b){ var t=b.previousSibling; if (t && t.nodeType===3 && !/ $/.test(t.nodeValue)) t.nodeValue=t.nodeValue.replace(/\s*$/,' '); });
   }
   new MutationObserver(fix).observe(document.body,{childList:true,subtree:true}); fix();

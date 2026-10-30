@@ -53,7 +53,8 @@
 
 - 標題「Your Balance」；價格顯示為「-N」，不顯示金幣
 - 價目列與 FAQ 列：滿版、`.6px rgba(235,235,236,.12)` 分隔線
-- 區塊標題 Pricing／Faq（v170，依 Figma 461:117819）：16px Bold、主文字白色、首字大寫（`capitalize`，FAQ → Faq），不再是 12px 灰色全大寫
+- 區塊標題 Credit costs／FAQ（v170，依 Figma 461:117819）：16px Bold、主文字白色、「Credit costs」（v173，原 Pricing）、「FAQ」（v172：維持全大寫），不再是 12px 灰色全大寫
+- Credit costs 最後一列（Free）下方加一條分隔線，與其他列相同 `.6px rgba(235,235,236,.12)`（v174）
 - 範例說明 `.eg`：`font-weight: normal`，`.eg b` 顏色 `#96B0B9`
 
 ## 5. Credits ／ History 頁頂部統一
