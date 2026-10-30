@@ -43,7 +43,7 @@
 - History 的 hd 比 Credits 矮 4px → 以 Credits（Figma）為準統一：
   - hd 高度、標題位置相同
   - 返回鍵統一為 24px 箭頭
-- History 右上角 credit chip（`.cr-chip`，v164）：寬度不固定、由內容撐開；`right: 16px`、`padding: 4px 4px 6px 4px`
+- History 右上角 credit chip（`.cr-chip`，v164）：寬度不固定、由內容撐開；`right: 16px`、`padding: 4px 6px 4px 4px`
 - Credits 頁右上角的 credit chip **隱藏**（下方 Your Balance 已顯示餘額）（v164）
 
 ## 6. History 內容
