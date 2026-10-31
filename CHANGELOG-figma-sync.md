@@ -51,6 +51,7 @@
   - 縮圖 52×60：圖 52×52，名稱列 10px 高、`#16171A` 底、6px 字；外框 `.6px #484848`；選中為內側 `3px #49C6EF` 框
   - 皇冠 16px（`icon-ll-crown.svg`）、新項目紅點（`icon-ll-new.svg`）、⊘ 18px（`icon-ll-none.svg`）、返回鍵 16×26（`icon-ll-back.svg`）皆用 Figma 原圖
   - 面板 padding 上 8、下 36；tab 列 padding `2px 0 12px 15px`
+- Looks 面板打開時 Copilot 按鈕（cp-fab）仍顯示，可隨時再打開聊天（v182）
 - 打開時自動選中剛剛在聊天中套用的妝容（例如 Super Sweet），並捲到該分類
 
 ## 2. Credit icon
