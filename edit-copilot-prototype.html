@@ -1842,6 +1842,9 @@ html body .ll-sl input::-moz-range-track{background:linear-gradient(90deg,#49C6E
 #cp-body .try-these.used{display:none;}
 /* v183 — demo scenario 5 (Edit More) hidden */
 .demo-btn[data-k=room]{display:none !important;}
+
+/* v184 — suggestion buttons right under a reply (no header) */
+html body #cp-body .try-these.no-head{margin-top:-2px;}
 </style>
 </head>
 <body>
@@ -4100,7 +4103,7 @@ startRun = function(){
     S.plan=null; if (pl.card && pl.card.remove) pl.card.remove();
     var msgs=[].slice.call(document.querySelectorAll('#cp-body .msg.ai')); var last=msgs[msgs.length-1];
     if (last && /I will start by applying/.test(last.textContent)) last.remove();
-    addMsg('This request needs <b>'+cost+' credits</b>'+(fee?' ('+fee+' for the request + '+items+' for the edits)':'')+', but you have <b>'+S.credits+'</b>. <span class="cr-lk" data-crget2>Get credits</span> or <span class="cr-lk" data-crpage>see pricing</span>.','ai');
+    addMsg('This request needs <b>'+cost+' credits</b>'+(fee?' ('+fee+' for the request + '+items+' for the edits)':'')+', but you have <b>'+S.credits+'</b>. <span class="cr-lk" data-crget2>Get credits &gt;</span>','ai');
     var g=document.querySelector('#cp-body [data-crget2]:last-of-type'); if (g) g.onclick=function(){ toast('Credit store (not part of this prototype)'); };
     S.creditBlocked=true; scrollBody(); return;
   }
@@ -4149,7 +4152,7 @@ runCost=function(){ return 0; };
 var _respond93 = respond;
 respond = function(text){
   if (S.credits < REQ_COST){
-    addMsg('Each request costs <b>'+REQ_COST+' credits</b>, but you have <b>'+S.credits+'</b>. <span class="cr-lk" data-crget2>Get credits</span> or <span class="cr-lk" data-crpage>see pricing</span>.','ai');
+    addMsg('Each request costs <b>'+REQ_COST+' credits</b>, but you have <b>'+S.credits+'</b>. <span class="cr-lk" data-crget2>Get credits &gt;</span>','ai');
     var g=[].slice.call(document.querySelectorAll('#cp-body [data-crget2]')).pop(); if (g) g.onclick=function(){ toast('Credit store (not part of this prototype)'); };
     scrollBody(); return;
   }
@@ -4175,7 +4178,7 @@ respond = function(text){
 runCost=function(ops){ return ops.reduce(function(a,o){ return a+(o.on===false?0:(COST[o.kind]||1)); }, 0); };
 respond = function(text){
   if (S.credits < REQ_COST){
-    addMsg('Each request costs at least <b>'+REQ_COST+' credits</b>, but you have <b>'+S.credits+'</b>. <span class="cr-lk" data-crget2>Get credits</span> or <span class="cr-lk" data-crpage>see pricing</span>.','ai');
+    addMsg('Each request costs at least <b>'+REQ_COST+' credits</b>, but you have <b>'+S.credits+'</b>. <span class="cr-lk" data-crget2>Get credits &gt;</span>','ai');
     var g=[].slice.call(document.querySelectorAll('#cp-body [data-crget2]')).pop(); if (g) g.onclick=function(){ toast('Credit store (not part of this prototype)'); };
     scrollBody(); return;
   }
@@ -4731,19 +4734,20 @@ document.addEventListener('click',function(e){var em=e.target.closest('#cp-body 
   var DROP='<img src="assets/icons/retouch/placeholder-plus.svg" alt="" style="left:8.9px;top:8.4px;width:8.16px;height:8.16px;transform:scaleX(-1)">';
   function PNG(n){ return '<img src="assets/icons/retouch/'+n+'@4x.png" alt="" style="left:0;top:0;width:26px;height:26px">'; }
   var BOX='<span class="bx"></span>'+DROP;
+  function SV(n){ return '<img src="assets/icons/retouch/'+n+'.svg" alt="" style="left:0;top:0;width:26px;height:26px">'; }
   var TOOLS=[
     {n:'Smoother', k:'smoother', ic:PNG('smoother')},
     {n:'Face Lift', p:1, ic:PNG('face-lift')},
     {n:'Smile', p:1, ic:PNG('smile')},
     {n:'Face Smoother', p:1, ic:PNG('face-smoother')},
     {n:'Brighten', k:'brighten', p:1, ic:PNG('brighten')},
-    {n:'Teeth Whitener', p:1, ic:BOX},
+    {n:'Teeth Whitener', p:1, ic:SV('teeth-whitener')},
     {n:'Concealer', ic:'<img src="assets/icons/retouch/concealer.svg" alt="" style="left:3.07px;top:1.27px;width:19.86px;height:24.15px">'},
-    {n:'Eye Sparkle', k:'eyes', ic:BOX},
+    {n:'Eye Sparkle', k:'eyes', ic:SV('eye-sparkle')},
     {n:'Eye Whiten', ic:'<img src="assets/icons/retouch/eye-whiten.svg" alt="" style="left:1.78px;top:7.14px;width:21.62px;height:13px">'},
     {n:'Eye Bag Removal', ic:'<img src="assets/icons/retouch/eye-bag-shape.svg" alt="" style="left:8.55px;top:6.99px;width:8.28px;height:8.21px"><img src="assets/icons/retouch/eye-bag-stroke4.svg" alt="" style="left:3.9px;top:7.28px;width:8.32px;height:10.14px;width:calc(26px*.68*1.09);height:calc(26px*.39*1.16);left:calc(3.9px - 26px*.68*.045);top:calc(7.28px - 26px*.39*.079)"><img src="assets/icons/retouch/eye-bag-stroke1.svg" alt="" style="left:calc(3.9px - 26px*.68*.028);top:calc(12.22px - 26px*.29*.066);width:calc(26px*.68*1.057);height:calc(26px*.29*1.133)">'},
     {n:'Lip Plumper', ic:'<img src="assets/icons/retouch/lip-plumper.svg" alt="" style="left:2.2px;top:7.65px;width:21.68px;height:11.03px">'},
-    {n:'Lip Wrinkle', ic:BOX}
+    {n:'Lip Wrinkle', ic:SV('lip-wrinkle')}
   ];
   var list=$('rt-list'), rg=$('rt-range'), out=$('rt-out'), frame=$('frame'), cur=0, V={};
   var prem=document.createElement('button'); prem.className='rt-prem'; prem.innerHTML='Premium Only<br>Upgrade Now'; frame.appendChild(prem);
@@ -4780,7 +4784,7 @@ document.addEventListener('click',function(e){var em=e.target.closest('#cp-body 
 
 /* v183 — "Try these..." follow-ups under a finished auto face retouch (Figma 529:14366) */
 (function(){
-  var ITEMS=['Smooth my skin and even out my skin tone','Give me a new makeup look','Whiten my teeth for a brighter smile'];
+  var ITEMS=['Smooth my skin and even out my skin tone','Recommend Korean-style makeup look','Whiten my teeth for a brighter smile'];
   function add(){
     var body=$('cp-body'); if (!body) return;
     var ms=[].filter.call(body.querySelectorAll('.msg'), function(m){ return m.querySelector('.em-link') && /face retouch/i.test(m.textContent); });
@@ -4794,6 +4798,24 @@ document.addEventListener('click',function(e){var em=e.target.closest('#cp-body 
     after.after(d); if (typeof scrollBody==='function') scrollBody();
   }
   new MutationObserver(function(){ add(); }).observe(document.body,{childList:true,subtree:true});
+})();
+
+/* v184 — unsupported replies: scenario 5 gets the "Try these..." block, a no-match reply gets tappable suggestions (Figma 529:14366 / 529:14369) */
+(function(){
+  var TRY=['Smooth my skin and even out my skin tone','Recommend Korean-style makeup look','Whiten my teeth for a brighter smile'];
+  var NEXT=['Apply auto face retouch','Recommend Korean-style makeup look'];
+  function block(after, items, head){
+    var d=document.createElement('div'); d.className='try-these'+(head?'':' no-head');
+    d.innerHTML=(head?'<p>'+head+'</p>':'')+'<div class="tl"></div>';
+    items.forEach(function(t){ var b=document.createElement('button'); b.textContent=t; b.onclick=function(){ if (S.busy) return; d.classList.add('used'); send(t); }; d.querySelector('.tl').appendChild(b); });
+    after.after(d); if (typeof scrollBody==='function') scrollBody();
+  }
+  new MutationObserver(function(ms){ ms.forEach(function(m){ m.addedNodes.forEach(function(n){
+    if (!n.classList || !n.classList.contains('fail-msg') || n.dataset.try) return;
+    n.dataset.try='1';
+    if (/couldn’t match/.test(n.textContent)){ n.textContent='I couldn’t match that to an edit yet.\nTry one of these:'; block(n, NEXT); }
+    else block(n, TRY, 'Try these...');
+  }); }); }).observe($('cp-body'), {childList:true});
 })();
 </script>
 </body>
