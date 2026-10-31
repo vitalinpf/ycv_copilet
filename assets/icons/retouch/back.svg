@@ -1,0 +1,14 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="16" height="26" viewBox="0 0 16 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="btn_ycv_feature_room_back">
+<path id="Rectangle 2350" d="M0 3.55556C0 1.59188 1.59188 0 3.55556 0H12.4444C14.4081 0 16 1.59188 16 3.55556V22.4444C16 24.4081 14.4081 26 12.4444 26H3.55556C1.59188 26 0 24.4081 0 22.4444V3.55556Z" fill="#31353F"/>
+<g id="Frame 74949" opacity="0.6" clip-path="url(#clip0_0_10715)">
+<path id="Line 186" d="M10.0487 8.80063L5.73343 12.8621" stroke-width="1.18519" stroke-linecap="round" stroke="white"/>
+<path id="Line 187" d="M5.87509 13L10.0654 17.1903" stroke-width="1.18519" stroke-linecap="round" stroke="white"/>
+</g>
+</g>
+<defs>
+<clipPath id="clip0_0_10715">
+<rect width="5.62963" height="10.0741" fill="white" transform="translate(5.03704 7.96296)"/>
+</clipPath>
+</defs>
+</svg>

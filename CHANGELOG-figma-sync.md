@@ -54,6 +54,27 @@
 - Looks 面板打開時 Copilot 按鈕（cp-fab）仍顯示，可隨時再打開聊天（v182）
 - 打開時自動選中剛剛在聊天中套用的妝容（例如 Super Sweet），並捲到該分類
 
+## 1-4. Retouch feature room 與 Try these（v183）
+
+- Scenario 1（Chat，Apply auto face retouch）完成後，回覆下方加上「Try these...」三個建議（Figma 529:14366）：
+  - Smooth my skin and even out my skin tone／Give me a new makeup look／Whiten my teeth for a brighter smile
+  - 標題 12px 白字；每列 padding 10、圓角 10、底色 `rgba(255,255,255,.06)`、11px／15px；點擊即送出，送出後這組建議收起
+- 點這則回覆的「Edit More ›」→ 關掉聊天視窗，底部換成 **Retouch 面板**（Figma 515:3524 截圖 + 元件 515:6521）
+  - 強度滑桿與 Looks 相同樣式，帶入 Copilot 套用的數值（Smoother 50、Brighten 40、Eye Sparkle 25），拖動即時更新預覽
+  - 工具列：Smoother、Face Lift、Smile、Face Smoother、Brighten、Teeth Whitener、Concealer、Eye Sparkle、Eye Whiten、Eye Bag Removal、Lip Plumper、Lip Wrinkle；選中為藍色 icon／文字＋底部短線；付費工具有黃色皇冠
+  - 有付費工具被套用時，預覽右上顯示橘色「Premium Only / Upgrade Now」，點了開啟 IAP 頁
+  - 左側「‹」返回一般工具列
+- Icon：Smoother、Face Lift、Smile、Face Smoother、Brighten、皇冠由 Figma 原始截圖（1290px）裁出 4× PNG；Concealer、Eye Whiten、Eye Bag Removal、Lip Plumper 用元件 SVG；Teeth Whitener、Eye Sparkle、Lip Wrinkle 在元件中是佔位圖（方框），待補正式 icon
+
+## 1-5. IAP 頁（v183）
+
+- 所有「Get credits／Get Credits」（Scenario 7 Not enough credits 的聊天連結、Credits 頁按鈕）→ 關掉聊天視窗，開啟 IAP 頁（Figma 531:25655，ycv1_59_iap_standard／_pro 畫面圖）
+- 上方 Standard／PRO 可切換；左上返回鍵 → 回到編輯 lobby
+
+## 1-6. Demo scenario
+
+- 隱藏 Scenario 5「Edit More」（v183），其餘重新編號：Unsupported request → 5、Not enough credits → 6
+
 ## 2. Credit icon
 
 - `icon-credit.svg` 解析度不足 → 改用 **`icon-credit@4x.png`**（64×64，顯示 16px）
@@ -142,6 +163,8 @@
 | `icon-sug2-expansion.svg`、`icon-sug2-play-bg.svg`、`icon-sug2-play-tri.svg` | Resize icon 的 Figma 原始圖層 |
 | `icon-fb-like*.svg`、`icon-fb-dislike*.svg` | Feedback icon；`-dark` 為 chip off（`#1A1A1F`），`-on` 為 on（白） |
 | `icon-ll-back.svg`、`icon-ll-crown.svg`、`icon-ll-new.svg`、`icon-ll-none.svg` | Looks 面板的返回鍵、皇冠、新項目紅點、不套用（Figma 515:6089） |
+| `retouch/*@4x.png`、`retouch/*.svg` | Retouch 面板工具 icon、皇冠、返回鍵（Figma 515:3524／515:6521） |
+| `../images/img-iap-standard.png`、`../images/img-iap-pro.png` | IAP 頁畫面（Figma 531:25655） |
 | `icon-fab-video-white.svg` | FAB 白色 icon |
 | `icon-cursor-brightblue.svg` | FAB processing chip 旋轉 icon |
 | `icon-toast-check.svg` | Feedback toast 樣式（保留，目前未使用） |

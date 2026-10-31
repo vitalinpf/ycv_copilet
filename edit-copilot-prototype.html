@@ -1802,6 +1802,46 @@ html body .ll-it .nw{position:absolute;left:-2px;right:auto;top:-5px;width:10px;
 /* v181 — intensity bar: filled part = knob blue, rest = gray_light_3 */
 html body .ll-sl input::-webkit-slider-runnable-track{background:linear-gradient(90deg,#49C6EF var(--p),#3F3F4D var(--p));}
 html body .ll-sl input::-moz-range-track{background:linear-gradient(90deg,#49C6EF var(--p),#3F3F4D var(--p));}
+
+/* v183 — IAP page (Figma 531:25655, ycv1_59_iap_standard / _pro) */
+.iap-page{position:absolute;inset:0;z-index:400;display:none;background:#16171A;overflow:hidden;}
+.iap-page.show{display:block;}
+.iap-page img{display:block;width:100%;height:100%;object-fit:cover;object-position:top;}
+.iap-page button{position:absolute;padding:0;border:none;background:none;cursor:pointer;-webkit-tap-highlight-color:transparent;}
+.iap-page .iap-back{left:4.65%;top:6.55%;width:8.84%;aspect-ratio:1;border-radius:50%;}
+.iap-page .iap-tab{top:6.55%;width:27.9%;height:4.08%;border-radius:20px;}
+.iap-page .iap-tab[data-p=standard]{left:22.1%;}
+.iap-page .iap-tab[data-p=pro]{left:50%;}
+/* v183 — Retouch feature room panel */
+.rt-room{display:none;flex-shrink:0;flex-direction:column;background:var(--bg);padding:8px 0 30px;}
+#frame.rt-open .rt-room{display:flex;}
+#frame.rt-open #tool-row,#frame.rt-open #mode-tabs,#frame.rt-open .f-chip,#frame.rt-open #fb-chip{display:none !important;}
+.rt-row{position:relative;height:70px;}
+.rt-back{position:absolute;left:0;top:0;z-index:2;width:30px;height:62px;background:var(--bg);display:flex;align-items:flex-end;justify-content:flex-end;padding-bottom:10px;box-sizing:border-box;}
+.rt-back button{padding:0;border:none;background:none;cursor:pointer;display:block;}
+.rt-back img{display:block;width:16px;height:26px;}
+.rt-list{display:flex;overflow-x:auto;scrollbar-width:none;padding:4px 14px 0 41px;height:70px;box-sizing:border-box;}
+.rt-list::-webkit-scrollbar{display:none;}
+.rt-it{position:relative;flex:none;width:50px;height:64px;padding:0;border:none;background:none;cursor:pointer;color:#fff;}
+.rt-it .ic{position:absolute;left:50%;top:5px;width:26px;height:26px;transform:translateX(-50%);}
+.rt-it .ic img{position:absolute;display:block;}
+.rt-it .ic .bx{position:absolute;left:4.3px;top:3.4px;width:16.8px;height:17.8px;border:1.275px solid #fff;border-radius:4.33px;box-sizing:border-box;}
+.rt-it .lb{position:absolute;left:2px;right:2px;top:46px;transform:translateY(-50%);font-size:8px;line-height:9px;text-align:center;}
+.rt-it .cr{position:absolute;left:calc(50% + 9px);top:1px;width:13.4px;height:11.9px;}
+.rt-it.on .lb{color:#49C6EF;}
+.rt-it.on .ic img{filter:brightness(0) saturate(100%) invert(73%) sepia(46%) saturate(749%) hue-rotate(160deg) brightness(97%) contrast(92%);}
+.rt-it.on .ic .bx{border-color:#49C6EF;}
+.rt-it.on::after{content:'';position:absolute;left:21px;top:60px;width:8px;height:2px;border-radius:1px;background:#29B8E7;}
+.rt-prem{position:absolute;z-index:45;right:12px;top:83px;display:none;padding:4px 7px;border:none;border-radius:2px;background:#FFA614;color:#1A1A1F;font-size:11px;font-weight:600;line-height:14px;text-align:center;cursor:pointer;}
+#frame.rt-open .rt-prem.show{display:block;}
+/* v183 — "Try these..." follow-ups after an auto face retouch (Figma 529:14366) */
+#cp-body .try-these{display:flex;flex-direction:column;gap:8px;align-items:flex-start;padding:6px 16px 0;align-self:stretch;}
+#cp-body .try-these>p{margin:0;font-size:12px;line-height:16px;letter-spacing:.2px;color:#fff;}
+#cp-body .try-these .tl{display:flex;flex-direction:column;gap:6px;align-items:flex-start;}
+#cp-body .try-these button{padding:10px;border:none;border-radius:10px;background:rgba(255,255,255,.06);color:#fff;font-size:11px;line-height:15px;letter-spacing:.2px;text-align:left;white-space:nowrap;cursor:pointer;}
+#cp-body .try-these.used{display:none;}
+/* v183 — demo scenario 5 (Edit More) hidden */
+.demo-btn[data-k=room]{display:none !important;}
 </style>
 </head>
 <body>
@@ -1911,6 +1951,11 @@ html body .ll-sl input::-moz-range-track{background:linear-gradient(90deg,#49C6E
     <div class="ll-sl"><input type="range" id="ll-range" min="0" max="100" step="1" value="60" aria-label="Look strength"><output id="ll-out">60</output></div>
     <div class="ll-tabs"><button class="ll-none" id="ll-none" aria-label="No look"><img src="assets/icons/icon-ll-none.svg" alt="" width="18" height="18"></button><div class="ll-cats" id="ll-cats"></div></div>
     <div class="ll-row"><button class="ll-back" id="ll-back" aria-label="Back"><img src="assets/icons/icon-ll-back.svg" alt="" width="16" height="26"></button><div class="ll-list" id="ll-list"></div></div>
+  </div>
+  <!-- v183 — Retouch feature room (Edit More after auto face retouch), Figma 515:3524 / 515:6521 -->
+  <div class="rt-room" id="rt-room" aria-label="Retouch">
+    <div class="ll-sl"><input type="range" id="rt-range" min="0" max="100" step="1" value="50" aria-label="Strength"><output id="rt-out">50</output></div>
+    <div class="rt-row"><div class="rt-back"><button id="rt-back" aria-label="Back"><img src="assets/icons/retouch/back.svg" alt="" width="16" height="26"></button></div><div class="rt-list" id="rt-list"></div></div>
   </div>
   <!-- Hand-off: fine-tune one Copilot change in its tool -->
   <div class="adj-panel" id="adj-panel">
@@ -4653,6 +4698,102 @@ document.addEventListener('click',function(e){var em=e.target.closest('#cp-body 
   lob.addEventListener('pointerdown', function(e){ if (e.pointerType!=='mouse') return; var r=e.target.closest('.ll-list, .ll-cats'); if (!r) return; row=r; x0=e.clientX; s0=r.scrollLeft; dragged=false; r.style.scrollBehavior='auto'; });
   document.addEventListener('pointermove', function(e){ if (!row) return; var dx=e.clientX-x0; if (Math.abs(dx)>4) dragged=true; if (dragged) row.scrollLeft=s0-dx; });
   document.addEventListener('pointerup', function(){ if (row) row.style.scrollBehavior=''; row=null; setTimeout(function(){ dragged=false; }, 0); });
+})();
+
+/* v183 — IAP page: every "Get credits" opens it; back returns to the editor lobby */
+(function(){
+  var pg=document.createElement('div'); pg.className='iap-page'; pg.id='iap-page';
+  pg.innerHTML='<img id="iap-img" src="assets/images/img-iap-standard.png" alt="Subscription plans"><button class="iap-back" aria-label="Back"></button><button class="iap-tab" data-p="standard" aria-label="Standard"></button><button class="iap-tab" data-p="pro" aria-label="PRO"></button>';
+  $('frame').appendChild(pg);
+  var IMG={standard:'assets/images/img-iap-standard.png', pro:'assets/images/img-iap-pro.png'};
+  new Image().src=IMG.pro;
+  pg.querySelectorAll('.iap-tab').forEach(function(t){ t.onclick=function(){ $('iap-img').src=IMG[t.dataset.p]; }; });
+  window.openIAP=function(){
+    var cr=document.querySelector('.cr-page.show, #cr-page.show'); if (cr) cr.classList.remove('show');
+    document.documentElement.classList.remove('cr-open');
+    if (S.sheet) closeSheet();
+    $('iap-img').src=IMG.standard; pg.classList.add('show');
+  };
+  window.closeIAP=function(){ pg.classList.remove('show'); };
+  pg.querySelector('.iap-back').onclick=closeIAP;
+  document.addEventListener('click', function(e){
+    var g=e.target.closest && e.target.closest('[data-crget],[data-crget2],.cr-page .get,#cr-page .get,.rt-prem');
+    if (!g) return; e.preventDefault(); e.stopImmediatePropagation(); openIAP();
+  }, true);
+  var _fr=fullReset; fullReset=function(){ closeIAP(); return _fr.apply(this, arguments); };
+})();
+
+/* v183 — hide demo scenario 5 (Edit More) and renumber the rest */
+(function(){ var n=0; document.querySelectorAll('.demo-btn:not(.reset)').forEach(function(b){ if (b.dataset.k==='room') return; var s=b.querySelector('.n'); if (s) s.textContent=++n; }); })();
+
+/* v183 — Retouch feature room: Edit More after auto face retouch closes the chat and opens it */
+(function(){
+  var DROP='<img src="assets/icons/retouch/placeholder-plus.svg" alt="" style="left:8.9px;top:8.4px;width:8.16px;height:8.16px;transform:scaleX(-1)">';
+  function PNG(n){ return '<img src="assets/icons/retouch/'+n+'@4x.png" alt="" style="left:0;top:0;width:26px;height:26px">'; }
+  var BOX='<span class="bx"></span>'+DROP;
+  var TOOLS=[
+    {n:'Smoother', k:'smoother', ic:PNG('smoother')},
+    {n:'Face Lift', p:1, ic:PNG('face-lift')},
+    {n:'Smile', p:1, ic:PNG('smile')},
+    {n:'Face Smoother', p:1, ic:PNG('face-smoother')},
+    {n:'Brighten', k:'brighten', p:1, ic:PNG('brighten')},
+    {n:'Teeth Whitener', p:1, ic:BOX},
+    {n:'Concealer', ic:'<img src="assets/icons/retouch/concealer.svg" alt="" style="left:3.07px;top:1.27px;width:19.86px;height:24.15px">'},
+    {n:'Eye Sparkle', k:'eyes', ic:BOX},
+    {n:'Eye Whiten', ic:'<img src="assets/icons/retouch/eye-whiten.svg" alt="" style="left:1.78px;top:7.14px;width:21.62px;height:13px">'},
+    {n:'Eye Bag Removal', ic:'<img src="assets/icons/retouch/eye-bag-shape.svg" alt="" style="left:8.55px;top:6.99px;width:8.28px;height:8.21px"><img src="assets/icons/retouch/eye-bag-stroke4.svg" alt="" style="left:3.9px;top:7.28px;width:8.32px;height:10.14px;width:calc(26px*.68*1.09);height:calc(26px*.39*1.16);left:calc(3.9px - 26px*.68*.045);top:calc(7.28px - 26px*.39*.079)"><img src="assets/icons/retouch/eye-bag-stroke1.svg" alt="" style="left:calc(3.9px - 26px*.68*.028);top:calc(12.22px - 26px*.29*.066);width:calc(26px*.68*1.057);height:calc(26px*.29*1.133)">'},
+    {n:'Lip Plumper', ic:'<img src="assets/icons/retouch/lip-plumper.svg" alt="" style="left:2.2px;top:7.65px;width:21.68px;height:11.03px">'},
+    {n:'Lip Wrinkle', ic:BOX}
+  ];
+  var list=$('rt-list'), rg=$('rt-range'), out=$('rt-out'), frame=$('frame'), cur=0, V={};
+  var prem=document.createElement('button'); prem.className='rt-prem'; prem.innerHTML='Premium Only<br>Upgrade Now'; frame.appendChild(prem);
+  TOOLS.forEach(function(t,i){
+    var b=document.createElement('button'); b.className='rt-it'; b.setAttribute('aria-label',t.n);
+    b.innerHTML='<span class="ic">'+t.ic+'</span>'+(t.p?'<img class="cr" src="assets/icons/retouch/crown@4x.png" alt="">':'')+'<span class="lb">'+esc(t.n)+'</span>';
+    b.onclick=function(){ sel(i); }; list.appendChild(b);
+  });
+  function setV(v){ rg.value=v; out.textContent=v; rg.style.setProperty('--p', v+'%'); }
+  function premCheck(){ prem.classList.toggle('show', TOOLS.some(function(t){ return t.p && V[t.n]>0; })); }
+  function sel(i){ cur=i; list.querySelectorAll('.rt-it').forEach(function(b,j){ b.classList.toggle('on', j===i); }); setV(V[TOOLS[i].n]||0); }
+  function retouchOps(){ for (var i=RUNS.length-1;i>=0;i--){ var r=RUNS[i]; if (r.status==='done' && r.ops.some(function(o){ return o.kind==='smoother'; })) return r.ops; } return []; }
+  rg.oninput=function(){ var t=TOOLS[cur], v=+rg.value; V[t.n]=v; setV(v);
+    if (t.k){ retouchOps().forEach(function(o){ if (o.kind===t.k){ o.v=v; o.on=v>0; } }); if (t.k==='smoother') P.rt.smoother=v; if (t.k==='brighten') P.rt.brighten=v; if (t.k==='eyes' && P.rt.eyes!==undefined) P.rt.eyes=v; renderPreview(); if (typeof renderFxTags==='function') renderFxTags(); }
+    premCheck(); };
+  window.openRetouchRoom=function(){
+    if (typeof closeLookLobby==='function') closeLookLobby();
+    V={}; retouchOps().forEach(function(o){ TOOLS.forEach(function(t){ if (t.k===o.kind && o.on!==false) V[t.n]=Math.round(o.v); }); });
+    frame.classList.add('rt-open'); sel(0); list.scrollLeft=0; premCheck(); requestAnimationFrame(renderPreview);
+  };
+  window.closeRetouchRoom=function(){ if (!frame.classList.contains('rt-open')) return; frame.classList.remove('rt-open'); requestAnimationFrame(renderPreview); };
+  $('rt-back').onclick=closeRetouchRoom;
+  var _aem=window.afterEditMore; window.afterEditMore=function(em){ var m=em.closest('.msg'); if (m && /face retouch/i.test(m.textContent)) return openRetouchRoom(); if (_aem) _aem(em); };
+  var _ol=window.openLookLobby; if (_ol) window.openLookLobby=function(){ closeRetouchRoom(); return _ol.apply(this, arguments); };
+  var _fr=fullReset; fullReset=function(){ closeRetouchRoom(); return _fr.apply(this, arguments); };
+  document.addEventListener('click', function(e){ if (e.target.closest && e.target.closest('.demo-btn')) closeRetouchRoom(); }, true);
+  /* mouse drag to swipe the tool row */
+  var x0=0, s0=0, drag=null, moved=false;
+  list.addEventListener('pointerdown', function(e){ if (e.pointerType!=='mouse') return; drag=list; x0=e.clientX; s0=list.scrollLeft; moved=false; });
+  document.addEventListener('pointermove', function(e){ if (!drag) return; var dx=e.clientX-x0; if (Math.abs(dx)>4) moved=true; if (moved) list.scrollLeft=s0-dx; });
+  document.addEventListener('pointerup', function(){ drag=null; setTimeout(function(){ moved=false; },0); });
+  list.addEventListener('click', function(e){ if (moved){ e.stopPropagation(); e.preventDefault(); } }, true);
+})();
+
+/* v183 — "Try these..." follow-ups under a finished auto face retouch (Figma 529:14366) */
+(function(){
+  var ITEMS=['Smooth my skin and even out my skin tone','Give me a new makeup look','Whiten my teeth for a brighter smile'];
+  function add(){
+    var body=$('cp-body'); if (!body) return;
+    var ms=[].filter.call(body.querySelectorAll('.msg'), function(m){ return m.querySelector('.em-link') && /face retouch/i.test(m.textContent); });
+    var m=ms[ms.length-1]; if (!m || m.dataset.try) return;
+    var lr=lastRun && lastRun(); if (!lr || lr.status!=='done') return;
+    m.dataset.try='1';
+    var after=m, n=m.nextElementSibling; while (n && (n.classList.contains('fb-out') || n.classList.contains('inline-next'))){ if (n.classList.contains('inline-next')) n.style.display='none'; after=n; n=n.nextElementSibling; }
+    var d=document.createElement('div'); d.className='try-these';
+    d.innerHTML='<p>Try these...</p><div class="tl"></div>';
+    ITEMS.forEach(function(t){ var b=document.createElement('button'); b.textContent=t; b.onclick=function(){ if (S.busy) return; d.classList.add('used'); send(t); }; d.querySelector('.tl').appendChild(b); });
+    after.after(d); if (typeof scrollBody==='function') scrollBody();
+  }
+  new MutationObserver(function(){ add(); }).observe(document.body,{childList:true,subtree:true});
 })();
 </script>
 </body>
