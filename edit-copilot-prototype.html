@@ -13,7 +13,7 @@
 <script>
 /* v192 — auto-update: compare this page's build with version.json (never cached); reload when a newer build is live.
    Bump YCV_BUILD here AND "build" in version.json together on every release. */
-window.YCV_BUILD='195';
+window.YCV_BUILD='196';
 (function(){
   if (location.protocol==='file:') return;
   function check(){
@@ -1926,6 +1926,7 @@ html body .aj-sl input::-webkit-slider-thumb{position:relative;z-index:2;margin-
 #frame .control-row .cmp-on.show{display:block;}
 #frame .control-row .cmp-on svg{display:block;width:24px;height:24px;}
 #frame .control-row .cmp-on.hold{opacity:.6;} /* v194: enabled = redo blue; held = pressed */
+html body .cr-chip.cr-chip,html body .f-credit.f-credit{cursor:default !important;} /* v196 — credit icon is not a link */
 </style>
 </head>
 <body>
@@ -5057,6 +5058,11 @@ new MutationObserver(function(ms){ ms.forEach(function(m){ m.addedNodes.forEach(
   b.addEventListener('click', function(e){ e.preventDefault(); });
   setInterval(function(){ b.classList.toggle('show', on()); }, 800);
 })();
+/* v196 — credit icon no longer opens the Credits page */
+document.addEventListener('click', function(e){
+  var c=e.target.closest && e.target.closest('.cr-chip,.f-credit');
+  if (c){ e.preventDefault(); e.stopImmediatePropagation(); }
+}, true);
 </script>
 </body>
 </html>

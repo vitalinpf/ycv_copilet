@@ -19,6 +19,11 @@
 - 預覽下方控制列的比較 icon（`bgref ci-cmp`）：任務完成後由灰色變成藍色 `#49C6EF`（v194：與 Redo 啟用時同色 `--accent-icon`）、可點；按住顯示修改前（icon 半透明 60% 表示按下），放開回到修改後
 - Copilot 執行中、Reset 或之後又有其他手動修改時回到灰色不可點
 
+## 0-2. Credit icon 不可點（v196）
+
+- 標題列與 History 等處的 credit icon（coin + 數字）只顯示餘額，點擊不再開啟 Credits 頁，游標也不再顯示為可點
+- 「Get credits >」與 FAQ 問號 icon 維持原本行為
+
 ## 1. 開場 Sheet（Meet Video Copilot）
 
 - 標題 **17px**（v170，原 18px），漸層 `#39D5F4 → #399FF5 (50.48%) → #A38BFF`；隱藏標題旁 logo（v139）
