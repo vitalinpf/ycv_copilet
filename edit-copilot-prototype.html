@@ -13,7 +13,7 @@
 <script>
 /* v192 — auto-update: compare this page's build with version.json (never cached); reload when a newer build is live.
    Bump YCV_BUILD here AND "build" in version.json together on every release. */
-window.YCV_BUILD='192';
+window.YCV_BUILD='193';
 (function(){
   if (location.protocol==='file:') return;
   function check(){
@@ -1920,6 +1920,12 @@ html body .aj-sl input::-webkit-slider-thumb{position:relative;z-index:2;margin-
 .aj-dot{position:absolute;left:50%;top:50%;width:6px;height:6px;transform:translate(-50%,calc(-50% - .5px));pointer-events:none;}
 .aj-room .rt-it .ic{display:flex;align-items:center;justify-content:center;}
 .aj-room .rt-it .ic img{position:static;}
+
+/* v193 — compare icon in the control row (bgref ci-cmp) becomes active after a finished task: hold to see before */
+#frame .control-row .cmp-on{position:absolute;left:228px;top:5px;width:24px;height:24px;padding:0;border:none;background:#16171A;color:#fff;display:none;cursor:pointer;z-index:2;-webkit-tap-highlight-color:transparent;touch-action:none;}
+#frame .control-row .cmp-on.show{display:block;}
+#frame .control-row .cmp-on svg{display:block;width:24px;height:24px;}
+#frame .control-row .cmp-on.hold{color:#49C6EF;}
 </style>
 </head>
 <body>
@@ -5033,6 +5039,21 @@ new MutationObserver(function(ms){ ms.forEach(function(m){ m.addedNodes.forEach(
   document.addEventListener('pointermove', function(e){ if (!drag) return; var dx=e.clientX-x0; if (Math.abs(dx)>4) moved=true; if (moved) list.scrollLeft=s0-dx; });
   document.addEventListener('pointerup', function(){ drag=null; setTimeout(function(){ moved=false; },0); });
   list.addEventListener('click', function(e){ if (moved){ e.stopPropagation(); e.preventDefault(); } }, true);
+})();
+
+/* v193 — enable the control-row compare icon (bgref ci-cmp) once a task is done; press & hold shows the before */
+(function(){
+  var cr=document.querySelector('#frame .control-row'); if (!cr) return;
+  var b=document.createElement('button'); b.className='cmp-on'; b.setAttribute('aria-label','Hold to compare');
+  b.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M9.5 6.5H5.5v11h4"/><path d="M12 4v16" stroke-linecap="round"/><path d="M14.5 6.5h4v11h-4" stroke-dasharray="2.2 1.8"/></svg>';
+  cr.appendChild(b);
+  function on(){ var lr=lastRun(); return !!(lr && lr.status==='done' && HI===lr.histAt && !S.busy); }
+  var _rc=renderCompare; renderCompare=function(){ var r=_rc.apply(this, arguments); b.classList.toggle('show', on()); return r; };
+  function down(e){ e.preventDefault(); if (!on()) return; try{ b.setPointerCapture(e.pointerId); }catch(_){} var lr=lastRun(); S.cmpBase=lr.base; S.comparing=true; b.classList.add('hold'); renderPreview(); renderFxTags(); }
+  function up(){ if (!S.comparing) return; S.comparing=false; b.classList.remove('hold'); renderPreview(); renderFxTags(); }
+  b.addEventListener('pointerdown', down); ['pointerup','pointercancel','lostpointercapture'].forEach(function(ev){ b.addEventListener(ev, up); });
+  b.addEventListener('click', function(e){ e.preventDefault(); });
+  setInterval(function(){ b.classList.toggle('show', on()); }, 800);
 })();
 </script>
 </body>

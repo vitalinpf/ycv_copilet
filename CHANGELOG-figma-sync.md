@@ -14,6 +14,11 @@
 - 加上 no-cache meta
 - **之後每次發佈：`YCV_BUILD` 與 `version.json` 的 build 要一起 +1**
 
+## 0-1. 比較鍵（v193）
+
+- 預覽下方控制列的比較 icon（`bgref ci-cmp`）：任務完成後由灰色變成白色、可點；按住顯示修改前（icon 變藍），放開回到修改後
+- Copilot 執行中、Reset 或之後又有其他手動修改時回到灰色不可點
+
 ## 1. 開場 Sheet（Meet Video Copilot）
 
 - 標題 **17px**（v170，原 18px），漸層 `#39D5F4 → #399FF5 (50.48%) → #A38BFF`；隱藏標題旁 logo（v139）
