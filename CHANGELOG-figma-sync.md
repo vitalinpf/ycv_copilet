@@ -75,6 +75,9 @@
 
 ## 1-6. Demo scenario
 
+- v188 Reset：按下 Reset 一定恢復開場的建議卡片（sug-list）與「Tell me how you’d like to edit your video.」，即使先前點過建議
+- v188 開場三個建議（Warm filter／Boost color／Resize）任一完成後，回覆下方加上「Try these...」：另外兩個建議＋Smooth my skin and even out my skin tone，點擊即繼續對話；其他一般任務則用它的 follow-up 建議
+- v187 Scenario 4（Pick a look）：選了一款妝容後，其他兩款不再變暗停用，往上捲仍可點選改套另一款（選中框移到新選的那款）；聊天中只保留最新一組「Try these...」
 - v186 Scenario 4（Pick a look）：妝容套用完成後，回覆下方加上「Try these...」（Figma 529:14366 樣式）：Make the look more intense／Soften the look for a natural finish／Add a warm filter for a cozy mood，點擊即送出
 - v184 Scenario 5（Unsupported request）：回覆下方加上「Try these...」三個建議（Figma 529:14366），可直接點擊送出
 - v184 Scenario 3（Follow-up request）：無法對應的回覆改為「I couldn’t match that to an edit yet. Try one of these:」，下方「Apply auto face retouch」「Recommend Korean-style makeup look」為可點擊按鈕（Figma 529:14369 樣式）
