@@ -7,6 +7,28 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#000000">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<script>
+/* v192 — auto-update: compare this page's build with version.json (never cached); reload when a newer build is live.
+   Bump YCV_BUILD here AND "build" in version.json together on every release. */
+window.YCV_BUILD='192';
+(function(){
+  if (location.protocol==='file:') return;
+  function check(){
+    fetch('version.json?t='+Date.now(), {cache:'no-store'}).then(function(r){ return r.ok ? r.json() : null; }).then(function(j){
+      if (!j || !j.build || j.build===window.YCV_BUILD) return;
+      var k='ycv-reloaded-'+j.build; try{ if (sessionStorage.getItem(k)) return; sessionStorage.setItem(k,'1'); }catch(_){}
+      location.replace(location.pathname+'?v='+encodeURIComponent(j.build)+location.hash);
+    }).catch(function(){});
+  }
+  check();
+  document.addEventListener('visibilitychange', function(){ if (document.visibilityState==='visible') check(); });
+  window.addEventListener('pageshow', function(e){ if (e.persisted) check(); });
+  setInterval(check, 5*60*1000);
+})();
+</script>
 <title>YCV — Edit Copilot</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+TC:wght@500;700;900&display=swap');

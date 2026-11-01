@@ -7,6 +7,13 @@
 
 ---
 
+## 0. 自動更新（v192）
+
+- 新增 `version.json`（`{"build":"192"}`），頁面內 `window.YCV_BUILD='192'`
+- 頁面開啟、回到前景、每 5 分鐘會讀一次 `version.json`（不走快取）；版本號不同就自動以 `?v=新版本` 重新載入（同一版本只重載一次，避免無限重載）
+- 加上 no-cache meta
+- **之後每次發佈：`YCV_BUILD` 與 `version.json` 的 build 要一起 +1**
+
 ## 1. 開場 Sheet（Meet Video Copilot）
 
 - 標題 **17px**（v170，原 18px），漸層 `#39D5F4 → #399FF5 (50.48%) → #A38BFF`；隱藏標題旁 logo（v139）
