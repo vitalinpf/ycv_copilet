@@ -75,6 +75,7 @@
 
 ## 1-6. Demo scenario
 
+- v189「Try these...」區塊 padding 改為 `6px 16px 10px 16px`
 - v188 Reset：按下 Reset 一定恢復開場的建議卡片（sug-list）與「Tell me how you’d like to edit your video.」，即使先前點過建議
 - v188 開場三個建議（Warm filter／Boost color／Resize）任一完成後，回覆下方加上「Try these...」：另外兩個建議＋Smooth my skin and even out my skin tone，點擊即繼續對話；其他一般任務則用它的 follow-up 建議
 - v187 Scenario 4（Pick a look）：選了一款妝容後，其他兩款不再變暗停用，往上捲仍可點選改套另一款（選中框移到新選的那款）；聊天中只保留最新一組「Try these...」
