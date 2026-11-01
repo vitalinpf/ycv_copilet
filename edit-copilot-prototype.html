@@ -1884,6 +1884,20 @@ html body #cp-sheet.vs-speak .in-row>#vs-stop,html body #cp-sheet.vs-trans .in-r
 
 /* v187 — after picking a look the other looks stay tappable (user may scroll up and try them) */
 html body #cp-body .lookpick.picked .lk:not(.on){opacity:1 !important;pointer-events:auto !important;}
+
+/* v190 — Adjust feature room (Figma 537:20399) */
+.aj-room{display:none;flex-shrink:0;flex-direction:column;background:var(--bg);padding:8px 0 30px;}
+#frame.aj-open .aj-room{display:flex;}
+#frame.aj-open #tool-row,#frame.aj-open #mode-tabs,#frame.aj-open .f-chip,#frame.aj-open #fb-chip{display:none !important;}
+.aj-room .ll-cats{justify-content:center;}
+.aj-trk{position:relative;display:block;width:168px;height:16px;}
+html body .aj-sl .aj-trk input{display:block;width:168px;--a:50%;--b:50%;}
+html body .aj-sl input::-webkit-slider-runnable-track{height:2px;border-radius:4px;background:linear-gradient(90deg,#484848 var(--a),#49C6EF var(--a),#49C6EF var(--b),#484848 var(--b));}
+html body .aj-sl input::-moz-range-track{height:2px;border-radius:4px;background:linear-gradient(90deg,#484848 var(--a),#49C6EF var(--a),#49C6EF var(--b),#484848 var(--b));}
+html body .aj-sl input::-webkit-slider-thumb{position:relative;z-index:2;margin-top:-7px;}
+.aj-dot{position:absolute;left:50%;top:50%;width:6px;height:6px;transform:translate(-50%,calc(-50% - .5px));pointer-events:none;}
+.aj-room .rt-it .ic{display:flex;align-items:center;justify-content:center;}
+.aj-room .rt-it .ic img{position:static;}
 </style>
 </head>
 <body>
@@ -1998,6 +2012,12 @@ html body #cp-body .lookpick.picked .lk:not(.on){opacity:1 !important;pointer-ev
   <div class="rt-room" id="rt-room" aria-label="Retouch">
     <div class="ll-sl"><input type="range" id="rt-range" min="0" max="100" step="1" value="50" aria-label="Strength"><output id="rt-out">50</output></div>
     <div class="rt-row"><div class="rt-back"><button id="rt-back" aria-label="Back"><img src="assets/icons/retouch/back.svg" alt="" width="16" height="26"></button></div><div class="rt-list" id="rt-list"></div></div>
+  </div>
+  <!-- v190 — Adjust feature room (Edit More after contrast / saturation), Figma 537:20399 -->
+  <div class="aj-room" id="aj-room" aria-label="Adjust">
+    <div class="ll-sl aj-sl"><span class="aj-trk"><input type="range" id="aj-range" min="-50" max="50" step="1" value="0" aria-label="Strength"><img class="aj-dot" src="assets/icons/adjust/center-dot.svg" alt=""></span><output id="aj-out">0</output></div>
+    <div class="ll-tabs"><button class="ll-none" id="aj-none" aria-label="Reset adjustments"><img src="assets/icons/adjust/none.svg" alt="" width="18" height="18"></button><div class="ll-cats" id="aj-cats"></div></div>
+    <div class="rt-row"><div class="rt-back"><button id="aj-back" aria-label="Back"><img src="assets/icons/adjust/back.svg" alt="" width="16" height="26"></button></div><div class="rt-list" id="aj-list"></div></div>
   </div>
   <!-- Hand-off: fine-tune one Copilot change in its tool -->
   <div class="adj-panel" id="adj-panel">
@@ -4946,6 +4966,51 @@ new MutationObserver(function(ms){ ms.forEach(function(m){ m.addedNodes.forEach(
     labels.slice(0,3).forEach(function(t){ var b=document.createElement('button'); b.textContent=t; b.onclick=function(){ if (S.busy) return; d.classList.add('used'); send(MAP[t]||t); }; d.querySelector('.tl').appendChild(b); });
     after.after(d); if (typeof scrollBody==='function') scrollBody();
   }).observe(document.body,{childList:true,subtree:true});
+})();
+
+/* v190 — Adjust feature room: Edit More after a contrast / saturation edit (Figma 537:20399) */
+(function(){
+  var IC=function(n){ return '<img src="assets/icons/adjust/'+n+'.svg" alt="">'; };
+  var TABS={
+    Overall:[{n:'Brightness',k:'bright',ic:'brightness'},{n:'Contrast',k:'contrast',ic:'contrast'},{n:'Exposure',ic:'exposure'},{n:'Sharpen',ic:'sharpen'},{n:'Light',ic:'light'},{n:'Dark',ic:'dark'},{n:'Highlights',ic:'highlights'},{n:'Shadows',ic:'shadows'},{n:'Temperature',ic:'temperature'},{n:'Tint',ic:'tint'}],
+    Portrait:[{n:'Radiance',ic:'brightness'},{n:'Vibrance',k:'sat',ic:'saturation'},{n:'Detail',ic:'sharpen'},{n:'Portrait Light',ic:'light'},{n:'Contrast',id:'p-contrast',ic:'contrast'}],
+    Background:[{n:'Color Level',id:'b-color',ic:'saturation'},{n:'Blur',ic:'blur'},{n:'Prominence',ic:'contrast'}]
+  };
+  var room=$('aj-room'), frame=$('frame'), cats=$('aj-cats'), list=$('aj-list'), rg=$('aj-range'), out=$('aj-out'), tab='Overall', cur=0, V={};
+  function key(t){ return t.id||t.n; }
+  Object.keys(TABS).forEach(function(n){ var b=document.createElement('button'); b.textContent=n; b.onclick=function(){ showTab(n, 0); }; cats.appendChild(b); });
+  function setV(v){ rg.value=v; out.textContent=v; var p=(v+50); rg.style.setProperty('--a', Math.min(50,p)+'%'); rg.style.setProperty('--b', Math.max(50,p)+'%'); }
+  function adjOps(){ for (var i=RUNS.length-1;i>=0;i--){ var r=RUNS[i]; if (r.status==='done' && r.ops.some(function(o){ return /^(bright|contrast|sat)$/.test(o.kind); })) return r.ops; } return []; }
+  function showTab(n, i){ tab=n; [].forEach.call(cats.children, function(b){ b.classList.toggle('on', b.textContent===n); });
+    list.innerHTML=''; TABS[n].forEach(function(t,j){ var b=document.createElement('button'); b.className='rt-it'; b.setAttribute('aria-label',t.n);
+      b.innerHTML='<span class="ic">'+(t.ic==='blur' ? '<img src="assets/icons/retouch/smoother@4x.png" alt="" style="width:26px;height:26px">' : IC(t.ic))+'</span><span class="lb">'+esc(t.n)+'</span>';
+      b.onclick=function(){ sel(j); }; list.appendChild(b); });
+    list.scrollLeft=0; sel(i||0); }
+  function sel(i){ cur=i; [].forEach.call(list.children, function(b,j){ b.classList.toggle('on', j===i); }); setV(V[key(TABS[tab][i])]||0);
+    var b=list.children[i]; if (b && (b.offsetLeft+b.offsetWidth > list.scrollLeft+list.clientWidth)) list.scrollLeft=b.offsetLeft-60; }
+  rg.oninput=function(){ var t=TABS[tab][cur], v=+rg.value; V[key(t)]=v; setV(v);
+    if (t.k){ P.adj[t.k]=v; adjOps().forEach(function(o){ if (o.kind===t.k){ o.v=v; o.on=v!==0; } }); renderPreview(); if (typeof renderFxTags==='function') renderFxTags(); } };
+  $('aj-none').onclick=function(){ V={}; ['bright','contrast','sat'].forEach(function(k){ P.adj[k]=0; }); adjOps().forEach(function(o){ if (/^(bright|contrast|sat)$/.test(o.kind)) o.on=false; }); setV(0); renderPreview(); if (typeof renderFxTags==='function') renderFxTags(); };
+  window.openAdjustRoom=function(){
+    if (typeof closeLookLobby==='function') closeLookLobby(); if (typeof closeRetouchRoom==='function') closeRetouchRoom();
+    V={ Brightness:P.adj.bright||0, Contrast:P.adj.contrast||0, Vibrance:P.adj.sat||0 };
+    var ops=adjOps(), first=ops.filter(function(o){ return o.on!==false && /^(bright|contrast|sat)$/.test(o.kind); }).map(function(o){ return o.kind; });
+    var k=first.indexOf('contrast')>=0 ? 'contrast' : first[0] || 'contrast';
+    frame.classList.add('aj-open');
+    if (k==='sat') showTab('Portrait', 1); else showTab('Overall', k==='bright' ? 0 : 1);
+    requestAnimationFrame(renderPreview);
+  };
+  window.closeAdjustRoom=function(){ if (!frame.classList.contains('aj-open')) return; frame.classList.remove('aj-open'); requestAnimationFrame(renderPreview); };
+  $('aj-back').onclick=closeAdjustRoom;
+  var _aem=window.afterEditMore; window.afterEditMore=function(em){ var m=em.closest('.msg'); if (m && /contrast|saturation|brightness/i.test(m.textContent) && !/face retouch| look /i.test(m.textContent)) return openAdjustRoom(); if (_aem) _aem(em); };
+  ['openLookLobby','openRetouchRoom'].forEach(function(f){ var o=window[f]; if (o) window[f]=function(){ closeAdjustRoom(); return o.apply(this, arguments); }; });
+  var _fr=fullReset; fullReset=function(){ closeAdjustRoom(); return _fr.apply(this, arguments); };
+  document.addEventListener('click', function(e){ if (e.target.closest && e.target.closest('.demo-btn')) closeAdjustRoom(); }, true);
+  var x0=0, s0=0, drag=null, moved=false;
+  list.addEventListener('pointerdown', function(e){ if (e.pointerType!=='mouse') return; drag=list; x0=e.clientX; s0=list.scrollLeft; moved=false; });
+  document.addEventListener('pointermove', function(e){ if (!drag) return; var dx=e.clientX-x0; if (Math.abs(dx)>4) moved=true; if (moved) list.scrollLeft=s0-dx; });
+  document.addEventListener('pointerup', function(){ drag=null; setTimeout(function(){ moved=false; },0); });
+  list.addEventListener('click', function(e){ if (moved){ e.stopPropagation(); e.preventDefault(); } }, true);
 })();
 </script>
 </body>

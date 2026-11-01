@@ -66,6 +66,17 @@
   - 左側「‹」返回一般工具列
 - Icon：Smoother、Face Lift、Smile、Face Smoother、Brighten、皇冠由 Figma 原始截圖（1290px）裁出 4× PNG；Concealer、Eye Whiten、Eye Bag Removal、Lip Plumper 用元件 SVG；Teeth Whitener（使用者提供 SVG）、Eye Sparkle、Lip Wrinkle（Figma 515:6521 匯出 SVG）於 v184 換成正式 icon
 
+## 1-4b. Adjust feature room（v190，Figma 537:20399）
+
+- 「Boost color and contrast」（對比＋飽和度）等調整類任務完成後，點回覆的「Edit More ›」→ 關掉聊天視窗，底部換成 **Adjust 面板**
+- 分頁 Overall／Portrait／Background（樣式同 Looks 面板）；左側「⊘」一鍵歸零
+  - Overall：Brightness、Contrast、Exposure、Sharpen、Light、Dark、Highlights、Shadows、Temperature、Tint
+  - Portrait：Radiance、Vibrance、Detail、Portrait Light、Contrast
+  - Background：Color Level、Blur、Prominence
+- 雙向滑桿（-50～50，中間圓點為 0，藍色從中心往兩側延伸），帶入 Copilot 套用的數值；開啟時預設選 Overall › Contrast
+- Brightness、Contrast（Overall）、Vibrance（=飽和度）拖動會即時更新預覽；其他工具僅記錄數值
+- 左側「‹」返回一般工具列
+
 ## 1-5. IAP 頁（v183）
 
 - 所有「Get credits／Get Credits」（Scenario 7 Not enough credits 的聊天連結、Credits 頁按鈕）→ 關掉聊天視窗，開啟 IAP 頁（Figma 531:25655，ycv1_59_iap_standard／_pro 畫面圖）
@@ -185,6 +196,7 @@
 | `retouch/*@4x.png`、`retouch/*.svg` | Retouch 面板工具 icon、皇冠、返回鍵（Figma 515:3524／515:6521） |
 | `retouch/teeth-whitener.svg`、`retouch/eye-sparkle.svg`、`retouch/lip-wrinkle.svg` | v184 新增：Teeth Whitener、Eye Sparkle、Lip Wrinkle 正式 icon |
 | `../videos/iap-banner.mp4` | v185 新增：IAP 頁頂部 banner 影片 |
+| `adjust/*.svg` | v190 新增：Adjust 面板工具 icon、返回鍵、⊘、滑桿圓點（Figma 537:20399） |
 | `../images/img-iap-standard.png`、`../images/img-iap-pro.png` | IAP 頁畫面（Figma 531:25655） |
 | `icon-fab-video-white.svg` | FAB 白色 icon |
 | `icon-cursor-brightblue.svg` | FAB processing chip 旋轉 icon |
