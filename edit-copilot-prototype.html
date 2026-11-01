@@ -13,7 +13,7 @@
 <script>
 /* v192 — auto-update: compare this page's build with version.json (never cached); reload when a newer build is live.
    Bump YCV_BUILD here AND "build" in version.json together on every release. */
-window.YCV_BUILD='193';
+window.YCV_BUILD='195';
 (function(){
   if (location.protocol==='file:') return;
   function check(){
@@ -1863,7 +1863,7 @@ html body .ll-sl input::-moz-range-track{background:linear-gradient(90deg,#49C6E
 #cp-body .try-these button{padding:10px;border:none;border-radius:10px;background:rgba(255,255,255,.06);color:#fff;font-size:11px;line-height:15px;letter-spacing:.2px;text-align:left;white-space:nowrap;cursor:pointer;}
 #cp-body .try-these.used{display:none;}
 /* v183 — demo scenario 5 (Edit More) hidden */
-.demo-btn[data-k=room]{display:none !important;}
+.demo-btn[data-k=room],.demo-sheet .it[data-k=room]{display:none !important;}
 
 /* v184 — suggestion buttons right under a reply (no header) */
 html body #cp-body .try-these.no-head{margin-top:-2px;}
@@ -1922,10 +1922,10 @@ html body .aj-sl input::-webkit-slider-thumb{position:relative;z-index:2;margin-
 .aj-room .rt-it .ic img{position:static;}
 
 /* v193 — compare icon in the control row (bgref ci-cmp) becomes active after a finished task: hold to see before */
-#frame .control-row .cmp-on{position:absolute;left:228px;top:5px;width:24px;height:24px;padding:0;border:none;background:#16171A;color:#fff;display:none;cursor:pointer;z-index:2;-webkit-tap-highlight-color:transparent;touch-action:none;}
+#frame .control-row .cmp-on{position:absolute;left:228px;top:5px;width:24px;height:24px;padding:0;border:none;background:#16171A;color:var(--accent-icon,#49C6EF);display:none;cursor:pointer;z-index:2;-webkit-tap-highlight-color:transparent;touch-action:none;}
 #frame .control-row .cmp-on.show{display:block;}
 #frame .control-row .cmp-on svg{display:block;width:24px;height:24px;}
-#frame .control-row .cmp-on.hold{color:#49C6EF;}
+#frame .control-row .cmp-on.hold{opacity:.6;} /* v194: enabled = redo blue; held = pressed */
 </style>
 </head>
 <body>
@@ -4817,6 +4817,8 @@ document.addEventListener('click',function(e){var em=e.target.closest('#cp-body 
 
 /* v183 — hide demo scenario 5 (Edit More) and renumber the rest */
 (function(){ var n=0; document.querySelectorAll('.demo-btn:not(.reset)').forEach(function(b){ if (b.dataset.k==='room') return; var s=b.querySelector('.n'); if (s) s.textContent=++n; }); })();
+/* v195 — same for the phone demo sheet */
+(function(){ var n=0; document.querySelectorAll('.demo-sheet .it').forEach(function(b){ if (b.dataset.k==='room') return; var s=b.querySelector('.n'); if (s) s.textContent=++n; }); })();
 
 /* v183 — Retouch feature room: Edit More after auto face retouch closes the chat and opens it */
 (function(){

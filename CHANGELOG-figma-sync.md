@@ -14,9 +14,9 @@
 - 加上 no-cache meta
 - **之後每次發佈：`YCV_BUILD` 與 `version.json` 的 build 要一起 +1**
 
-## 0-1. 比較鍵（v193）
+## 0-1. 比較鍵（v193，v194 改色）
 
-- 預覽下方控制列的比較 icon（`bgref ci-cmp`）：任務完成後由灰色變成白色、可點；按住顯示修改前（icon 變藍），放開回到修改後
+- 預覽下方控制列的比較 icon（`bgref ci-cmp`）：任務完成後由灰色變成藍色 `#49C6EF`（v194：與 Redo 啟用時同色 `--accent-icon`）、可點；按住顯示修改前（icon 半透明 60% 表示按下），放開回到修改後
 - Copilot 執行中、Reset 或之後又有其他手動修改時回到灰色不可點
 
 ## 1. 開場 Sheet（Meet Video Copilot）
@@ -98,6 +98,7 @@
 
 ## 1-6. Demo scenario
 
+- v195 手機版「Demo scenario」選單同步桌面版：隱藏「Edit More」，重新編號為 1–6（Chat／Interrupt a run／Follow-up request／Pick a look／Unsupported request／Not enough credits）
 - v191 建議區塊標題「Try these...」改為「Keep exploring...」（所有情境）
 - v189「Try these...」區塊 padding 改為 `6px 16px 10px 16px`
 - v188 Reset：按下 Reset 一定恢復開場的建議卡片（sug-list）與「Tell me how you’d like to edit your video.」，即使先前點過建議
