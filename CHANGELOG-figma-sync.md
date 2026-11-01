@@ -75,11 +75,20 @@
 
 ## 1-6. Demo scenario
 
+- v186 Scenario 4（Pick a look）：妝容套用完成後，回覆下方加上「Try these...」（Figma 529:14366 樣式）：Make the look more intense／Soften the look for a natural finish／Add a warm filter for a cozy mood，點擊即送出
 - v184 Scenario 5（Unsupported request）：回覆下方加上「Try these...」三個建議（Figma 529:14366），可直接點擊送出
 - v184 Scenario 3（Follow-up request）：無法對應的回覆改為「I couldn’t match that to an edit yet. Try one of these:」，下方「Apply auto face retouch」「Recommend Korean-style makeup look」為可點擊按鈕（Figma 529:14369 樣式）
 - v184 Scenario 6（Not enough credits）文案：This request needs 8 credits (5 for the request + 3 for the edits), but you have 6. Get credits >（移除「or see pricing」，「Get credits >」開啟 IAP 頁）
 
 - 隱藏 Scenario 5「Edit More」（v183），其餘重新編號：Unsupported request → 5、Not enough credits → 6
+
+## 1-7. 輸入列狀態（v186，Figma 536:19442）
+
+- 輸入框：底色 `rgba(73,198,239,.04)`、框線 .6px `#3D5C66`、圓角 16；送出鈕藍底 `#49C6EF`、深色箭頭
+- 點麥克風 → **Speaking**：框內顯示白色 50% 波形動畫、麥克風半透明，右側換成藍色停止鈕（■）
+- 按停止（或 4 秒自動）→ **Transcribing…**：轉圈 icon＋灰字，右側仍是停止鈕；約 1.3 秒後文字填入輸入框，出現送出鈕（Typing 狀態）
+- 說太短（< 0.9 秒就停）→ **Didn’t catch that — try again**：警告 icon＋白字、麥克風、右側 History 鈕；2.6 秒後或開始打字即恢復
+- 取代原本「按住說話」的方式
 
 ## 2. Credit icon
 

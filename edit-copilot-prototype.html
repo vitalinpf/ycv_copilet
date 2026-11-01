@@ -1857,6 +1857,30 @@ html body #cp-body .try-these.no-head{margin-top:-2px;}
 .iap-page[data-p=standard] .iap-hd .pill span[data-p=standard]{background:linear-gradient(90deg,#3FD6EA,#0DB3D8);color:#0D1B22;font-weight:700;box-shadow:inset 0 0 0 1px rgba(255,255,255,.35);}
 .iap-page[data-p=pro] .iap-hd .pill span[data-p=pro]{background:linear-gradient(90deg,#EFAE14,#EC8006);color:#1C1408;font-weight:700;box-shadow:inset 0 0 0 1px rgba(255,255,255,.35);}
 .iap-page .iap-back,.iap-page .iap-tab{z-index:2;}
+
+/* v186 — input field states (Figma 536:19442): typing / speaking / transcribing / didn't catch */
+html body #cp-sheet #in-box{background:rgba(73,198,239,.04) !important;border:.6px solid #3D5C66 !important;border-radius:16px !important;}
+html body #cp-sheet .in-row>#send-btn{border:.6px solid #3D5C66 !important;color:#1A1A1F !important;}
+html body #cp-sheet #in-wave{display:none !important;}
+#cp-sheet .vs-wave,#cp-sheet .vs-txt{display:none;flex:1;min-width:0;height:24px;align-items:center;overflow:hidden;}
+#cp-sheet .vs-wave{gap:1.6px;}
+#cp-sheet .vs-wave i{flex:none;width:2px;border-radius:1px;background:rgba(255,255,255,.5);animation:vsbar .9s ease-in-out infinite alternate;}
+@keyframes vsbar{from{transform:scaleY(.45);}to{transform:scaleY(1);}}
+#cp-sheet .vs-txt{gap:6px;font-size:12px;letter-spacing:.2px;color:#fff;white-space:nowrap;}
+#cp-sheet .vs-txt .sp{flex:none;width:12px;height:12px;border-radius:50%;border:1.5px solid rgba(73,198,239,.25);border-top-color:#49C6EF;animation:vsspin .8s linear infinite;}
+@keyframes vsspin{to{transform:rotate(360deg);}}
+#cp-sheet.vs-trans .vs-txt{color:#96B0B9;}
+#cp-sheet .vs-txt svg{flex:none;width:14px;height:14px;}
+html body #cp-sheet .in-row>#vs-stop{display:none;flex:none;width:40px;height:40px;padding:0;box-sizing:border-box;border-radius:45px;border:.6px solid #3D5C66;background:#49C6EF;align-items:center;justify-content:center;cursor:pointer;}
+#cp-sheet #vs-stop i{width:11px;height:11px;border-radius:2px;background:#1A1A1F;}
+html body #cp-sheet.vs-speak #cp-input,html body #cp-sheet.vs-trans #cp-input,html body #cp-sheet.vs-miss #cp-input{display:none !important;}
+#cp-sheet.vs-speak .vs-wave{display:flex;}
+#cp-sheet.vs-trans .vs-txt,#cp-sheet.vs-miss .vs-txt{display:flex;}
+html body #cp-sheet.vs-speak #mic-btn{opacity:.5;}
+html body #cp-sheet.vs-trans #mic-btn{display:none !important;}
+html body #cp-sheet.vs-speak .in-row>#send-btn,html body #cp-sheet.vs-trans .in-row>#send-btn,html body #cp-sheet.vs-speak .in-row>#hist-in,html body #cp-sheet.vs-trans .in-row>#hist-in,html body #cp-sheet.vs-miss .in-row>#send-btn{display:none !important;}
+html body #cp-sheet.vs-miss .in-row>#hist-in{display:flex !important;}
+html body #cp-sheet.vs-speak .in-row>#vs-stop,html body #cp-sheet.vs-trans .in-row>#vs-stop{display:flex;}
 </style>
 </head>
 <body>
@@ -4843,6 +4867,50 @@ document.addEventListener('click',function(e){var em=e.target.closest('#cp-body 
   var _o=openIAP; openIAP=window.openIAP=function(){ var r=_o.apply(this, arguments); pg.dataset.p='standard'; try{ v.currentTime=0; v.play(); }catch(_){} return r; };
   var _c=closeIAP; closeIAP=window.closeIAP=function(){ try{ v.pause(); }catch(_){} return _c.apply(this, arguments); };
   pg.querySelector('.iap-back').addEventListener('click', function(){ try{ v.pause(); }catch(_){} });
+})();
+
+/* v186 — Pick a look: "Try these..." follow-ups after the look is applied (Figma 529:14366) */
+(function(){
+  function cap(t){ return t.charAt(0).toUpperCase()+t.slice(1); }
+  new MutationObserver(function(){
+    var body=$('cp-body'); if (!body) return;
+    var ms=[].filter.call(body.querySelectorAll('.msg.ai.result'), function(m){ return / look to your video/i.test(m.textContent); });
+    var m=ms[ms.length-1]; if (!m || m.dataset.try) return;
+    var lr=lastRun && lastRun(); if (!lr || lr.status!=='done') return;
+    var nx=m.nextElementSibling, after=m;
+    while (nx && !nx.classList.contains('inline-next') && (nx.classList.contains('fb-out'))){ after=nx; nx=nx.nextElementSibling; }
+    if (!nx || !nx.classList.contains('inline-next')) return;
+    var lks=[].slice.call(nx.querySelectorAll('.lk')); if (!lks.length) return;
+    m.dataset.try='1';
+    while (after.nextElementSibling && (after.nextElementSibling.classList.contains('inline-next') || after.nextElementSibling.classList.contains('fb-out'))) after=after.nextElementSibling;
+    var d=document.createElement('div'); d.className='try-these'; d.innerHTML='<p>Try these...</p><div class="tl"></div>';
+    lks.forEach(function(a){ var b=document.createElement('button'); b.textContent=cap(a.textContent); b.onclick=function(){ if (S.busy) return; d.classList.add('used'); send(b.textContent); }; d.querySelector('.tl').appendChild(b); });
+    after.after(d); if (typeof scrollBody==='function') scrollBody();
+  }).observe(document.body,{childList:true,subtree:true});
+})();
+
+/* v186 — voice input states (Figma 536:19442): tap mic → speaking → stop → transcribing → text in field; too short → "Didn't catch that" */
+(function(){
+  var sh=$('cp-sheet'), box=$('in-box'), old=$('mic-btn'), inp=$('cp-input'); if (!sh || !box || !old) return;
+  var mic=old.cloneNode(true); old.replaceWith(mic);   // drop the old hold-to-speak listeners
+  var wave=document.createElement('div'); wave.className='vs-wave'; var w=''; for (var i=0;i<78;i++){ var h=[4,7,11,16,12,6,9,14,18,10,5,8,13,17,11,6,4,9,15,12,7,5,10,14,8,4][i%26]; w+='<i style="height:'+h+'px;animation-delay:'+((i*0.07)%0.9).toFixed(2)+'s"></i>'; } wave.innerHTML=w;
+  var txt=document.createElement('div'); txt.className='vs-txt';
+  box.insertBefore(wave, mic); box.insertBefore(txt, mic);
+  var stop=document.createElement('button'); stop.id='vs-stop'; stop.setAttribute('aria-label','Stop'); stop.innerHTML='<i></i>';
+  $('send-btn').after(stop);
+  var WARN='<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.3 3.9L1.8 18a2 2 0 001.7 3h17a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"/><path d="M12 9v4M12 17h.01"/></svg>';
+  var t0=0, T=null;
+  function set(st){ sh.classList.remove('vs-speak','vs-trans','vs-miss'); if (st) sh.classList.add('vs-'+st); $('cp-fab').classList.toggle('listening', st==='speak'); }
+  function speak(){ if (S.busy){ toast('Copilot is still running'); return; } clearTimeout(T); set('speak'); t0=Date.now(); T=setTimeout(finish, 4000); }
+  function finish(){ clearTimeout(T);
+    if (Date.now()-t0<900){ txt.innerHTML=WARN+'<span>Didn’t catch that — try again</span>'; set('miss'); T=setTimeout(function(){ set(null); }, 2600); return; }
+    txt.innerHTML='<span class="sp"></span><span>Transcribing…</span>'; set('trans');
+    T=setTimeout(function(){ set(null); inp.value=VOICE[voiceI++%VOICE.length]; inp.dispatchEvent(new Event('input',{bubbles:true})); if (typeof renderSend==='function') renderSend(); inp.focus(); }, 1300);
+  }
+  mic.addEventListener('click', function(e){ e.preventDefault(); e.stopPropagation(); if (sh.classList.contains('vs-speak')) finish(); else speak(); });
+  stop.addEventListener('click', function(e){ e.preventDefault(); if (sh.classList.contains('vs-speak')) finish(); else { clearTimeout(T); set(null); } });
+  inp.addEventListener('input', function(){ if (sh.classList.contains('vs-miss')){ clearTimeout(T); set(null); } });
+  var _fr=fullReset; fullReset=function(){ clearTimeout(T); set(null); return _fr.apply(this, arguments); };
 })();
 </script>
 </body>
