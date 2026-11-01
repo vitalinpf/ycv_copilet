@@ -1845,6 +1845,18 @@ html body .ll-sl input::-moz-range-track{background:linear-gradient(90deg,#49C6E
 
 /* v184 — suggestion buttons right under a reply (no header) */
 html body #cp-body .try-these.no-head{margin-top:-2px;}
+
+/* v185 — IAP top banner video (YCV Plus/Pro, 4 features) with live header on top */
+.iap-page{container-type:size;}
+.iap-page .iap-vid{position:absolute;left:0;top:0;width:100%;height:38.95%;object-fit:cover;display:block;background:#16171A;}
+.iap-page .iap-hd{position:absolute;inset:0;pointer-events:none;}
+.iap-page .iap-hd .status-bar{display:flex !important;background:none;position:absolute;z-index:1;}
+.iap-page .iap-hd .bk{position:absolute;left:4.65%;top:6.55%;width:8.37cqw;height:8.37cqw;border-radius:50%;background:rgba(28,33,42,.8);display:flex;align-items:center;justify-content:center;}
+.iap-page .iap-hd .pill{position:absolute;left:22.1%;top:6.55%;width:55.8%;height:4.08%;border-radius:999px;background:rgba(30,32,38,.85);display:flex;}
+.iap-page .iap-hd .pill span{flex:1;display:flex;align-items:center;justify-content:center;border-radius:999px;font-size:3.9cqw;font-weight:500;color:#C9CDD3;letter-spacing:.2px;}
+.iap-page[data-p=standard] .iap-hd .pill span[data-p=standard]{background:linear-gradient(90deg,#3FD6EA,#0DB3D8);color:#0D1B22;font-weight:700;box-shadow:inset 0 0 0 1px rgba(255,255,255,.35);}
+.iap-page[data-p=pro] .iap-hd .pill span[data-p=pro]{background:linear-gradient(90deg,#EFAE14,#EC8006);color:#1C1408;font-weight:700;box-shadow:inset 0 0 0 1px rgba(255,255,255,.35);}
+.iap-page .iap-back,.iap-page .iap-tab{z-index:2;}
 </style>
 </head>
 <body>
@@ -4816,6 +4828,21 @@ document.addEventListener('click',function(e){var em=e.target.closest('#cp-body 
     if (/couldn’t match/.test(n.textContent)){ n.textContent='I couldn’t match that to an edit yet.\nTry one of these:'; block(n, NEXT); }
     else block(n, TRY, 'Try these...');
   }); }); }).observe($('cp-body'), {childList:true});
+})();
+
+/* v185 — IAP top banner video; header (status bar, back, Standard/PRO) drawn live on top */
+(function(){
+  var pg=$('iap-page'), img=$('iap-img'); if (!pg) return;
+  var v=document.createElement('video'); v.className='iap-vid'; v.src='assets/videos/iap-banner.mp4';
+  v.muted=true; v.loop=true; v.autoplay=true; v.playsInline=true; v.setAttribute('playsinline',''); v.setAttribute('muted','');
+  var hd=document.createElement('div'); hd.className='iap-hd';
+  var sb=document.querySelector('#frame > .status-bar'); if (sb) hd.appendChild(sb.cloneNode(true));
+  hd.insertAdjacentHTML('beforeend','<span class="bk"><svg width="40%" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></span><span class="pill"><span data-p="standard">Standard</span><span data-p="pro">PRO</span></span>');
+  img.after(v); v.after(hd); pg.dataset.p='standard';
+  pg.querySelectorAll('.iap-tab').forEach(function(t){ t.addEventListener('click', function(){ pg.dataset.p=t.dataset.p; }); });
+  var _o=openIAP; openIAP=window.openIAP=function(){ var r=_o.apply(this, arguments); pg.dataset.p='standard'; try{ v.currentTime=0; v.play(); }catch(_){} return r; };
+  var _c=closeIAP; closeIAP=window.closeIAP=function(){ try{ v.pause(); }catch(_){} return _c.apply(this, arguments); };
+  pg.querySelector('.iap-back').addEventListener('click', function(){ try{ v.pause(); }catch(_){} });
 })();
 </script>
 </body>

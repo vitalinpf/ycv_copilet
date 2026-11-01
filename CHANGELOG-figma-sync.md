@@ -70,6 +70,7 @@
 
 - 所有「Get credits／Get Credits」（Scenario 7 Not enough credits 的聊天連結、Credits 頁按鈕）→ 關掉聊天視窗，開啟 IAP 頁（Figma 531:25655，ycv1_59_iap_standard／_pro 畫面圖）
 - 上方 Standard／PRO 可切換；左上返回鍵 → 回到編輯 lobby
+- v185：頂部 banner 改播影片 `assets/videos/iap-banner.mp4`（YCV Plus/Pro 4 features，600×508，靜音循環自動播放），高度與原圖 banner 相同；狀態列、返回鍵、Standard／PRO 切換列改用 HTML 疊在影片上，切換時選中樣式（Standard 藍、PRO 橘）跟著變
 - v184：PRO 畫面圖整體上移 5px，切換時 Standard／PRO 切換鈕位置固定（以 Standard 為準）
 
 ## 1-6. Demo scenario
@@ -170,6 +171,7 @@
 | `icon-ll-back.svg`、`icon-ll-crown.svg`、`icon-ll-new.svg`、`icon-ll-none.svg` | Looks 面板的返回鍵、皇冠、新項目紅點、不套用（Figma 515:6089） |
 | `retouch/*@4x.png`、`retouch/*.svg` | Retouch 面板工具 icon、皇冠、返回鍵（Figma 515:3524／515:6521） |
 | `retouch/teeth-whitener.svg`、`retouch/eye-sparkle.svg`、`retouch/lip-wrinkle.svg` | v184 新增：Teeth Whitener、Eye Sparkle、Lip Wrinkle 正式 icon |
+| `../videos/iap-banner.mp4` | v185 新增：IAP 頁頂部 banner 影片 |
 | `../images/img-iap-standard.png`、`../images/img-iap-pro.png` | IAP 頁畫面（Figma 531:25655） |
 | `icon-fab-video-white.svg` | FAB 白色 icon |
 | `icon-cursor-brightblue.svg` | FAB processing chip 旋轉 icon |
