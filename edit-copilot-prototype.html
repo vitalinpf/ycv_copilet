@@ -4854,7 +4854,7 @@ document.addEventListener('click',function(e){var em=e.target.closest('#cp-body 
     m.dataset.try='1';
     var after=m, n=m.nextElementSibling; while (n && (n.classList.contains('fb-out') || n.classList.contains('inline-next'))){ if (n.classList.contains('inline-next')) n.style.display='none'; after=n; n=n.nextElementSibling; }
     var d=document.createElement('div'); d.className='try-these';
-    d.innerHTML='<p>Try these...</p><div class="tl"></div>';
+    d.innerHTML='<p>Keep exploring...</p><div class="tl"></div>';
     ITEMS.forEach(function(t){ var b=document.createElement('button'); b.textContent=t; b.onclick=function(){ if (S.busy) return; d.classList.add('used'); send(t); }; d.querySelector('.tl').appendChild(b); });
     after.after(d); if (typeof scrollBody==='function') scrollBody();
   }
@@ -4875,7 +4875,7 @@ document.addEventListener('click',function(e){var em=e.target.closest('#cp-body 
     if (!n.classList || !n.classList.contains('fail-msg') || n.dataset.try) return;
     n.dataset.try='1';
     if (/couldn’t match/.test(n.textContent)){ n.textContent='I couldn’t match that to an edit yet.\nTry one of these:'; block(n, NEXT); }
-    else block(n, TRY, 'Try these...');
+    else block(n, TRY, 'Keep exploring...');
   }); }); }).observe($('cp-body'), {childList:true});
 })();
 
@@ -4908,7 +4908,7 @@ document.addEventListener('click',function(e){var em=e.target.closest('#cp-body 
     var lks=[].slice.call(nx.querySelectorAll('.lk')); if (!lks.length) return;
     m.dataset.try='1';
     while (after.nextElementSibling && (after.nextElementSibling.classList.contains('inline-next') || after.nextElementSibling.classList.contains('fb-out'))) after=after.nextElementSibling;
-    var d=document.createElement('div'); d.className='try-these'; d.innerHTML='<p>Try these...</p><div class="tl"></div>';
+    var d=document.createElement('div'); d.className='try-these'; d.innerHTML='<p>Keep exploring...</p><div class="tl"></div>';
     lks.forEach(function(a){ var b=document.createElement('button'); b.textContent=cap(a.textContent); b.onclick=function(){ if (S.busy) return; d.classList.add('used'); send(b.textContent); }; d.querySelector('.tl').appendChild(b); });
     after.after(d); if (typeof scrollBody==='function') scrollBody();
   }).observe(document.body,{childList:true,subtree:true});
@@ -4962,7 +4962,7 @@ new MutationObserver(function(ms){ ms.forEach(function(m){ m.addedNodes.forEach(
     if (hit){ labels=[]; SG.forEach(function(x){ if (x.t!==last && x.l!==last){ labels.push(x.l); MAP[x.l]=x.t; } }); labels.push('Smooth my skin and even out my skin tone'); }
     if (!labels.length) return;
     m.dataset.try='1';
-    var d=document.createElement('div'); d.className='try-these'; d.innerHTML='<p>Try these...</p><div class="tl"></div>';
+    var d=document.createElement('div'); d.className='try-these'; d.innerHTML='<p>Keep exploring...</p><div class="tl"></div>';
     labels.slice(0,3).forEach(function(t){ var b=document.createElement('button'); b.textContent=t; b.onclick=function(){ if (S.busy) return; d.classList.add('used'); send(MAP[t]||t); }; d.querySelector('.tl').appendChild(b); });
     after.after(d); if (typeof scrollBody==='function') scrollBody();
   }).observe(document.body,{childList:true,subtree:true});
