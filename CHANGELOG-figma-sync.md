@@ -94,6 +94,15 @@
 - Brightness、Contrast（Overall）、Vibrance（=飽和度）拖動會即時更新預覽；其他工具僅記錄數值
 - 左側「‹」返回一般工具列
 
+## 1-4c. Filter feature room（v197，Figma 515:7139）
+
+- 套用濾鏡的任務（例如 Add a warm filter）完成後，點「Edit More」會關閉聊天並開啟 Filter room，取代工具列（版型沿用 Looks lobby：強度滑桿＋數值、None 鈕＋分類 tab、返回鈕＋52×60 縮圖列）
+- 縮圖使用 `assets/images/Filter/` 全部 156 張圖，分成 Hot／Warm／Film／Portrait／Nature／Mood／Festive／City & Art 八類；左右滑動縮圖時分類 tab 會跟著切換，點 tab 會跳到該類
+- 進入時自動選中目前的濾鏡（Warm → Warm and Cozy、Cool → Glacier、B&W → Black & White、Vintage → Vintage Feel），強度沿用原本數值
+- 點縮圖即時套用到預覽（依名稱給一個對應色調：暖色、冷色、黑白、底片、暗調等），滑桿調整強度，None 取消濾鏡；任務卡上的濾鏡名稱與數值同步更新
+- 部分縮圖顯示皇冠＋下載 icon（Figma `ico_ycv_badge_crown_o_s`、`btn_ycp_download_update`）
+- 返回鈕、Reset、Demo 情境、開啟其他 feature room 時都會關閉
+
 ## 1-5. IAP 頁（v183）
 
 - 所有「Get credits／Get Credits」（Scenario 7 Not enough credits 的聊天連結、Credits 頁按鈕）→ 關掉聊天視窗，開啟 IAP 頁（Figma 531:25655，ycv1_59_iap_standard／_pro 畫面圖）
@@ -212,6 +221,7 @@
 | `icon-sug2-expansion.svg`、`icon-sug2-play-bg.svg`、`icon-sug2-play-tri.svg` | Resize icon 的 Figma 原始圖層 |
 | `icon-fb-like*.svg`、`icon-fb-dislike*.svg` | Feedback icon；`-dark` 為 chip off（`#1A1A1F`），`-on` 為 on（白） |
 | `icon-ll-back.svg`、`icon-ll-crown.svg`、`icon-ll-new.svg`、`icon-ll-none.svg` | Looks 面板的返回鍵、皇冠、新項目紅點、不套用（Figma 515:6089） |
+| `filter/crown.svg`、`filter/download.svg` | Filter room 縮圖的皇冠與下載 icon（Figma 515:7139，v197） |
 | `retouch/*@4x.png`、`retouch/*.svg` | Retouch 面板工具 icon、皇冠、返回鍵（Figma 515:3524／515:6521） |
 | `retouch/teeth-whitener.svg`、`retouch/eye-sparkle.svg`、`retouch/lip-wrinkle.svg` | v184 新增：Teeth Whitener、Eye Sparkle、Lip Wrinkle 正式 icon |
 | `../videos/iap-banner.mp4` | v185 新增：IAP 頁頂部 banner 影片 |

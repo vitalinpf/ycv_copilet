@@ -13,7 +13,7 @@
 <script>
 /* v192 — auto-update: compare this page's build with version.json (never cached); reload when a newer build is live.
    Bump YCV_BUILD here AND "build" in version.json together on every release. */
-window.YCV_BUILD='196';
+window.YCV_BUILD='197';
 (function(){
   if (location.protocol==='file:') return;
   function check(){
@@ -1927,6 +1927,13 @@ html body .aj-sl input::-webkit-slider-thumb{position:relative;z-index:2;margin-
 #frame .control-row .cmp-on svg{display:block;width:24px;height:24px;}
 #frame .control-row .cmp-on.hold{opacity:.6;} /* v194: enabled = redo blue; held = pressed */
 html body .cr-chip.cr-chip,html body .f-credit.f-credit{cursor:default !important;} /* v196 — credit icon is not a link */
+/* v197 — Filter feature room (reuses the Looks lobby layout, Figma 515:7139) */
+#frame.look-open .fl-lobby{display:none;}
+#frame.fl-open .fl-lobby{display:flex;}
+#frame.fl-open #tool-row,#frame.fl-open #mode-tabs,#frame.fl-open .f-chip,#frame.fl-open #fb-chip{display:none !important;}
+html body .fl-lobby .ll-it img:first-child{object-position:50% 20%;}
+html body .fl-lobby .ll-it .cr{display:block;}
+html body .fl-lobby .ll-it .dl{position:absolute;left:2px;bottom:12px;width:12px;height:12px;z-index:3;pointer-events:none;}
 </style>
 </head>
 <body>
@@ -2036,6 +2043,12 @@ html body .cr-chip.cr-chip,html body .f-credit.f-credit{cursor:default !importan
     <div class="ll-sl"><input type="range" id="ll-range" min="0" max="100" step="1" value="60" aria-label="Look strength"><output id="ll-out">60</output></div>
     <div class="ll-tabs"><button class="ll-none" id="ll-none" aria-label="No look"><img src="assets/icons/icon-ll-none.svg" alt="" width="18" height="18"></button><div class="ll-cats" id="ll-cats"></div></div>
     <div class="ll-row"><button class="ll-back" id="ll-back" aria-label="Back"><img src="assets/icons/icon-ll-back.svg" alt="" width="16" height="26"></button><div class="ll-list" id="ll-list"></div></div>
+  </div>
+  <!-- v197 — Filter feature room (Edit More after a filter), Figma 515:7139 -->
+  <div class="look-lobby fl-lobby" id="fl-room" aria-label="Filters">
+    <div class="ll-sl"><input type="range" id="fl-range" min="0" max="100" step="1" value="80" aria-label="Filter strength"><output id="fl-out">80</output></div>
+    <div class="ll-tabs"><button class="ll-none" id="fl-none" aria-label="No filter"><img src="assets/icons/icon-ll-none.svg" alt="" width="18" height="18"></button><div class="ll-cats" id="fl-cats"></div></div>
+    <div class="ll-row"><button class="ll-back" id="fl-back" aria-label="Back"><img src="assets/icons/icon-ll-back.svg" alt="" width="16" height="26"></button><div class="ll-list" id="fl-list"></div></div>
   </div>
   <!-- v183 — Retouch feature room (Edit More after auto face retouch), Figma 515:3524 / 515:6521 -->
   <div class="rt-room" id="rt-room" aria-label="Retouch">
@@ -5063,6 +5076,79 @@ document.addEventListener('click', function(e){
   var c=e.target.closest && e.target.closest('.cr-chip,.f-credit');
   if (c){ e.preventDefault(); e.stopImmediatePropagation(); }
 }, true);
+/* v197 — Filter feature room: Edit More after a filter edit (Figma 515:7139, images from assets/images/Filter) */
+(function(){
+  var NAMES=["Analog Muse","Aquatic","Artistic","Aurora","Autumn Vibes","Beauty","Black & White","Bleached","Breeze","Bright Hues","Bright","Bubble Magic","Bubbly Soda","Café Mellow","Candy Colors","Carnival","Celestial","City Vibes","Clouds","Color Pop","Constellation","Cool Urban","Countdown","Creamy","Creepy","Cyberpunk","Dark Harmony","Dark Side","Dark","Daydream","Dewy Skin","Disco","Dream Doll","Earth Tone","Evergold","Fabulous Fall","Fairy Tale","Fantasy Pastel","Fantasy","Fashion","Festive Flicker","Festive Shine","Film Flair","Film Nostalgia","Film Reel","Film","Filmatic","Flora Flurry","Floral Dreams","Floralicious","Flower Field","Foggy Forest","Food","Foodie","Fuji Flashback","Galaxy","Geometric","Glacier","Glowscape","Gothic Hues","Greenery","Grid","Halloween","Harvest","Hawaii","Hazy Nostalgia","Heart in Bloom","Holiday Magic","Holiday Sparkle","Illusionary","In Love","Jazz","Jolly Palette","Landscape","Light Leak","Light Shadow","Light Spot","Lomo","Love Bloom","Loving Moments","Lush","Lustrous Love","Macaron","Memory","Merry Mood","Metaworld","Mono-Tone","Mood Moments","Mystery","Myth","Natsu Glow","Neo-Minimalist","Neon","New York","Nostalgia","Outdoor Life","Paris","Patterns","Phantom Twilight","Pixel Jive","Prismatic Glow","Provence","Psychedelic 60s","Pure Paradise","Pure","Rainbow","Raindrop","Retro Gray","Retro","Rizzify","Romance","Sakura","Santa Monica","Savory Tones","Scenery","Selfie Sizzle","Shadow Symphony","Shadowlore","Silver Screen","So Fetch!","Soft Pink","Solaris","Sparkle","Spooktacular","Spooky","Spotlight Colors","Spring Floral","Spring Sunshine","Springtide","Springtime","Summer","Sun Dazed","Sunburst","Sunkissed","Sweet Scoop","Swimming Pool","Techno Tint","Tokyo Fusion","Travel","Tropical Heat","Universe","Urban Ambience","VCR Vibes","Vacation","Valentine's","Vibrant Bloom","Vibrant","Vintage Feel","Vintage Film Reel","Warm Amber","Warm Honey","Warm Neutral","Warm and Cozy","White","Winter Aesthetic","Yummy Vibes"];
+  var HOT=['Warm and Cozy','Warm Amber','Black & White','Vintage Feel','Glacier','Soft Pink','Film','Natsu Glow','Fuji Flashback','Dewy Skin','Creamy','Café Mellow'];
+  var RULES=[
+    ['Warm',/warm|autumn|fall|harvest|honey|amber|sun|gold|café|earth|summer|hawaii|tropical|provence|santa|solaris|savory|food|yummy|sweet/i],
+    ['Film',/film|retro|vintage|nostalg|memory|lomo|vcr|analog|fuji|silver|reel|hazy|psyched|leak|bleach|mono|black|white|jazz/i],
+    ['Portrait',/skin|beauty|selfie|pink|doll|creamy|pure|romance|love|heart|macaron|soft|dream|fetch|rizz|fashion|fairy|valentine|bright/i],
+    ['Nature',/flor|flower|bloom|spring|sakura|green|lush|forest|glacier|aquatic|breeze|cloud|rain|landscape|scenery|winter|outdoor|pool|travel|vacation/i],
+    ['Mood',/dark|shadow|creep|spook|gothic|myst|myth|halloween|phantom|neon|cyber|techno|pixel|meta|galaxy|universe|celest|constell|aurora|illusion|mood/i],
+    ['Festive',/holiday|festive|merry|jolly|carnival|countdown|disco|sparkle|candy|bubbl|rainbow|color|vibrant|prism|glow/i]
+  ];
+  var CATS=[['Hot',HOT.slice()]]; RULES.forEach(function(r){ CATS.push([r[0],[]]); }); CATS.push(['City & Art',[]]);
+  NAMES.forEach(function(n){ if (HOT.indexOf(n)>=0) return; for (var i=0;i<RULES.length;i++) if (RULES[i][1].test(n)) return CATS[i+1][1].push(n); CATS[CATS.length-1][1].push(n); });
+  var BASE={Warm:'Warm and Cozy', Cool:'Glacier', 'B&W':'Black & White', Vintage:'Vintage Feel'};
+  function src(n){ return 'assets/images/Filter/'+encodeURIComponent(n.normalize('NFD'))+'.jpg'; }
+  function hash(n){ var h=0; for (var i=0;i<n.length;i++) h=(h*31+n.charCodeAt(i))>>>0; return h; }
+  /* a tone per filter so picking one visibly changes the preview */
+  function tone(n, k){
+    if (/black|mono|white|silver|gray/i.test(n)) return 'grayscale('+k.toFixed(2)+') contrast('+(1+.1*k).toFixed(3)+')';
+    if (/warm|autumn|fall|harvest|honey|amber|sun|gold|café|earth|summer|cozy/i.test(n)) return 'sepia('+(.3*k).toFixed(2)+') saturate('+(1+.15*k).toFixed(3)+')';
+    if (/glacier|aquatic|winter|cool|breeze|pool|rain|cloud/i.test(n)) return 'hue-rotate('+(-16*k).toFixed(0)+'deg) brightness('+(1+.03*k).toFixed(3)+')';
+    if (/film|retro|vintage|nostalg|memory|lomo|vcr|analog|fuji|reel|hazy|bleach/i.test(n)) return 'sepia('+(.42*k).toFixed(2)+') contrast('+(1-.08*k).toFixed(3)+') saturate('+(1-.15*k).toFixed(3)+')';
+    if (/dark|shadow|gothic|myst|phantom|spook|creep|halloween/i.test(n)) return 'brightness('+(1-.12*k).toFixed(3)+') contrast('+(1+.15*k).toFixed(3)+') saturate('+(1-.2*k).toFixed(3)+')';
+    var h=hash(n); return 'hue-rotate('+(((h%40)-20)*k).toFixed(0)+'deg) saturate('+(1+((h>>>6)%5)/12*k).toFixed(3)+') brightness('+(1+((h>>>10)%4)/50*k).toFixed(3)+')';
+  }
+  var _cf=cssFilter; cssFilter=function(p){ var r=_cf(p); if (p.filter && NAMES.indexOf(p.filter)>=0) r=tone(p.filter,(p.filterV||0)/100)+' '+r; return r; };
+  var room=$('fl-room'), frame=$('frame'), cats=$('fl-cats'), list=$('fl-list'), rg=$('fl-range'), out=$('fl-out'), none=$('fl-none'), lockCat=0, dragged=false;
+  CATS.forEach(function(c,ci){
+    var t=document.createElement('button'); t.textContent=c[0]; t.dataset.c=ci; cats.appendChild(t);
+    t.onclick=function(){ if (dragged) return; var f=list.querySelector('[data-c="'+ci+'"]'); if (f) list.scrollTo({left:f.offsetLeft-list.offsetLeft, behavior:'smooth'}); setCat(ci); lockCat=Date.now(); };
+    c[1].forEach(function(n,j){
+      var b=document.createElement('button'); b.className='ll-it'; b.dataset.n=n; b.dataset.c=ci; b.setAttribute('aria-label',n);
+      var prem=(hash(n)%5===2);
+      b.innerHTML='<img src="'+src(n)+'" alt="" draggable="false">'+(prem?'<img class="cr" src="assets/icons/filter/crown.svg" alt=""><img class="dl" src="assets/icons/filter/download.svg" alt="">':'')+'<span class="nm">'+esc(n)+'</span>';
+      b.onclick=function(){ if (dragged) return; pick(n); }; list.appendChild(b);
+    });
+  });
+  function setCat(ci){ cats.querySelectorAll('button').forEach(function(t){ t.classList.toggle('on', +t.dataset.c===+ci); });
+    var on=cats.querySelector('.on'); if (on) cats.scrollTo({left:on.offsetLeft-cats.offsetLeft-cats.clientWidth/2+on.offsetWidth/2, behavior:'smooth'}); }
+  list.addEventListener('scroll', function(){ if (Date.now()-lockCat<600) return;
+    var x=list.scrollLeft+8, ci=0; list.querySelectorAll('.ll-it').forEach(function(b){ if (b.offsetLeft-list.offsetLeft<=x) ci=b.dataset.c; }); setCat(ci); });
+  function filterOp(){ var r=lastRun && lastRun(); if (!r) return null; for (var i=r.ops.length-1;i>=0;i--) if (r.ops[i].kind==='filter') return r.ops[i]; return null; }
+  function apply(n, v){
+    P.filter=n||'None'; P.filterV=v; var o=filterOp(); if (o){ if (n) o.c=n; o.v=v; o.on=!!n; }
+    renderPreview(); if (typeof renderFxTags==='function') renderFxTags();
+  }
+  function paint(n){ list.querySelectorAll('.ll-it').forEach(function(b){ b.classList.toggle('on', b.dataset.n===n); }); none.classList.toggle('on', !n); rg.disabled=!n; room.classList.toggle('off', !n); }
+  function setV(v){ rg.value=v; out.textContent=v; rg.style.setProperty('--p', v+'%'); }
+  function pick(n){ paint(n); apply(n, +rg.value||80); }
+  none.onclick=function(){ paint(''); apply('', +rg.value); };
+  rg.oninput=function(){ setV(+rg.value); var on=list.querySelector('.ll-it.on'); if (on) apply(on.dataset.n, +rg.value); };
+  window.openFilterRoom=function(){
+    ['closeLookLobby','closeRetouchRoom','closeAdjustRoom'].forEach(function(f){ if (typeof window[f]==='function') window[f](); });
+    var n=P.filter && P.filter!=='None' ? (BASE[P.filter]||P.filter) : '', v=Math.round(P.filterV||80);
+    if (n && n!==P.filter) apply(n, v);
+    frame.classList.add('fl-open'); setV(v); paint(n);
+    var it=n && list.querySelector('.ll-it[data-n="'+n.replace(/"/g,'')+'"]'), ci=it?it.dataset.c:0;
+    lockCat=Date.now(); setCat(ci);
+    requestAnimationFrame(function(){ var f=it||list.querySelector('[data-c="'+ci+'"]'); if (f) list.scrollLeft=Math.max(0,f.offsetLeft-list.offsetLeft-(it?60:0)); renderPreview(); });
+  };
+  window.closeFilterRoom=function(){ if (!frame.classList.contains('fl-open')) return; frame.classList.remove('fl-open'); requestAnimationFrame(renderPreview); };
+  $('fl-back').onclick=closeFilterRoom;
+  var _aem=window.afterEditMore; window.afterEditMore=function(em){ var m=em.closest('.msg'); if (m && /filter/i.test(m.textContent) && filterOp() && !/face retouch|\blook\b/i.test(m.textContent)) return openFilterRoom(); if (_aem) _aem(em); };
+  ['openLookLobby','openRetouchRoom','openAdjustRoom'].forEach(function(f){ var o=window[f]; if (o) window[f]=function(){ closeFilterRoom(); return o.apply(this, arguments); }; });
+  var _fr=fullReset; fullReset=function(){ closeFilterRoom(); return _fr.apply(this, arguments); };
+  document.addEventListener('click', function(e){ if (e.target.closest && e.target.closest('.demo-btn,.demo-sheet .it,.demo-sheet .rs')) closeFilterRoom(); }, true);
+  /* mouse drag to swipe the filter / category rows */
+  var row=null, x0=0, s0=0;
+  room.addEventListener('pointerdown', function(e){ if (e.pointerType!=='mouse') return; var r=e.target.closest('.ll-list, .ll-cats'); if (!r) return; row=r; x0=e.clientX; s0=r.scrollLeft; dragged=false; r.style.scrollBehavior='auto'; });
+  document.addEventListener('pointermove', function(e){ if (!row) return; var dx=e.clientX-x0; if (Math.abs(dx)>4) dragged=true; if (dragged) row.scrollLeft=s0-dx; });
+  document.addEventListener('pointerup', function(){ if (row) row.style.scrollBehavior=''; row=null; setTimeout(function(){ dragged=false; }, 0); });
+})();
 </script>
 </body>
 </html>
