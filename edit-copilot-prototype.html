@@ -13,7 +13,7 @@
 <script>
 /* v192 — auto-update: compare this page's build with version.json (never cached); reload when a newer build is live.
    Bump YCV_BUILD here AND "build" in version.json together on every release. */
-window.YCV_BUILD='197';
+window.YCV_BUILD='198';
 (function(){
   if (location.protocol==='file:') return;
   function check(){
@@ -1934,6 +1934,10 @@ html body .cr-chip.cr-chip,html body .f-credit.f-credit{cursor:default !importan
 html body .fl-lobby .ll-it img:first-child{object-position:50% 20%;}
 html body .fl-lobby .ll-it .cr{display:block;}
 html body .fl-lobby .ll-it .dl{position:absolute;left:2px;bottom:12px;width:12px;height:12px;z-index:3;pointer-events:none;}
+/* v198 — Filter / Looks lobby: selected tile uses an outside 3px stroke */
+html body .ll-it.on::after{inset:-3px;border-radius:9px;}
+html body .ll-row{gap:8px;}
+html body .ll-list{padding-left:3px;}
 </style>
 </head>
 <body>
@@ -5148,6 +5152,25 @@ document.addEventListener('click', function(e){
   room.addEventListener('pointerdown', function(e){ if (e.pointerType!=='mouse') return; var r=e.target.closest('.ll-list, .ll-cats'); if (!r) return; row=r; x0=e.clientX; s0=r.scrollLeft; dragged=false; r.style.scrollBehavior='auto'; });
   document.addEventListener('pointermove', function(e){ if (!row) return; var dx=e.clientX-x0; if (Math.abs(dx)>4) dragged=true; if (dragged) row.scrollLeft=s0-dx; });
   document.addEventListener('pointerup', function(){ if (row) row.style.scrollBehavior=''; row=null; setTimeout(function(){ dragged=false; }, 0); });
+})();
+/* v198 — RETOUCH tab tools and icons from Figma 544:24697 (lobby_retouch) */
+(function(){
+  var R='retouch-lobby/';
+  TOOL_HTML.rt_retouch=tImg(R+'retouch.svg',0,0,26,26);
+  TOOL_HTML.rt_reshape=tImg(R+'reshape.svg',0,0,26,26);
+  TOOL_HTML.rt_makeup=tImg(R+'makeup.svg',0,0,26,26);
+  TOOL_HTML.rt_body=tImg(R+'body.svg',3.56,2.44,18.929,21.135);
+  TOOL_HTML.rt_hair=tImg(R+'hair.svg',3.69,2.93,18.6079,19.8823);
+  TOOL_HTML.rt_looks=tImg(R+'looks.svg',0,0,26,26);
+  RETOUCH_TOOLS.length=0;
+  [['Retouch','html:rt_retouch'],['Reshape','html:rt_reshape'],['Makeup','html:rt_makeup'],['Body','html:rt_body'],['Hair','html:rt_hair'],['Looks','html:rt_looks'],['Credit','html:credit']].forEach(function(t){ RETOUCH_TOOLS.push(t); });
+  var _bt=buildTools; buildTools=function(hl){
+    _bt(hl);
+    if (S.mode!=='retouch' || S.selClip!=null) return;
+    var items=$('tool-row').children;
+    RETOUCH_TOOLS.forEach(function(t,i){ var b=items[i]; if (!b) return; var ic=b.querySelector('.tb-icon'); ic.className='tb-icon'; ic.innerHTML=TOOL_HTML[t[1].slice(5)]; });
+  };
+  if (S.mode==='retouch') buildTools();
 })();
 </script>
 </body>

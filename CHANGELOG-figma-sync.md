@@ -103,6 +103,11 @@
 - 部分縮圖顯示皇冠＋下載 icon（Figma `ico_ycv_badge_crown_o_s`、`btn_ycp_download_update`）
 - 返回鈕、Reset、Demo 情境、開啟其他 feature room 時都會關閉
 
+## 1-4d. 選取外框與 RETOUCH 工具列（v198）
+
+- Filter room 與 Looks lobby：選中的縮圖改為 **外框（outside stroke）** 3px `#49C6EF`，框在縮圖外側、不再蓋住圖片；列表左側留 3px 讓第一張的外框不被裁切
+- RETOUCH 分頁工具列依 Figma 544:24697（lobby_retouch）改為 7 個：Retouch／Reshape／Makeup／Body／Hair／Looks／Credit（移除 Face Lift），icon 換成 Figma 的 `btn_ycv_lobby_*` 圖示
+
 ## 1-5. IAP 頁（v183）
 
 - 所有「Get credits／Get Credits」（Scenario 7 Not enough credits 的聊天連結、Credits 頁按鈕）→ 關掉聊天視窗，開啟 IAP 頁（Figma 531:25655，ycv1_59_iap_standard／_pro 畫面圖）
@@ -222,6 +227,7 @@
 | `icon-fb-like*.svg`、`icon-fb-dislike*.svg` | Feedback icon；`-dark` 為 chip off（`#1A1A1F`），`-on` 為 on（白） |
 | `icon-ll-back.svg`、`icon-ll-crown.svg`、`icon-ll-new.svg`、`icon-ll-none.svg` | Looks 面板的返回鍵、皇冠、新項目紅點、不套用（Figma 515:6089） |
 | `filter/crown.svg`、`filter/download.svg` | Filter room 縮圖的皇冠與下載 icon（Figma 515:7139，v197） |
+| `retouch-lobby/retouch.svg`、`reshape.svg`、`makeup.svg`、`body.svg`、`hair.svg`、`looks.svg` | RETOUCH 分頁工具列 icon（Figma 544:24697，v198） |
 | `retouch/*@4x.png`、`retouch/*.svg` | Retouch 面板工具 icon、皇冠、返回鍵（Figma 515:3524／515:6521） |
 | `retouch/teeth-whitener.svg`、`retouch/eye-sparkle.svg`、`retouch/lip-wrinkle.svg` | v184 新增：Teeth Whitener、Eye Sparkle、Lip Wrinkle 正式 icon |
 | `../videos/iap-banner.mp4` | v185 新增：IAP 頁頂部 banner 影片 |
