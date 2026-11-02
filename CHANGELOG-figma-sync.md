@@ -120,6 +120,7 @@
 
 ## 1-6. Demo scenario
 
+- v207 「Thanks for the feedback」不再顯示選到的讚/不讚 icon，只留文字；手機 Demo scenarios 的 build 字樣改回淺灰色
 - v206 IAP banner：在 LINE/Slack 等 App 內建瀏覽器，或 iPhone 低耗電模式擋住自動播放時，改播同一段影片的動態 WebP（assets/videos/iap-banner.webp，需要時才下載），不再只是靜態圖
 - v205 自動更新：push 後 GitHub Pages 可能還會送舊頁面幾分鐘，之前只重新整理一次就放棄，現在最多重試 3 次（每分鐘檢查一次，網址帶時間戳避開快取）；build 字樣改成藍色、較明顯
 - v204 點 Scenario 1~6 都和 Reset 一樣先出現 default page（Meet Video Copilot、「Tell me how you’d like to edit your video.」、三個建議），自動輸入的請求送出後才進入對話；之前點過建議也一樣（取代 v201 的行為）

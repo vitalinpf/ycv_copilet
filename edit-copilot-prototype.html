@@ -13,7 +13,7 @@
 <script>
 /* v192 — auto-update: compare this page's build with version.json (never cached); reload when a newer build is live.
    Bump YCV_BUILD here AND "build" in version.json together on every release. */
-window.YCV_BUILD='206';
+window.YCV_BUILD='207';
 (function(){
   if (location.protocol==='file:') return;
   function check(){
@@ -1950,10 +1950,12 @@ html body #cp-sheet.used.hello-mode:not(.has-text):not(.typed) .cp-foot .in-row>
 .iap-page .iap-poster{position:absolute;left:0;top:0;width:100%;height:38.95%;object-fit:cover;display:none;pointer-events:none;}
 .iap-page.novid .iap-poster{display:block;}
 /* v203 — build number shown in the demo menus so testers can tell which version they're on */
-.ycv-build{font-weight:600;opacity:.8;color:#49C6EF;margin-left:6px;font-size:.85em;letter-spacing:0;text-transform:none;}
+.ycv-build{font-weight:500;opacity:.45;margin-left:6px;font-size:.85em;letter-spacing:0;text-transform:none;}
 /* v206 — animated banner (WebP) when the video can't play inline / autoplay is blocked */
 .iap-page .iap-anim{position:absolute;left:0;top:0;width:100%;height:38.95%;object-fit:cover;display:none;pointer-events:none;}
 .iap-page.novid .iap-anim.ok{display:block;}
+/* v207 — thanks chip without the thumb: even padding */
+.f-chip.f-chip.fb.thx{padding:4px 10px !important;}
 </style>
 </head>
 <body>
@@ -4552,7 +4554,7 @@ function flowPaused(){ var pg=document.getElementById('cr-page'); return !!(S.hi
     chip.className='f-chip fb'; chip.innerHTML='<span>Was it helpful?</span><button class="fbb" data-v="up" aria-label="Helpful"><img src="assets/icons/icon-fb-like.svg?v=3" alt=""><img class="on-ic" src="assets/icons/icon-fb-like-on.svg?v=3" alt=""></button><button class="fbb" data-v="down" aria-label="Not helpful"><img src="assets/icons/icon-fb-dislike.svg?v=3" alt=""><img class="on-ic" src="assets/icons/icon-fb-dislike-on.svg?v=3" alt=""></button>';
     chip.style.left=(fab.offsetLeft+41)+'px'; chip.style.top=(fab.offsetTop+(fab.offsetHeight-27.2)/2)+'px';
     chip.classList.add('show'); clearTimeout(T); T=setTimeout(function(){ chip.classList.remove('show'); }, 5000); }
-  chip.addEventListener('click', function(e){ var b=e.target.closest('.fbb'); if (!b) return; e.stopPropagation(); b.classList.add('on'); clearTimeout(T); /* v154 — thanks stays in the "Was it helpful?" chip spot (no centre toast), then closes */ setTimeout(function(){ chip.querySelector('span').textContent='Thanks for the feedback'; chip.querySelectorAll('.fbb:not(.on)').forEach(function(x){ x.remove(); }); }, 300); T=setTimeout(function(){ chip.classList.remove('show'); }, 1800); }, true);
+  chip.addEventListener('click', function(e){ var b=e.target.closest('.fbb'); if (!b) return; e.stopPropagation(); b.classList.add('on'); clearTimeout(T); /* v154 — thanks stays in the "Was it helpful?" chip spot (no centre toast), then closes */ setTimeout(function(){ chip.querySelector('span').textContent='Thanks for the feedback'; chip.querySelectorAll('.fbb').forEach(function(x){ x.remove(); }); chip.classList.add('thx'); /* v207 — no thumb next to the thanks */ }, 300); T=setTimeout(function(){ chip.classList.remove('show'); }, 1800); }, true);
   var _sdt=showDoneToast; showDoneToast=function(){ var r=_sdt.apply(this, arguments); chip.classList.remove('fb'); clearTimeout(T); T=setTimeout(function(){ if (!chip.classList.contains('fb')) showFb(); }, 5300); return r; };
   var _os=openSheet; openSheet=function(){ clearTimeout(T); chip.classList.remove('show'); return _os.apply(this, arguments); };
 })();
