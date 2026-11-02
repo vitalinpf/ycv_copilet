@@ -120,6 +120,7 @@
 
 ## 1-6. Demo scenario
 
+- v210 完成 toast（「N edits done」chip 與 done toast）的「Review ›」改成「Continue ›」
 - v209 Credit page：Credit costs 表移除「Each request to Copilot −5」那一列（與新 FAQ 的 1–6 credits 說法一致）
 - v208 Credit page：移除「Example: “Whiten teeth” = 5 + 1 = 6 credits…」說明；FAQ「When are credits used?」改為新文案（先確認至少 6 credits，不足會先告知且不扣點；開始編輯後依複雜度約 1–6 credits，提問與無法完成的請求仍可能扣點）
 - v207 「Thanks for the feedback」不再顯示選到的讚/不讚 icon，只留文字；手機 Demo scenarios 的 build 字樣改回淺灰色

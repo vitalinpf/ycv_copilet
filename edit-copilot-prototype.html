@@ -13,7 +13,7 @@
 <script>
 /* v192 — auto-update: compare this page's build with version.json (never cached); reload when a newer build is live.
    Bump YCV_BUILD here AND "build" in version.json together on every release. */
-window.YCV_BUILD='209';
+window.YCV_BUILD='210';
 (function(){
   if (location.protocol==='file:') return;
   function check(){
@@ -2019,7 +2019,7 @@ html body #cp-sheet.used.hello-mode:not(.has-text):not(.typed) .cp-foot .in-row>
       </div>
     </div>
     <button class="cmp-btn" id="cmp-btn" aria-label="Hold to compare"></button>
-    <div class="done-toast" id="done-toast" role="status"><span class="ok" id="done-ok"></span><span id="done-msg">Copilot finished</span><button onclick="hideDoneToast();openReview()">Review</button></div>
+    <div class="done-toast" id="done-toast" role="status"><span class="ok" id="done-ok"></span><span id="done-msg">Copilot finished</span><button onclick="hideDoneToast();openReview()">Continue</button></div>
   </div>
 
   <div class="control-row">
@@ -4441,7 +4441,7 @@ welcome = function(){
   chip.onclick=function(e){ e.stopPropagation(); hide(); if (kind==='done') openReview(); else openSheet(); };
   fabIntro=function(){ show('<span class="act">Edit by Chatting</span>', 'idle'); };
   var _sdt=showDoneToast; showDoneToast=function(n){ _sdt.apply(this, arguments); hideDoneToast(); S.unread=true; fab.classList.add('unread');
-    show('<span>'+n+' edit'+(n>1?'s':'')+' done</span><b class="act">Review</b>', 'done'); };
+    show('<span>'+n+' edit'+(n>1?'s':'')+' done</span><b class="act">Continue</b>', 'done'); };
   var _os=openSheet; openSheet=function(){ hide(); return _os.apply(this, arguments); };
   var _fp=fabProgress; fabProgress=function(){ hide(); return _fp.apply(this, arguments); };
   clearTimeout(S.introT); fab.classList.remove('intro'); setTimeout(fabIntro, 500);
