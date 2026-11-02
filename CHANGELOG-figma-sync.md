@@ -120,6 +120,7 @@
 
 ## 1-6. Demo scenario
 
+- v205 自動更新：push 後 GitHub Pages 可能還會送舊頁面幾分鐘，之前只重新整理一次就放棄，現在最多重試 3 次（每分鐘檢查一次，網址帶時間戳避開快取）；build 字樣改成藍色、較明顯
 - v204 點 Scenario 1~6 都和 Reset 一樣先出現 default page（Meet Video Copilot、「Tell me how you’d like to edit your video.」、三個建議），自動輸入的請求送出後才進入對話；之前點過建議也一樣（取代 v201 的行為）
 - v203 手機版「Demo scenarios」選單標題旁與桌面版 Reset 鈕下方顯示目前的 build 號（例如 build 203），方便確認裝置上是不是最新版
 - ~~v201~~（已由 v204 取代）點任一 Demo scenario（Reset 以外）會直接進入對話：輸入請求時不再先出現 default page 的三個建議與「Tell me how you’d like to edit your video.」；只有 Reset 與 Scenario 1 的「沒選擇→重開」會回到 default page

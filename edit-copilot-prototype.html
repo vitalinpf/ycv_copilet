@@ -13,20 +13,21 @@
 <script>
 /* v192 — auto-update: compare this page's build with version.json (never cached); reload when a newer build is live.
    Bump YCV_BUILD here AND "build" in version.json together on every release. */
-window.YCV_BUILD='204';
+window.YCV_BUILD='205';
 (function(){
   if (location.protocol==='file:') return;
   function check(){
     fetch('version.json?t='+Date.now(), {cache:'no-store'}).then(function(r){ return r.ok ? r.json() : null; }).then(function(j){
       if (!j || !j.build || j.build===window.YCV_BUILD) return;
-      var k='ycv-reloaded-'+j.build; try{ if (sessionStorage.getItem(k)) return; sessionStorage.setItem(k,'1'); }catch(_){}
-      location.replace(location.pathname+'?v='+encodeURIComponent(j.build)+location.hash);
+      /* v205 — GitHub Pages can still serve the old page for a few minutes after a push: retry up to 3 times (on later checks), with a fresh URL each time */
+      var k='ycv-reloaded-'+j.build, n=0; try{ n=+sessionStorage.getItem(k)||0; if (n>=3) return; sessionStorage.setItem(k, n+1); }catch(_){}
+      location.replace(location.pathname+'?v='+encodeURIComponent(j.build)+'&r='+Date.now()+location.hash);
     }).catch(function(){});
   }
   check();
   document.addEventListener('visibilitychange', function(){ if (document.visibilityState==='visible') check(); });
   window.addEventListener('pageshow', function(e){ if (e.persisted) check(); });
-  setInterval(check, 5*60*1000);
+  setInterval(check, 60*1000);
 })();
 </script>
 <title>YCV — Edit Copilot</title>
@@ -1949,7 +1950,7 @@ html body #cp-sheet.used.hello-mode:not(.has-text):not(.typed) .cp-foot .in-row>
 .iap-page .iap-poster{position:absolute;left:0;top:0;width:100%;height:38.95%;object-fit:cover;display:none;pointer-events:none;}
 .iap-page.novid .iap-poster{display:block;}
 /* v203 — build number shown in the demo menus so testers can tell which version they're on */
-.ycv-build{font-weight:500;opacity:.45;margin-left:6px;font-size:.85em;letter-spacing:0;text-transform:none;}
+.ycv-build{font-weight:600;opacity:.8;color:#49C6EF;margin-left:6px;font-size:.85em;letter-spacing:0;text-transform:none;}
 </style>
 </head>
 <body>
