@@ -13,7 +13,7 @@
 <script>
 /* v192 — auto-update: compare this page's build with version.json (never cached); reload when a newer build is live.
    Bump YCV_BUILD here AND "build" in version.json together on every release. */
-window.YCV_BUILD='207';
+window.YCV_BUILD='209';
 (function(){
   if (location.protocol==='file:') return;
   function check(){
@@ -4314,7 +4314,6 @@ respond = function(text){
   var bd=document.querySelector('#cr-page .bd'); if (!bd) return;
   var bal=bd.querySelector('.bal').outerHTML;
   var rows=[
-    ['Each request to Copilot','Every message you send, including questions',REQ_COST+' credits'],
     ['Retouch','Smooth skin, brighten face, whiten teeth, eyes, face lift, body','1 credit'],
     ['Auto face retouch','Smooth skin + brighten face + eyes','3 credits'],
     ['Makeup','Lip color, blush','1 credit'],
@@ -4324,10 +4323,9 @@ respond = function(text){
     ['Undo, Edit More, History','Fine-tuning or reviewing a result','Free']
   ];
   var h=bal+'<h4>Credit costs</h4>';
-  rows.forEach(function(r,i){ h+='<div class="row"'+(i===1?' style="border-top:1px dashed rgba(255,255,255,.12)"':'')+'><div>'+esc(r[0])+'<span>'+esc(r[1])+'</span></div><em>'+esc(r[2])+'</em></div>'; });
-  h+='<p class="eg" style="margin:10px 0 0;font-size:11px;color:rgba(255,255,255,.55);line-height:1.5">Example: “Whiten teeth” = 5 + 1 = <b style="color:#FFD36B">6 credits</b>. A question or an unsupported request = 5 credits.</p>';
+  rows.forEach(function(r,i){ h+='<div class="row"><div>'+esc(r[0])+'<span>'+esc(r[1])+'</span></div><em>'+esc(r[2])+'</em></div>'; });
   h+='<div class="faq"><h4>FAQ</h4>'+
-    '<p><b>When are credits used?</b>When Copilot starts editing: 5 for the request plus the price of each edit. Questions and requests Copilot can’t do yet cost 5.</p>'+
+    '<p><b>When are credits used?</b>Copilot checks that you have at least 6 credits before it starts editing. If you have fewer than 6 credits, Copilot will let you know before doing anything, and no credits will be charged.<br><br>Once Copilot starts editing, the actual number of credits used depends on the complexity of your request and typically ranges from 1 to 6 credits. Questions and requests that Copilot can’t complete may still use credits.</p>'+
     '<p><b>What if I stop Copilot or open another tool?</b>Copilot stops and its changes aren’t applied. Credits already used aren’t refunded.</p>'+
     '<p><b>What if I don’t have enough credits?</b>Copilot tells you before doing anything, and nothing is charged.</p>'+
     '<p><b>Do I pay for undo or Edit More?</b>No. Undoing or fine-tuning a result in the tool is free.</p></div>';

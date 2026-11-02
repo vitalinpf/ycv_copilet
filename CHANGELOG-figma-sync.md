@@ -120,6 +120,8 @@
 
 ## 1-6. Demo scenario
 
+- v209 Credit page：Credit costs 表移除「Each request to Copilot −5」那一列（與新 FAQ 的 1–6 credits 說法一致）
+- v208 Credit page：移除「Example: “Whiten teeth” = 5 + 1 = 6 credits…」說明；FAQ「When are credits used?」改為新文案（先確認至少 6 credits，不足會先告知且不扣點；開始編輯後依複雜度約 1–6 credits，提問與無法完成的請求仍可能扣點）
 - v207 「Thanks for the feedback」不再顯示選到的讚/不讚 icon，只留文字；手機 Demo scenarios 的 build 字樣改回淺灰色
 - v206 IAP banner：在 LINE/Slack 等 App 內建瀏覽器，或 iPhone 低耗電模式擋住自動播放時，改播同一段影片的動態 WebP（assets/videos/iap-banner.webp，需要時才下載），不再只是靜態圖
 - v205 自動更新：push 後 GitHub Pages 可能還會送舊頁面幾分鐘，之前只重新整理一次就放棄，現在最多重試 3 次（每分鐘檢查一次，網址帶時間戳避開快取）；build 字樣改成藍色、較明顯
