@@ -13,7 +13,7 @@
 <script>
 /* v192 — auto-update: compare this page's build with version.json (never cached); reload when a newer build is live.
    Bump YCV_BUILD here AND "build" in version.json together on every release. */
-window.YCV_BUILD='205';
+window.YCV_BUILD='206';
 (function(){
   if (location.protocol==='file:') return;
   function check(){
@@ -1951,6 +1951,9 @@ html body #cp-sheet.used.hello-mode:not(.has-text):not(.typed) .cp-foot .in-row>
 .iap-page.novid .iap-poster{display:block;}
 /* v203 — build number shown in the demo menus so testers can tell which version they're on */
 .ycv-build{font-weight:600;opacity:.8;color:#49C6EF;margin-left:6px;font-size:.85em;letter-spacing:0;text-transform:none;}
+/* v206 — animated banner (WebP) when the video can't play inline / autoplay is blocked */
+.iap-page .iap-anim{position:absolute;left:0;top:0;width:100%;height:38.95%;object-fit:cover;display:none;pointer-events:none;}
+.iap-page.novid .iap-anim.ok{display:block;}
 </style>
 </head>
 <body>
@@ -5251,6 +5254,27 @@ new MutationObserver(function(ms){ ms.forEach(function(m){ m.addedNodes.forEach(
   var b=window.YCV_BUILD||''; if (!b) return;
   var h=document.querySelector('.demo-sheet h3'); if (h) h.insertAdjacentHTML('beforeend','<span class="ycv-build">build '+b+'</span>');
   var p=document.querySelector('.flow-panel .demo-btn.reset'); if (p) p.insertAdjacentHTML('afterend','<div class="ycv-build" style="text-align:center;margin-top:8px;font-size:10.5px;color:#fff">build '+b+'</div>');
+})();
+/* v206 — IAP banner keeps moving everywhere:
+   in-app browsers (v202 still frame) and blocked autoplay (iPhone Low Power Mode, data saver) now show an animated WebP of the same clip.
+   The WebP is only downloaded when it is needed. */
+(function(){
+  var pg=$('iap-page'), v=pg && pg.querySelector('.iap-vid'), ps=pg && pg.querySelector('.iap-poster'); if (!v || !ps) return;
+  var an=document.createElement('img'); an.className='iap-anim'; an.alt=''; ps.after(an);
+  an.onload=function(){ an.classList.add('ok'); };
+  function anim(){ if (!an.src) an.src='assets/videos/iap-banner.webp?b='+(window.YCV_BUILD||''); }
+  if (pg.classList.contains('novid')) anim();
+  new MutationObserver(function(){ if (pg.classList.contains('novid')) anim(); }).observe(pg, {attributes:true, attributeFilter:['class']});
+  function fallback(){ pg.classList.add('novid'); try{ v.pause(); }catch(_){} }
+  var _o=openIAP; openIAP=window.openIAP=function(){
+    var r=_o.apply(this, arguments);
+    if (!pg.classList.contains('novid')){
+      try{ var pr=v.play(); if (pr && pr.catch) pr.catch(function(e){ if (e && e.name==='NotAllowedError') fallback(); }); }catch(_){}
+      var t0=v.currentTime;   /* still frozen after 2s while the page is open → autoplay was silently blocked */
+      setTimeout(function(){ if (pg.classList.contains('show') && v.paused && v.currentTime===t0 && v.readyState>=2) fallback(); }, 2000);
+    }
+    return r;
+  };
 })();
 </script>
 </body>
