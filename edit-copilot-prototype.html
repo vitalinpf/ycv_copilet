@@ -13,7 +13,7 @@
 <script>
 /* v192 — auto-update: compare this page's build with version.json (never cached); reload when a newer build is live.
    Bump YCV_BUILD here AND "build" in version.json together on every release. */
-window.YCV_BUILD='203';
+window.YCV_BUILD='204';
 (function(){
   if (location.protocol==='file:') return;
   function check(){
@@ -4739,7 +4739,7 @@ document.addEventListener('click',function(e){var em=e.target.closest('#cp-body 
   /* v169 — once a suggestion has been tapped in this session, demo scenarios / reset keep the list + prompt line hidden (until page reload) */
   var tapped=false; document.addEventListener('click',function(e){ if (e.target.closest('#cp-body .sug')) tapped=true; },true);
   /* v188 — the Reset button brings the suggestion list + “Tell me how you’d like to edit your video.” back */
-  document.addEventListener('click',function(e){ if (e.target.closest('.demo-btn.reset')) tapped=false; },true);
+  document.addEventListener('click',function(e){ if (e.target.closest('.demo-btn, .demo-sheet .it, .demo-sheet .rs')) tapped=false; },true); /* v204 — scenarios too */
   var _r=fullReset; fullReset=function(){ $('cp-sheet').classList.toggle('sug-done', tapped); return _r.apply(this, arguments); };
 })();
 
@@ -5214,14 +5214,14 @@ new MutationObserver(function(ms){ ms.forEach(function(m){ m.addedNodes.forEach(
     setTimeout(function(){ sheet.classList.remove('sug-done'); if (!body.children.length || !S.sheet){ body.innerHTML=''; openSheet(); } }, 60);
   }, false);
 })();
-/* v201 — scenarios start straight into the chat: no default-page suggestions while the request is typed (only Reset / the Chat reopen case show the default page) */
+/* v204 (replaces v201) — every scenario 1–6 starts on the default page, same as Reset: suggestions + "Tell me how…" line show until the scenario sends its request */
 (function(){
   var sheet=$('cp-sheet'), starting=0;
   document.addEventListener('click', function(e){
     var d=e.target.closest && e.target.closest('.demo-btn:not(.reset), .demo-sheet .it'); if (!d) return;
-    starting=Date.now(); sheet.classList.add('sug-done');
+    starting=Date.now(); sheet.classList.remove('sug-done');
   }, true);
-  var _r=fullReset; fullReset=function(){ var r=_r.apply(this, arguments); if (Date.now()-starting<2000) sheet.classList.add('sug-done'); return r; };
+  var _r=fullReset; fullReset=function(){ var r=_r.apply(this, arguments); if (Date.now()-starting<2000) sheet.classList.remove('sug-done'); return r; };
 })();
 /* v202 — IAP banner video must never open the iOS full-screen player.
    In-app browsers (LINE, Slack, Messenger, Instagram, WeChat…) ignore playsinline and force full screen,

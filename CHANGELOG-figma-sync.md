@@ -120,8 +120,9 @@
 
 ## 1-6. Demo scenario
 
+- v204 點 Scenario 1~6 都和 Reset 一樣先出現 default page（Meet Video Copilot、「Tell me how you’d like to edit your video.」、三個建議），自動輸入的請求送出後才進入對話；之前點過建議也一樣（取代 v201 的行為）
 - v203 手機版「Demo scenarios」選單標題旁與桌面版 Reset 鈕下方顯示目前的 build 號（例如 build 203），方便確認裝置上是不是最新版
-- v201 點任一 Demo scenario（Reset 以外）會直接進入對話：輸入請求時不再先出現 default page 的三個建議與「Tell me how you’d like to edit your video.」；只有 Reset 與 Scenario 1 的「沒選擇→重開」會回到 default page
+- ~~v201~~（已由 v204 取代）點任一 Demo scenario（Reset 以外）會直接進入對話：輸入請求時不再先出現 default page 的三個建議與「Tell me how you’d like to edit your video.」；只有 Reset 與 Scenario 1 的「沒選擇→重開」會回到 default page
 - v200 Scenario 1（Chat）：回覆下方出現「Keep exploring...」後，若使用者沒有點選任何建議就關掉 bottom sheet，再點 Copilot icon（f-logo）會回到 default page（Meet Video Copilot＋三個建議＋輸入框與 History 鈕，credit 餘額保留）；點 Edit More 不算「沒有選擇」，對話保留。只套用在 Scenario 1，其他情境不變
 - v200 Reset（桌面版面板與手機版 Demo scenario 選單）：重設後直接打開 bottom sheet 並顯示 default page（含三個建議）
 - v200 default page 在跑過任一情境後也顯示輸入框旁的 History 鈕
