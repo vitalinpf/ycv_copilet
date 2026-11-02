@@ -13,7 +13,7 @@
 <script>
 /* v192 — auto-update: compare this page's build with version.json (never cached); reload when a newer build is live.
    Bump YCV_BUILD here AND "build" in version.json together on every release. */
-window.YCV_BUILD='200';
+window.YCV_BUILD='201';
 (function(){
   if (location.protocol==='file:') return;
   function check(){
@@ -5207,6 +5207,15 @@ new MutationObserver(function(ms){ ms.forEach(function(m){ m.addedNodes.forEach(
     if (!(e.target.closest && e.target.closest('.demo-btn.reset, .demo-sheet .rs'))) return;
     setTimeout(function(){ sheet.classList.remove('sug-done'); if (!body.children.length || !S.sheet){ body.innerHTML=''; openSheet(); } }, 60);
   }, false);
+})();
+/* v201 — scenarios start straight into the chat: no default-page suggestions while the request is typed (only Reset / the Chat reopen case show the default page) */
+(function(){
+  var sheet=$('cp-sheet'), starting=0;
+  document.addEventListener('click', function(e){
+    var d=e.target.closest && e.target.closest('.demo-btn:not(.reset), .demo-sheet .it'); if (!d) return;
+    starting=Date.now(); sheet.classList.add('sug-done');
+  }, true);
+  var _r=fullReset; fullReset=function(){ var r=_r.apply(this, arguments); if (Date.now()-starting<2000) sheet.classList.add('sug-done'); return r; };
 })();
 </script>
 </body>
