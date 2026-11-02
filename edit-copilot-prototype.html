@@ -13,7 +13,7 @@
 <script>
 /* v192 — auto-update: compare this page's build with version.json (never cached); reload when a newer build is live.
    Bump YCV_BUILD here AND "build" in version.json together on every release. */
-window.YCV_BUILD='198';
+window.YCV_BUILD='199';
 (function(){
   if (location.protocol==='file:') return;
   function check(){
@@ -1926,7 +1926,6 @@ html body .aj-sl input::-webkit-slider-thumb{position:relative;z-index:2;margin-
 #frame .control-row .cmp-on.show{display:block;}
 #frame .control-row .cmp-on svg{display:block;width:24px;height:24px;}
 #frame .control-row .cmp-on.hold{opacity:.6;} /* v194: enabled = redo blue; held = pressed */
-html body .cr-chip.cr-chip,html body .f-credit.f-credit{cursor:default !important;} /* v196 — credit icon is not a link */
 /* v197 — Filter feature room (reuses the Looks lobby layout, Figma 515:7139) */
 #frame.look-open .fl-lobby{display:none;}
 #frame.fl-open .fl-lobby{display:flex;}
@@ -1938,6 +1937,11 @@ html body .fl-lobby .ll-it .dl{position:absolute;left:2px;bottom:12px;width:12px
 html body .ll-it.on::after{inset:-3px;border-radius:9px;}
 html body .ll-row{gap:8px;}
 html body .ll-list{padding-left:3px;}
+/* v199 — sheet credit chip pinned to the top-right corner (it used to scroll away with the chat) */
+html body #cp-sheet>.sheet-cr{position:absolute !important;top:21.5px !important;right:16px !important;margin:0 !important;z-index:6;cursor:pointer;background:linear-gradient(rgba(255,255,255,.1),rgba(255,255,255,.1)) #22242A !important;box-shadow:0 0 6px 6px #22242A;}
+html body #cp-sheet.hist-mode>.sheet-cr{display:none !important;}
+html body #cp-body.cr-fade{-webkit-mask-image:linear-gradient(to bottom,transparent 0,transparent 14px,#000 34px);mask-image:linear-gradient(to bottom,transparent 0,transparent 14px,#000 34px);}
+html body #cp-body .f-head .hello h2 .f-credit,html body #cp-body .msg.greet .hello h2 .f-credit{visibility:hidden !important;pointer-events:none !important;}
 </style>
 </head>
 <body>
@@ -5075,11 +5079,6 @@ new MutationObserver(function(ms){ ms.forEach(function(m){ m.addedNodes.forEach(
   b.addEventListener('click', function(e){ e.preventDefault(); });
   setInterval(function(){ b.classList.toggle('show', on()); }, 800);
 })();
-/* v196 — credit icon no longer opens the Credits page */
-document.addEventListener('click', function(e){
-  var c=e.target.closest && e.target.closest('.cr-chip,.f-credit');
-  if (c){ e.preventDefault(); e.stopImmediatePropagation(); }
-}, true);
 /* v197 — Filter feature room: Edit More after a filter edit (Figma 515:7139, images from assets/images/Filter) */
 (function(){
   var NAMES=["Analog Muse","Aquatic","Artistic","Aurora","Autumn Vibes","Beauty","Black & White","Bleached","Breeze","Bright Hues","Bright","Bubble Magic","Bubbly Soda","Café Mellow","Candy Colors","Carnival","Celestial","City Vibes","Clouds","Color Pop","Constellation","Cool Urban","Countdown","Creamy","Creepy","Cyberpunk","Dark Harmony","Dark Side","Dark","Daydream","Dewy Skin","Disco","Dream Doll","Earth Tone","Evergold","Fabulous Fall","Fairy Tale","Fantasy Pastel","Fantasy","Fashion","Festive Flicker","Festive Shine","Film Flair","Film Nostalgia","Film Reel","Film","Filmatic","Flora Flurry","Floral Dreams","Floralicious","Flower Field","Foggy Forest","Food","Foodie","Fuji Flashback","Galaxy","Geometric","Glacier","Glowscape","Gothic Hues","Greenery","Grid","Halloween","Harvest","Hawaii","Hazy Nostalgia","Heart in Bloom","Holiday Magic","Holiday Sparkle","Illusionary","In Love","Jazz","Jolly Palette","Landscape","Light Leak","Light Shadow","Light Spot","Lomo","Love Bloom","Loving Moments","Lush","Lustrous Love","Macaron","Memory","Merry Mood","Metaworld","Mono-Tone","Mood Moments","Mystery","Myth","Natsu Glow","Neo-Minimalist","Neon","New York","Nostalgia","Outdoor Life","Paris","Patterns","Phantom Twilight","Pixel Jive","Prismatic Glow","Provence","Psychedelic 60s","Pure Paradise","Pure","Rainbow","Raindrop","Retro Gray","Retro","Rizzify","Romance","Sakura","Santa Monica","Savory Tones","Scenery","Selfie Sizzle","Shadow Symphony","Shadowlore","Silver Screen","So Fetch!","Soft Pink","Solaris","Sparkle","Spooktacular","Spooky","Spotlight Colors","Spring Floral","Spring Sunshine","Springtide","Springtime","Summer","Sun Dazed","Sunburst","Sunkissed","Sweet Scoop","Swimming Pool","Techno Tint","Tokyo Fusion","Travel","Tropical Heat","Universe","Urban Ambience","VCR Vibes","Vacation","Valentine's","Vibrant Bloom","Vibrant","Vintage Feel","Vintage Film Reel","Warm Amber","Warm Honey","Warm Neutral","Warm and Cozy","White","Winter Aesthetic","Yummy Vibes"];
@@ -5171,6 +5170,16 @@ document.addEventListener('click', function(e){
     RETOUCH_TOOLS.forEach(function(t,i){ var b=items[i]; if (!b) return; var ic=b.querySelector('.tb-icon'); ic.className='tb-icon'; ic.innerHTML=TOOL_HTML[t[1].slice(5)]; });
   };
   if (S.mode==='retouch') buildTools();
+})();
+/* v199 — sheet credit chip pinned to the top-right corner; tapping it opens Credits again (undoes v196) */
+(function(){
+  var sh=$('cp-sheet'); if (!sh || sh.querySelector(':scope>.sheet-cr')) return;
+  var b=document.createElement('button'); b.className='f-credit sheet-cr'; b.setAttribute('data-cr',''); b.setAttribute('aria-label','Credits');
+  b.innerHTML='<img src="assets/icons/icon-credit@4x.png" alt="" width="16" height="16"><span data-crn>'+fCredits()+'</span>';
+  sh.appendChild(b);
+  /* once the chat is scrolled, fade the top edge so text never slides under the chip */
+  var body=$('cp-body'); function fade(){ body.classList.toggle('cr-fade', body.scrollTop>4); }
+  body.addEventListener('scroll', fade, {passive:true}); new MutationObserver(fade).observe(body,{childList:true}); fade();
 })();
 </script>
 </body>
