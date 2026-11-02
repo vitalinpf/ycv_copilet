@@ -13,7 +13,7 @@
 <script>
 /* v192 — auto-update: compare this page's build with version.json (never cached); reload when a newer build is live.
    Bump YCV_BUILD here AND "build" in version.json together on every release. */
-window.YCV_BUILD='202';
+window.YCV_BUILD='203';
 (function(){
   if (location.protocol==='file:') return;
   function check(){
@@ -1948,6 +1948,8 @@ html body #cp-sheet.used.hello-mode:not(.has-text):not(.typed) .cp-foot .in-row>
 .iap-page.novid .iap-vid{visibility:hidden !important;}
 .iap-page .iap-poster{position:absolute;left:0;top:0;width:100%;height:38.95%;object-fit:cover;display:none;pointer-events:none;}
 .iap-page.novid .iap-poster{display:block;}
+/* v203 — build number shown in the demo menus so testers can tell which version they're on */
+.ycv-build{font-weight:500;opacity:.45;margin-left:6px;font-size:.85em;letter-spacing:0;text-transform:none;}
 </style>
 </head>
 <body>
@@ -5242,6 +5244,12 @@ new MutationObserver(function(ms){ ms.forEach(function(m){ m.addedNodes.forEach(
     var p=v.play; v.play=function(){ return Promise.resolve(); };   /* skip the play() inside the v185 wrapper */
     try{ return _o.apply(this, arguments); } finally { v.play=p; }
   };
+})();
+/* v203 — show the build number in the phone "Demo scenarios" sheet and the desktop panel */
+(function(){
+  var b=window.YCV_BUILD||''; if (!b) return;
+  var h=document.querySelector('.demo-sheet h3'); if (h) h.insertAdjacentHTML('beforeend','<span class="ycv-build">build '+b+'</span>');
+  var p=document.querySelector('.flow-panel .demo-btn.reset'); if (p) p.insertAdjacentHTML('afterend','<div class="ycv-build" style="text-align:center;margin-top:8px;font-size:10.5px;color:#fff">build '+b+'</div>');
 })();
 </script>
 </body>
