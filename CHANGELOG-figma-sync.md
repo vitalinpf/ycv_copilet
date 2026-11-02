@@ -115,6 +115,7 @@
 - 所有「Get credits／Get Credits」（Scenario 7 Not enough credits 的聊天連結、Credits 頁按鈕）→ 關掉聊天視窗，開啟 IAP 頁（Figma 531:25655，ycv1_59_iap_standard／_pro 畫面圖）
 - 上方 Standard／PRO 可切換；左上返回鍵 → 回到編輯 lobby
 - v185：頂部 banner 改播影片 `assets/videos/iap-banner.mp4`（YCV Plus/Pro 4 features，600×508，靜音循環自動播放），高度與原圖 banner 相同；狀態列、返回鍵、Standard／PRO 切換列改用 HTML 疊在影片上，切換時選中樣式（Standard 藍、PRO 橘）跟著變
+- v202：修正部分手機進入 IAP 頁時先跳出 iOS 全螢幕影片播放器、之後才顯示 IAP 畫面。影片只會在頁面內播放（`playsinline`、靜音、不自動播放、停用子母畫面與 AirPlay）；在會強制全螢幕的 App 內建瀏覽器（LINE、Slack、Messenger、Instagram、WeChat 等）或一旦觸發全螢幕時，改顯示影片的靜態首幀 `assets/videos/iap-banner-poster.jpg`，不再跳出播放器
 - v184：PRO 畫面圖整體上移 5px，切換時 Standard／PRO 切換鈕位置固定（以 Standard 為準）
 
 ## 1-6. Demo scenario
@@ -233,6 +234,7 @@
 | `icon-fb-like*.svg`、`icon-fb-dislike*.svg` | Feedback icon；`-dark` 為 chip off（`#1A1A1F`），`-on` 為 on（白） |
 | `icon-ll-back.svg`、`icon-ll-crown.svg`、`icon-ll-new.svg`、`icon-ll-none.svg` | Looks 面板的返回鍵、皇冠、新項目紅點、不套用（Figma 515:6089） |
 | `filter/crown.svg`、`filter/download.svg` | Filter room 縮圖的皇冠與下載 icon（Figma 515:7139，v197） |
+| `../videos/iap-banner-poster.jpg` | IAP banner 影片的靜態首幀，無法頁內播放時使用（v202） |
 | `retouch-lobby/retouch.svg`、`reshape.svg`、`makeup.svg`、`body.svg`、`hair.svg`、`looks.svg` | RETOUCH 分頁工具列 icon（Figma 544:24697，v198） |
 | `retouch/*@4x.png`、`retouch/*.svg` | Retouch 面板工具 icon、皇冠、返回鍵（Figma 515:3524／515:6521） |
 | `retouch/teeth-whitener.svg`、`retouch/eye-sparkle.svg`、`retouch/lip-wrinkle.svg` | v184 新增：Teeth Whitener、Eye Sparkle、Lip Wrinkle 正式 icon |

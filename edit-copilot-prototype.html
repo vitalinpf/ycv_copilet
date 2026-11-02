@@ -13,7 +13,7 @@
 <script>
 /* v192 — auto-update: compare this page's build with version.json (never cached); reload when a newer build is live.
    Bump YCV_BUILD here AND "build" in version.json together on every release. */
-window.YCV_BUILD='201';
+window.YCV_BUILD='202';
 (function(){
   if (location.protocol==='file:') return;
   function check(){
@@ -1944,6 +1944,10 @@ html body #cp-body.cr-fade{-webkit-mask-image:linear-gradient(to bottom,transpar
 html body #cp-body .f-head .hello h2 .f-credit,html body #cp-body .msg.greet .hello h2 .f-credit{visibility:hidden !important;pointer-events:none !important;}
 /* v200 — default page after a scenario keeps the History button (Figma default page) */
 html body #cp-sheet.used.hello-mode:not(.has-text):not(.typed) .cp-foot .in-row>#hist-in{display:flex !important;}
+/* v202 — IAP banner falls back to the static banner when the browser can't play video inline */
+.iap-page.novid .iap-vid{visibility:hidden !important;}
+.iap-page .iap-poster{position:absolute;left:0;top:0;width:100%;height:38.95%;object-fit:cover;display:none;pointer-events:none;}
+.iap-page.novid .iap-poster{display:block;}
 </style>
 </head>
 <body>
@@ -5216,6 +5220,28 @@ new MutationObserver(function(ms){ ms.forEach(function(m){ m.addedNodes.forEach(
     starting=Date.now(); sheet.classList.add('sug-done');
   }, true);
   var _r=fullReset; fullReset=function(){ var r=_r.apply(this, arguments); if (Date.now()-starting<2000) sheet.classList.add('sug-done'); return r; };
+})();
+/* v202 — IAP banner video must never open the iOS full-screen player.
+   In-app browsers (LINE, Slack, Messenger, Instagram, WeChat…) ignore playsinline and force full screen,
+   so there (and whenever full screen starts anyway) we keep the static banner instead. */
+(function(){
+  var pg=$('iap-page'), v=pg && pg.querySelector('.iap-vid'); if (!v) return;
+  ['playsinline','webkit-playsinline','muted','disablepictureinpicture','disableremoteplayback'].forEach(function(a){ v.setAttribute(a,''); });
+  v.poster='assets/videos/iap-banner-poster.jpg';
+  var ps=document.createElement('img'); ps.className='iap-poster'; ps.alt=''; ps.src=v.poster; v.after(ps);
+  v.setAttribute('x-webkit-airplay','deny'); v.controls=false; v.autoplay=false; v.removeAttribute('autoplay');
+  try{ v.disablePictureInPicture=true; }catch(_){}
+  function noVideo(){ pg.classList.add('novid'); try{ v.pause(); }catch(_){} }
+  var ua=navigator.userAgent||'';
+  if (/\bLine\/|FBAN|FBAV|FB_IAB|Instagram|Slack|MicroMessenger|KAKAOTALK|Teams|WebView|; wv\)/i.test(ua) ||
+      (/iPhone|iPad|iPod/.test(ua) && !/Safari\//.test(ua))) noVideo();   /* iOS WKWebView without Safari = in-app browser */
+  v.addEventListener('webkitbeginfullscreen', function(){ try{ v.webkitExitFullscreen(); }catch(_){} noVideo(); });
+  v.addEventListener('enterpictureinpicture', function(){ try{ document.exitPictureInPicture(); }catch(_){} noVideo(); });
+  var _o=openIAP; openIAP=window.openIAP=function(){
+    if (!pg.classList.contains('novid')) return _o.apply(this, arguments);
+    var p=v.play; v.play=function(){ return Promise.resolve(); };   /* skip the play() inside the v185 wrapper */
+    try{ return _o.apply(this, arguments); } finally { v.play=p; }
+  };
 })();
 </script>
 </body>
