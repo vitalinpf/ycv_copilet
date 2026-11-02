@@ -119,6 +119,9 @@
 
 ## 1-6. Demo scenario
 
+- v200 Scenario 1（Chat）：回覆下方出現「Keep exploring...」後，若使用者沒有點選任何建議就關掉 bottom sheet，再點 Copilot icon（f-logo）會回到 default page（Meet Video Copilot＋三個建議＋輸入框與 History 鈕，credit 餘額保留）；點 Edit More 不算「沒有選擇」，對話保留。只套用在 Scenario 1，其他情境不變
+- v200 Reset（桌面版面板與手機版 Demo scenario 選單）：重設後直接打開 bottom sheet 並顯示 default page（含三個建議）
+- v200 default page 在跑過任一情境後也顯示輸入框旁的 History 鈕
 - v195 手機版「Demo scenario」選單同步桌面版：隱藏「Edit More」，重新編號為 1–6（Chat／Interrupt a run／Follow-up request／Pick a look／Unsupported request／Not enough credits）
 - v191 建議區塊標題「Try these...」改為「Keep exploring...」（所有情境）
 - v189「Try these...」區塊 padding 改為 `6px 16px 10px 16px`

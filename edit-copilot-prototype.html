@@ -13,7 +13,7 @@
 <script>
 /* v192 — auto-update: compare this page's build with version.json (never cached); reload when a newer build is live.
    Bump YCV_BUILD here AND "build" in version.json together on every release. */
-window.YCV_BUILD='199';
+window.YCV_BUILD='200';
 (function(){
   if (location.protocol==='file:') return;
   function check(){
@@ -1942,6 +1942,8 @@ html body #cp-sheet>.sheet-cr{position:absolute !important;top:21.5px !important
 html body #cp-sheet.hist-mode>.sheet-cr{display:none !important;}
 html body #cp-body.cr-fade{-webkit-mask-image:linear-gradient(to bottom,transparent 0,transparent 14px,#000 34px);mask-image:linear-gradient(to bottom,transparent 0,transparent 14px,#000 34px);}
 html body #cp-body .f-head .hello h2 .f-credit,html body #cp-body .msg.greet .hello h2 .f-credit{visibility:hidden !important;pointer-events:none !important;}
+/* v200 — default page after a scenario keeps the History button (Figma default page) */
+html body #cp-sheet.used.hello-mode:not(.has-text):not(.typed) .cp-foot .in-row>#hist-in{display:flex !important;}
 </style>
 </head>
 <body>
@@ -5180,6 +5182,31 @@ new MutationObserver(function(ms){ ms.forEach(function(m){ m.addedNodes.forEach(
   /* once the chat is scrolled, fade the top edge so text never slides under the chip */
   var body=$('cp-body'); function fade(){ body.classList.toggle('cr-fade', body.scrollTop>4); }
   body.addEventListener('scroll', fade, {passive:true}); new MutationObserver(fade).observe(body,{childList:true}); fade();
+})();
+/* v200 — Scenario 1 (Chat): if "Keep exploring..." was shown and nothing was picked, closing the sheet and tapping the FAB starts over on the default page.
+   Reset (desktop panel or phone sheet) also lands on the default page with the suggestions. */
+(function(){
+  var body=$('cp-body'), sheet=$('cp-sheet'), scen='', seen=false, viaEM=false;
+  function ke(){ var t=body.querySelectorAll('.try-these'); t=t[t.length-1]; return t && !t.classList.contains('used') ? t : null; }
+  function toDefault(){ resetChat(); sheet.classList.remove('sug-done'); seen=false; }
+  document.addEventListener('click', function(e){
+    var d=e.target.closest && e.target.closest('.demo-btn, .demo-sheet .it, .demo-sheet .rs'); if (!d) return;
+    scen=d.dataset.k||''; seen=false;
+  }, true);
+  /* Edit More is a choice, not "nothing picked" */
+  document.addEventListener('pointerdown', function(e){ if (e.target.closest && e.target.closest('#cp-body .em-link')) viaEM=true; }, true);
+  new MutationObserver(function(){ if (S.sheet && ke()) seen=true; }).observe(body, {childList:true});
+  var _o=openSheet; openSheet=function(){
+    if (scen==='chat' && seen && !S.busy && ke()) toDefault();
+    var r=_o.apply(this, arguments); if (ke()) seen=true; viaEM=false; return r;
+  };
+  var _c=closeSheet; closeSheet=function(){ if (viaEM || !ke()) seen=false; viaEM=false; return _c.apply(this, arguments); };
+  var _r=fullReset; fullReset=function(){ var r=_r.apply(this, arguments); seen=false; return r; };
+  /* Reset → default page */
+  document.addEventListener('click', function(e){
+    if (!(e.target.closest && e.target.closest('.demo-btn.reset, .demo-sheet .rs'))) return;
+    setTimeout(function(){ sheet.classList.remove('sug-done'); if (!body.children.length || !S.sheet){ body.innerHTML=''; openSheet(); } }, 60);
+  }, false);
 })();
 </script>
 </body>
