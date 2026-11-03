@@ -120,6 +120,8 @@
 
 ## 1-6. Demo scenario
 
+- v212 「Done! I made smooth skin, brighten face and bigger eyes stronger / more natural」結果的 Edit More 會開 Retouch room（之前只認得含 “face retouch” 的訊息，所以沒反應）
+- v211 任務完成後的自然語句追問也能理解：如 Scenario 3 的「Make the retouch more noticeable」、more intense / more visible / tone it down / 明顯一點 等，對應到 Make it stronger / More natural（之前只認得以 make it stronger / more 開頭的句子，會回「I couldn’t match that to an edit yet」）
 - v210 完成 toast（「N edits done」chip 與 done toast）的「Review ›」改成「Continue ›」
 - v209 Credit page：Credit costs 表移除「Each request to Copilot −5」那一列（與新 FAQ 的 1–6 credits 說法一致）
 - v208 Credit page：移除「Example: “Whiten teeth” = 5 + 1 = 6 credits…」說明；FAQ「When are credits used?」改為新文案（先確認至少 6 credits，不足會先告知且不扣點；開始編輯後依複雜度約 1–6 credits，提問與無法完成的請求仍可能扣點）

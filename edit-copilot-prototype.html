@@ -13,7 +13,7 @@
 <script>
 /* v192 — auto-update: compare this page's build with version.json (never cached); reload when a newer build is live.
    Bump YCV_BUILD here AND "build" in version.json together on every release. */
-window.YCV_BUILD='210';
+window.YCV_BUILD='212';
 (function(){
   if (location.protocol==='file:') return;
   function check(){
@@ -5274,6 +5274,27 @@ new MutationObserver(function(ms){ ms.forEach(function(m){ m.addedNodes.forEach(
       setTimeout(function(){ if (pg.classList.contains('show') && v.paused && v.currentTime===t0 && v.readyState>=2) fallback(); }, 2000);
     }
     return r;
+  };
+})();
+/* v211 — natural follow-ups after a finished task: "Make the retouch more noticeable", "more intense", "tone it down"… map to Make it stronger / More natural */
+(function(){
+  var UP=/\b(more (noticeable|visible|obvious|intense|dramatic|pronounced|vivid)|stronger|intensify|boost|amp (it )?up|increase|enhance (it )?more|turn (it )?up|bolder)\b|明顯|強一點|加強|再多/i,
+      DOWN=/\b(more (natural|subtle)|subtler|softer|weaker|less|tone (it )?down|lighter|turn (it )?down|reduce|too much|too strong)\b|自然|淡一點|弱一點|少一點/i;
+  var _r=respond; respond=function(text){
+    var lr=lastRun && lastRun();
+    if (lr && lr.status==='done' && typeof text==='string' && !/^(make it stronger|more natural)$/i.test(text) && !/korean|k-?beauty|韓|filter|9:16|crop|trim|music/i.test(text)){
+      if (DOWN.test(text)) return _r.call(this, 'More natural');
+      if (UP.test(text)) return _r.call(this, 'Make it stronger');
+    }
+    return _r.apply(this, arguments);
+  };
+})();
+/* v212 — Edit More on a "made … stronger / more natural" retouch result opens the Retouch room too */
+(function(){
+  var _aem=window.afterEditMore; window.afterEditMore=function(em){
+    var m=em.closest('.msg'), t=m ? m.textContent : '';
+    if (/smooth skin|brighten face|bigger eyes|whiten(ing)? teeth|face lift|retouch/i.test(t) && !/\blook\b|filter|contrast|saturation/i.test(t)) return openRetouchRoom();
+    if (_aem) _aem(em);
   };
 })();
 </script>
